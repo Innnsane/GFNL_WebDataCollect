@@ -1,0 +1,470 @@
+<html>
+    <!--引入jQuery包用于使用ajax-->
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        body {
+            text-align: center;
+        }
+        
+        .doNumberDiv:before {
+            content: "次数:";
+        }
+
+        .doNumberDiv {
+            display: inline-block;
+            width: 100px;
+        }
+
+        #doNumber {
+            width: 50px;
+        }
+
+        .algorithmDiv {
+            width: 80px;
+            margin: 5px 2px;
+            display: inline-block;
+            text-align: center;
+            border: 1px solid #bdbdbd;
+            user-select: none;
+            cursor: pointer;
+            transition: box-shadow 0.5s ease;
+        }
+
+        img.algorithmImg {
+            width: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 82%;
+            background-color: #bdbdbd;
+        }
+
+        .algorithmDiv.notInTurn {
+            display: none;
+        }
+
+        #algorithmAllDiv {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        #algorithmDataAllDiv {
+            max-width: 908px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .algorithmDiv:hover {
+            box-shadow: 0 0 3px 0px #bdbdbd;
+        }
+
+        .algorithmLineDelete {
+            display: inline-block;
+            font-size: 12px;
+        }
+
+        .algorithmLine {
+            width: 280px;
+            text-align: center; 
+            padding: 5px;
+            margin: 5px auto;
+            border-radius: 2px;
+            border-bottom: 1px solid #888;
+        }
+
+        .lab42CollectSelect {
+            display: inline-block;
+            padding: 2px;
+            border: 1px solid #888;
+            background-color: #fff;
+        }
+
+        .lab42CollectSelect select {
+            border: none;
+        }
+
+        .lab42CollectSelect select:focus-visible {
+            outline: none;
+        }
+
+        .lab42CollectSelect select option {
+            padding: 2px;
+        }
+
+        .algorithmLinePosSelect {
+            border-right: none;
+            width: 95px;
+        }
+
+        .algorithmLineTypeSelect {
+            width: 132px;
+        }
+
+        .algorithmLineDelete {
+            border: 1px solid #888;
+            margin: 0px 4px;
+            line-height: 17px;
+            padding: 2px 4px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+    </style>
+    <h1>Good morning professor.</h1>
+    <div class="doNumberDiv">
+        <input id="doNumber" type="number" value="1" min="1">
+    </div>
+    <div class="lab42CollectSelect">
+        <select id="inTurnTypeSelect">
+            <option id="1" class="inTurnTypeOption" value="1" selected="selected">周一</option>
+            <option id="2" class="inTurnTypeOption" value="2">周二</option>
+            <option id="3" class="inTurnTypeOption" value="3">周三</option>
+            <option id="4" class="inTurnTypeOption" value="4">周四</option>
+            <option id="5" class="inTurnTypeOption" value="5">周五</option>
+            <option id="6" class="inTurnTypeOption" value="6">周六/日</option>
+        </select>
+    </div>
+    <div>
+        点击算法图标进行条目添加
+    </div>
+    <div id="algorithmAllDiv">
+        <div class="algorithmDiv" data-id="1_1">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">最小阈值</div>
+        </div>
+        <div class="algorithmDiv" data-id="1_2">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">数据复原</div>
+        </div>
+        <div class="algorithmDiv" data-id="1_3">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">异相回归</div>
+        </div>
+        <div class="algorithmDiv" data-id="1_4">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">前馈</div>
+        </div>
+        <div class="algorithmDiv" data-id="1_5">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">渐进</div>
+        </div>
+        <div class="algorithmDiv" data-id="1_6">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">推演</div>
+        </div>
+        <div class="algorithmDiv" data-id="2_1">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">代码封装</div>
+        </div>
+        <div class="algorithmDiv" data-id="2_2">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">机器学习</div>
+        </div>
+        <div class="algorithmDiv" data-id="2_3">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">补码溢出</div>
+        </div>
+        <div class="algorithmDiv" data-id="2_4">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">感知</div>
+        </div>
+        <div class="algorithmDiv" data-id="2_5">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">理性</div>
+        </div>
+        <div class="algorithmDiv" data-id="2_6">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">连结</div>
+        </div>
+        <div class="algorithmDiv" data-id="3_1">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">正向反馈</div>
+        </div>
+        <div class="algorithmDiv" data-id="3_2">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">支持向量</div>
+        </div>
+        <div class="algorithmDiv" data-id="3_3">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">矢量加速</div>
+        </div>
+        <div class="algorithmDiv" data-id="3_4">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">矩阵结构</div>
+        </div>
+        <div class="algorithmDiv" data-id="3_5">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">集束</div>
+        </div>
+        <div class="algorithmDiv" data-id="3_6">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">启发</div>
+        </div>
+        <div class="algorithmDiv" data-id="3_7">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">卷积</div>
+        </div>
+        <div class="algorithmDiv" data-id="3_8">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">博弈</div>
+        </div>
+        <div class="algorithmDiv" data-id="4_1">
+            <img class="algorithmImg" src="./image/Icon_算法套装_单件.png"/>
+            <div class="algorithmText">单件</div>
+        </div>
+    </div>
+    
+    <div id="algorithmDataAllDiv">
+    </div>
+    <!--创建button按钮，点击则激发submit()事件-->
+    <button onclick="algorithmDelete();">清空</button>
+    <button onclick="algorithmSubmit();">提交</button>
+    <script>
+        var algorithm = {
+            "1_1": {
+                "name": "最小阈值",
+                "inTurn": 2,
+                "position": 3,
+                "attribute": 1,
+            },
+            "1_2": {
+                "name": "数据复原",
+                "inTurn": 5,
+                "position": 3,
+                "attribute": 1,
+            },
+            "1_3": {
+                "name": "异相回归",
+                "inTurn": 5,
+                "position": 3,
+                "attribute": 1,
+            },
+            "1_4": {
+                "name": "前馈",
+                "inTurn": 2,
+                "position": 2,
+                "attribute": 1,
+            },
+            "1_5": {
+                "name": "渐进",
+                "inTurn": 3,
+                "position": 2,
+                "attribute": 1,
+            },
+            "1_6": {
+                "name": "推演",
+                "inTurn": 4,
+                "position": 2,
+                "attribute": 1,
+            },
+            "2_1": {
+                "name": "代码封装",
+                "inTurn": 1,
+                "position": 3,
+                "attribute": 2,
+            },
+            "2_2": {
+                "name": "机器学习",
+                "inTurn": 1,
+                "position": 3,
+                "attribute": 2,
+            },
+            "2_3": {
+                "name": "补码溢出",
+                "inTurn": 2,
+                "position": 3,
+                "attribute": 2,
+            },
+            "2_4": {
+                "name": "感知",
+                "inTurn": 1,
+                "position": 2,
+                "attribute": 2,
+            },
+            "2_5": {
+                "name": "理性",
+                "inTurn": 2,
+                "position": 2,
+                "attribute": 2,
+            },
+            "2_6": {
+                "name": "连结",
+                "inTurn": 3,
+                "position": 2,
+                "attribute": 2,
+            },
+            "3_1": {
+                "name": "正向反馈",
+                "inTurn": 3,
+                "position": 3,
+                "attribute": 3,
+            },
+            "3_2": {
+                "name": "支持向量",
+                "inTurn": 3,
+                "position": 3,
+                "attribute": 3,
+            },
+            "3_3": {
+                "name": "矢量加速",
+                "inTurn": 4,
+                "position": 3,
+                "attribute": 3,
+            },
+            "3_4": {
+                "name": "矩阵结构",
+                "inTurn": 4,
+                "position": 3,
+                "attribute": 3,
+            },
+            "3_5": {
+                "name": "集束",
+                "inTurn": 5,
+                "position": 2,
+                "attribute": 3,
+            },
+            "3_6": {
+                "name": "启发",
+                "inTurn": 1,
+                "position": 2,
+                "attribute": 3,
+            },
+            "3_7": {
+                "name": "卷积",
+                "inTurn": 4,
+                "position": 2,
+                "attribute": 3,
+            },
+            "3_8": {
+                "name": "博弈",
+                "inTurn": 5,
+                "position": 2,
+                "attribute": 3,
+            },
+            "4_1": {
+                "name": "单件",
+                "inTurn": 0,
+                "position": 1,
+                "attribute": 4,
+            }
+        }
+
+        var attributeList = {
+            1: [1, 2, 3, 4, 5, 6, 7, 8],
+            2: [9, 10, 11, 12, 13, 14, 15],
+            3: [11, 12, 13, 14, 16, 17, 18, 19],
+            4: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+        }
+
+        var attribute = {
+            1: "攻击力 12%",
+            2: "攻击力 54",
+            3: "算力 12%",
+            4: "算力 54",
+            5: "物理穿透 7.2%",
+            6: "物理穿透 20",
+            7: "算量穿透 7.2%",
+            8: "算量穿透 20",
+
+            9: "最大生命 12%",
+            10: "最大生命 1800",
+            11: "物理防御 7.2%",
+            12: "物理防御 56",
+            13: "算量防御 7.2%",
+            14: "算量防御 56",
+            15: "战后生命恢复 720",
+
+            16: "暴击率 8%",
+            17: "暴击伤害 16%",
+            18: "治疗效果 4%",
+            19: "技能急速 8%",
+        }
+
+        initial();
+        function initial(){
+            let element = $(".algorithmDiv");
+            for(let i = 0; i < element.length; i ++){
+                let thisId = $(element[i]).data("id");
+                $(element[i]).children(".algorithmImg").attr("data-image-src", "./image/Icon_算法套装_" + algorithm[thisId]['name'] + ".png");
+                $(element[i]).children(".algorithmImg").css({"background-image": "url(./image/Icon_算法套装_" + algorithm[thisId]['name'] + ".png)"});
+            }
+
+            inTurnTypeSelectChange();
+            $("#inTurnTypeSelect").change(function(){
+                inTurnTypeSelectChange();
+                algorithmDelete();
+            });
+            
+            $(".algorithmDiv").click(function(){
+                let algorithmType = $(this).data("id");
+                $("#algorithmDataAllDiv").append(creatAlgorithmLine(algorithmType));
+                $(".algorithmLineDelete").unbind("click").click(function(){
+                    $(this).parent(".algorithmLine").remove();
+                });
+            });
+        }
+
+        function inTurnTypeSelectChange(){
+                let type = Number($("#inTurnTypeSelect").val());
+                let element = $(".algorithmDiv");
+                for(let i = 0; i < element.length; i ++){
+                    let thisTurnId = algorithm[$(element[i]).data("id")]['inTurn'];
+                    if(thisTurnId == 0 || type == 6) $(element[i]).removeClass("notInTurn");
+                    else if(thisTurnId == type) $(element[i]).removeClass("notInTurn");
+                    else $(element[i]).addClass("notInTurn");
+                }
+        }
+
+        function creatAlgorithmLine(algorithmType) {
+            let dom = `<div class="algorithmLine" data-id="${algorithmType}">`;
+
+            dom += `<div class="lab42CollectSelect algorithmLinePosSelect"><select>`;
+            for(let i = 0; i < algorithm[algorithmType]['position']; i ++){
+                dom += `<option value="${i}" ${(i == 0) ? `selected="selected"` : ``}>${algorithm[algorithmType]['name']}-${i}<\/option>`;
+            }
+            dom += `<\/select><\/div>`;
+                
+            dom += `<div class="lab42CollectSelect algorithmLineTypeSelect"><select>`;
+            let algorithmAttr = attributeList[algorithm[algorithmType]['attribute']];
+            for(let i = 0; i < algorithmAttr.length; i ++){
+                dom += `<option value="${algorithmAttr[i]}" ${(i == 0) ? `selected="selected"` : ``}>${attribute[algorithmAttr[i]]}<\/option>`;
+            }
+            dom += `<\/select><\/div>`;
+
+            dom += `<div class="algorithmLineDelete">删除<\/div>`;
+            dom += `<\/div>`;
+            
+            return dom
+        }
+
+        function algorithmDelete(){
+            $(".algorithmLine").remove();
+        }
+
+        function algorithmSubmit(){
+            let algorithmLineData = $(".algorithmLine");
+            let algorithmData = {
+                "doNumber": $("#doNumber").val(),
+                "inTurnType": $("#inTurnTypeSelect").val(),
+                "algorithm": []
+            }
+
+            for(let i = 0; i < algorithmLineData.length; i ++){
+                algorithmData['algorithm'].push({
+                    "id": $(algorithmLineData[i]).data("id"),
+                    "mainAttr": $(algorithmLineData[i]).children(".algorithmLineTypeSelect").children("select").val(),
+                    "position": $(algorithmLineData[i]).children(".algorithmLinePosSelect").children("select").val(),
+                });
+            }
+            algorithmData['algorithm'] = JSON.stringify(algorithmData['algorithm']);
+
+            $.ajax({
+                url: "algorithm/submit",
+                type: "POST",
+                data: algorithmData,
+                success: function (result) {
+                    if(result.message == "success") algorithmDelete();
+                    alert(result.message);
+                }
+            });
+        }
+    </script>
+</html>

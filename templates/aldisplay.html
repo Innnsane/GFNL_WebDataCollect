@@ -1,0 +1,74 @@
+<html>
+    <!--引入jQuery包用于使用ajax-->
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <style>
+        .algorithmDisplay1 {
+            background-color: #fff;
+            width: 400px;
+            text-align: center;
+            margin: auto;
+            margin-top: 10px;
+            padding: 5px;
+            box-shadow: 0 0 3px -1px #888;
+            transition: all 1s ease;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        div#algorithmDataAllDiv {
+            text-align: center;
+            background-color: #eaeaea;
+            padding: 20px;
+        }
+
+        .algorithmDisplay1:hover {
+            box-shadow: 1px 1px 4px #888;
+        }
+
+        .algorithmDisplay1:active {
+            background-color: #ddd;
+        }
+
+        .algorithmDisplay3 {
+            width: 350px;
+            margin: 6px auto;
+            padding: 5px 0px;
+            border-bottom: 1px solid;
+        }
+    </style>
+    <div id="algorithmDataAllDiv">
+        <div id='algorithmDataAllData' style='display: none;'>
+            {{ data }}
+        </div>
+    </div>
+
+    <script>
+        $(function(){
+            let data = JSON.parse($("#algorithmDataAllData").html().replace(/ /g, ""));
+            $("#algorithmDataAllData").remove();
+
+            let dom = ``;
+            for(let i = 0; i < data.length; i ++){
+                dom += `<div class='algorithmDisplay1' data-2-status='hide'>${data[i]["1"]}<\/div>`;
+                dom += `<div class='algorithmDisplay2' style='display:none;'>`;
+                for(let j = 0; j < data[i]["2"].length; j ++) dom += `<div class='algorithmDisplay3'>${data[i]["2"][j]}<\/div>`;
+                dom += `<\/div>`;
+            }
+            $("#algorithmDataAllDiv").append(dom);
+
+
+            $(".algorithmDisplay1").click(function(){
+                let status = $(this).data("2-status");
+                if(status == "hide"){
+                    $(this).data("2-status", "show");
+                    $(this).next(".algorithmDisplay2").slideDown(200);
+                } else {
+                    $(this).data("2-status", "hide");
+                    $(this).next(".algorithmDisplay2").slideUp(200);
+                }
+            });
+        });
+
+    </script>
+</html>
