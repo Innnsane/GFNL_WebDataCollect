@@ -1,8 +1,11 @@
 import os
 import ujson
-import datetime
+import pymysql
 from flask import Flask, render_template, Response, request, jsonify
 from process import create_html
+from process import format_algorithm_single
+from dicts import *
+from database import *
 
 # 创建Flask对象app并初始化
 app = Flask(__name__)
@@ -35,31 +38,56 @@ def algorithm_submit():
     if request.method == "POST":
         algorithm['doNumber'] = request.form.get('doNumber')
         algorithm['inTurnType'] = request.form.get('inTurnType')
-        algorithm['algorithm'] = ujson.loads(request.form.get('algorithm'))
+        algorithm_json = request.form.get('algorithm')
+        algorithm['algorithm'] = ujson.loads(algorithm_json)
     elif request.method == "GET":
         algorithm['doNumber'] = request.args.get('doNumber')
         algorithm['inTurnType'] = request.args.get('inTurnType')
-        algorithm['algorithm'] = ujson.loads(request.args.get('algorithm'))
+        algorithm_json = request.args.get('algorithm')
+        algorithm['algorithm'] = ujson.loads(algorithm_json)
     else:
         algorithm = []
+        algorithm_json = ""
 
-    print(algorithm)
     # 如果获取的数据为空
     if not algorithm or not algorithm['algorithm']:
         return {'message': "error!"}
+    algorithm_format = format_algorithm_single(algorithm['algorithm'])
+    length = len(algorithm['algorithm'])
+    ip = request.remote_addr
 
-    previous = []
-    today = "".join(str(datetime.date.today()).split("-")) + ".json"
-    if os.path.exists(os.path.join(DATA, today)):
-        with open(os.path.join(DATA, today), "r", encoding='utf-8') as f:
-            previous = ujson.load(f)
-            f.close()
+    sql_1 = "INSERT INTO algorithm_list VALUES "
+    sql_1 += f"(null, NOW(), '{ip}', {algorithm['doNumber']}, {algorithm['inTurnType']}, {length}, '{algorithm_json}');"
+    sql_2_part1 = "INSERT INTO algorithm_single VALUES "
 
-    previous.append(algorithm)
-    with open(os.path.join(DATA, today), "w", encoding='utf-8') as f:
-        ujson.dump(previous, f)
-        f.close()
+    db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
+    cursor = db.cursor()
 
+    try:
+        print(sql_1)
+        cursor.execute(sql_1)
+        db.commit()
+
+        cursor.execute("SELECT LAST_INSERT_ID()")
+        last_id = cursor.fetchall()[0][0]
+
+        for keyname in algorithm_format.keys():
+            key = keyname.split("-")
+            frequent = float(algorithm_format[keyname]) / float(algorithm['inTurnType'])
+            sql_2_part2 = f"(null, {last_id}, '{key[0]}', '{ALGORITHM[key[0]]['name']}', {key[2]}, "
+            sql_2_part2 += f"'{ATTRIBUTE[int(key[2])].replace(' ', '_')}', {key[1]}, {algorithm['inTurnType']}, {frequent});"
+            print(sql_2_part1 + sql_2_part2)
+            cursor.execute(sql_2_part1 + sql_2_part2)
+        db.commit()
+
+    except Exception as e:
+        db.rollback()
+        cursor.close()
+        db.close()
+        return {'status': "error", 'message': "code error"}
+
+    cursor.close()
+    db.close()
     return {'message': "success"}
 
 
@@ -67,8 +95,29 @@ def algorithm_submit():
 @app.route("/algorithm/display")
 # 定义方法 用jinjia2引擎来渲染页面，并返回一个index.html页面
 def algorithm_display():
-    return render_template("aldisplay.html", data=create_html(11))
+    db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
+    cursor = db.cursor()
+
+    limit = 20
+    sql = f"select * from algorithm_list order by id desc limit {limit} ;"
+    cursor.execute(sql)
+    algorithm_table = cursor.fetchall()
+
+    html_list = []
+    for row in algorithm_table:
+        this_html_dict = {
+            "1": f"No.{row[0]}__周{row[4]}_执行{row[3]}次_掉落{row[5]}个算法_({str(row[1]).replace(' ', '_')})",
+            "2": []
+        }
+
+        algorithm_list = ujson.loads(row[6])
+        for j in algorithm_list:
+            this_html_dict["2"].append(f"{ALGORITHM[j['id']]['name']}-{j['position']}_{ATTRIBUTE[int(j['mainAttr'])]}")
+
+        html_list.append(this_html_dict)
+
+    return render_template("aldisplay.html", data=ujson.dumps(html_list))
 
 
 # 定义app在8080端口运行
-app.run(host='0.0.0.0', port=4222)
+app.run(port=4222)

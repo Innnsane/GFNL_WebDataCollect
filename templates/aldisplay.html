@@ -5,7 +5,8 @@
     <style>
         .algorithmDisplay1 {
             background-color: #fff;
-            width: 400px;
+            width: 500px;
+            max-width: 100%;
             text-align: center;
             margin: auto;
             margin-top: 10px;
@@ -31,7 +32,7 @@
         }
 
         .algorithmDisplay3 {
-            width: 350px;
+            width: 400px;
             margin: 6px auto;
             padding: 5px 0px;
             border-bottom: 1px solid;
@@ -45,7 +46,7 @@
 
     <script>
         $(function(){
-            let data = JSON.parse($("#algorithmDataAllData").html().replace(/ /g, ""));
+            let data = JSON.parse($("#algorithmDataAllData").html().replace(/ /g, "").replace(/_/g, " "));
             $("#algorithmDataAllData").remove();
 
             let dom = ``;

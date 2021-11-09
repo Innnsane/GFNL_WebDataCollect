@@ -30,3 +30,16 @@ def create_html(num):
         i -= 1
 
     return ujson.dumps(html_list)
+
+
+def format_algorithm_single(algorithm_list):
+    algorithm_dict = {}
+    for i in algorithm_list:
+        keyname = f"{i['id']}-{i['position']}-{i['mainAttr']}"
+        if keyname not in algorithm_dict.keys():
+            algorithm_dict[keyname] = 1
+        else:
+            algorithm_dict[keyname] += 1
+
+    return algorithm_dict
+

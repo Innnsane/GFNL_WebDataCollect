@@ -215,8 +215,8 @@
     <div id="algorithmDataAllDiv">
     </div>
     <!--创建button按钮，点击则激发submit()事件-->
-    <button onclick="algorithmDelete();">清空</button>
-    <button onclick="algorithmSubmit();">提交</button>
+    <button id="algorithmClear" onclick="algorithmDelete();">清空</button>
+    <button id="algorithmSubmit" onclick="algorithmSubmit();">提交</button>
     <script>
         var algorithm = {
             "1_1": {
@@ -351,7 +351,7 @@
             1: [1, 2, 3, 4, 5, 6, 7, 8],
             2: [9, 10, 11, 12, 13, 14, 15],
             3: [11, 12, 13, 14, 16, 17, 18, 19],
-            4: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+            4: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
         }
 
         var attribute = {
@@ -376,6 +376,28 @@
             17: "暴击伤害 16%",
             18: "治疗效果 4%",
             19: "技能急速 8%",
+
+            20: "攻击力 6%",
+            21: "攻击力 27",
+            22: "算力 6%",
+            23: "算力 27",
+            24: "物理穿透 3.6%",
+            25: "物理穿透 10",
+            26: "算量穿透 3.6%",
+            27: "算量穿透 10",
+
+            28: "最大生命 6%",
+            29: "最大生命 900",
+            30: "物理防御 3.6%",
+            31: "物理防御 28",
+            32: "算量防御 3.6%",
+            33: "算量防御 28",
+            34: "战后生命恢复 360",
+
+            35: "暴击率 4%",
+            36: "暴击伤害 8%",
+            37: "治疗效果 2%",
+            38: "技能急速 4%",
         }
 
         initial();
@@ -418,7 +440,7 @@
 
             dom += `<div class="lab42CollectSelect algorithmLinePosSelect"><select>`;
             for(let i = 0; i < algorithm[algorithmType]['position']; i ++){
-                dom += `<option value="${i}" ${(i == 0) ? `selected="selected"` : ``}>${algorithm[algorithmType]['name']}-${i}<\/option>`;
+                dom += `<option value="${i + 1}" ${(i == 0) ? `selected="selected"` : ``}>${algorithm[algorithmType]['name']}-${i + 1}<\/option>`;
             }
             dom += `<\/select><\/div>`;
                 
@@ -440,6 +462,7 @@
         }
 
         function algorithmSubmit(){
+            $("#algorithmSubmit").hide();
             let algorithmLineData = $(".algorithmLine");
             let algorithmData = {
                 "doNumber": $("#doNumber").val(),
@@ -463,6 +486,7 @@
                 success: function (result) {
                     if(result.message == "success") algorithmDelete();
                     alert(result.message);
+                    $("#algorithmSubmit").show();
                 }
             });
         }
