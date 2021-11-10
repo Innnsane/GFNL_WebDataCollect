@@ -1,7 +1,7 @@
 import os
 import ujson
 import pymysql
-from flask import Flask, render_template, Response, request, jsonify
+from flask import Flask, render_template, Response, request, jsonify, send_from_directory
 from process import create_html
 from process import format_algorithm_single
 from dicts import *
@@ -19,6 +19,13 @@ def root():
     return render_template("web.html")
 
 
+# 设置网站icon
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
+# 请求图片
 @app.route("/image/<image_id>.png")
 def get_frame(image_id):
     # 去对应的文件夹找到对应名字的图片
@@ -73,9 +80,9 @@ def algorithm_submit():
 
         for keyname in algorithm_format.keys():
             key = keyname.split("-")
-            frequent = float(algorithm_format[keyname]) / float(algorithm['inTurnType'])
-            sql_2_part2 = f"(null, {last_id}, '{key[0]}', '{ALGORITHM[key[0]]['name']}', {key[2]}, "
-            sql_2_part2 += f"'{ATTRIBUTE[int(key[2])].replace(' ', '_')}', {key[1]}, {algorithm['inTurnType']}, {frequent});"
+            sql_2_part2 = f"(null, {last_id}, NOW(), {algorithm['inTurnType']}, '{key[0]}', '{ALGORITHM[key[0]]['name']}', "
+            sql_2_part2 += f"{key[1]}, {key[2]}, '{ATTRIBUTE[int(key[2])].replace(' ', '_')}', "
+            sql_2_part2 += f"{algorithm_format[keyname]}, {algorithm['doNumber']});"
             print(sql_2_part1 + sql_2_part2)
             cursor.execute(sql_2_part1 + sql_2_part2)
         db.commit()
@@ -119,5 +126,5 @@ def algorithm_display():
     return render_template("aldisplay.html", data=ujson.dumps(html_list))
 
 
-# 定义app在8080端口运行
+# 定义app在4222端口运行
 app.run(port=4222)
