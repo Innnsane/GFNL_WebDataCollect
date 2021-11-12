@@ -1,0 +1,627 @@
+<html>
+    <head>
+        <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.css">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNLTT6XCXN"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-RNLTT6XCXN');
+        </script>
+        <style>
+            .ui.pointing.menu {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+            }
+
+            .ui.segment {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+            }
+
+            #algorithmTable {
+                max-width: 700px;
+                margin: auto;
+            }
+
+            .ui.checkbox.algorithmCheck {
+                display: block;
+                margin-top: 5px;
+            }
+
+            .checkboxDisable {
+                position: relative;
+                background: #FFFFFF;
+                margin-bottom: 0.5em;
+                padding: 0.1em 0.1em;
+                font-weight: bold;
+            }
+
+            tr.algorithmSingle:hover {
+                background-color: rgb(136 136 136 / 13%);
+            }
+
+            div#sidebarButton {
+                float: left;
+                cursor: pointer;
+                padding: 2px;
+                text-align: center;
+                box-shadow: none;
+            }
+
+            h2.ui.header {
+                text-align: right;
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ui left vertical menu sidebar">
+            <div class="item">
+                <div class="header">算法</div>
+                <div class="menu">
+                  <a class="item" href="/">数据提交</a>
+                  <a class="item" href="/algorithm/query">算法掉落查询</a>
+                  <a class="item" href="/algorithm/display">近期提交记录</a>
+                </div>
+            </div>
+        </div>
+        <div class="pusher">
+            <br/>
+            <div class="ui segment">
+                <div class="ui basic button" tabindex="0" id="sidebarButton">
+                    <i class="th list big icon"></i>
+                </div>
+                <h2 class="ui header">
+                    <div class="content">
+                        算法掉落查询
+                    </div>
+                </h2>
+            </div>
+            <div class="ui pointing menu">
+                <a class="item weekType" id="weekType1">周一</a>
+                <a class="item weekType" id="weekType2">周二</a>
+                <a class="item weekType" id="weekType3">周三</a>
+                <a class="item weekType" id="weekType4">周四</a>
+                <a class="item weekType" id="weekType5">周五</a>
+                <a class="item weekType" id="weekType6">周六/日</a>
+                <a class="item weekType active" id="weekType7">全部</a>
+            </div>
+            <div class="ui segment">
+                <div class="ui grid">
+                    <div class="four wide column">
+                        <div class="ui segment" id="nameCheckBox">
+                            <div class="ui form">
+                                <div class="grouped fields">
+                                    <div class="ui toggle checkbox checkboxDisable" id="nameCheckBoxDisable">
+                                        <input type="checkbox" name="public">
+                                        <label>选择算法名称</label>
+                                    </div>
+                                    <div class="ui mini buttons">
+                                        <button class="mini ui toggleButton button">反选</button>
+                                        <button class="mini ui positiveButton button">全选</button>
+                                        <button class="mini ui negativeButton button">清除</button>
+                                    </div>
+                                    <div class="ui horizontal divider">
+                                        Name
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui segment" id="posCheckBox">
+                            <div class="ui form">
+                                <div class="grouped fields">
+                                    <div class="ui toggle checkbox checkboxDisable" id="posCheckBoxDisable">
+                                        <input type="checkbox" name="public">
+                                        <label>选择算法位置</label>
+                                    </div>
+                                    <div class="ui mini buttons">
+                                        <button class="mini ui toggleButton button">反选</button>
+                                        <button class="mini ui positiveButton button">全选</button>
+                                        <button class="mini ui negativeButton button">清除</button>
+                                    </div>
+                                    <div class="ui horizontal divider">
+                                        Position
+                                    </div>
+                                    <div class="ui checkbox algorithmCheck" id="algorithmPos_1">
+                                        <input type="checkbox" class="algorithmPosCheck" checked="checked">
+                                        <label>位置-1</label>
+                                    </div>
+                                    <div class="ui checkbox algorithmCheck" id="algorithmPos_2">
+                                        <input type="checkbox" class="algorithmPosCheck" checked="checked">
+                                        <label>位置-2</label>
+                                    </div>
+                                    <div class="ui checkbox algorithmCheck" id="algorithmPos_3">
+                                        <input type="checkbox" class="algorithmPosCheck" checked="checked">
+                                        <label>位置-3</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui segment" id="statsCheckBox">
+                            <div class="ui form">
+                                <div class="grouped fields">
+                                    <div class="ui toggle checkbox checkboxDisable" id="statsCheckBoxDisable">
+                                        <input type="checkbox" name="public">
+                                        <label>选择算法主属性</label>
+                                    </div>
+                                    <div class="ui mini buttons">
+                                        <button class="mini ui toggleButton button">反选</button>
+                                        <button class="mini ui positiveButton button">全选</button>
+                                        <button class="mini ui negativeButton button">清除</button>
+                                    </div>
+                                    <div class="ui horizontal divider">
+                                        Status
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="eleven wide column">
+                        <table id="algorithmTable" class="ui single line table">
+                            <thead>
+                                <tr>
+                                    <th>周期</th>
+                                    <th>名称</th>
+                                    <th>位置</th>
+                                    <th>主属性</th>
+                                    <th>获取</th>
+                                    <th>算法数</th>
+                                    <th>频率</th>
+                                    <th>采集数</th>
+                                    <th>掉率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for algorithm in algorithm_list.a1 %}
+                                    <tr class="algorithmSingle algorithmSingle1" data-week="{{ algorithm.week }}">
+                                        <td>{{ algorithm.week }}</td>
+                                        <td>All</td>
+                                        <td>All</td>
+                                        <td>All</td>
+                                        <td>{{ algorithm.getNum }}</td>
+                                        <td>{{ algorithm.allNum }}</td>
+                                        <td>{{ algorithm.drop }}</td>
+                                        <td>{{ algorithm.doNum }}</td>
+                                        <td>{{ algorithm.frequent }}</td>
+                                    </tr>
+                                {% endfor %}
+                                {% for algorithm in algorithm_list.a2 %}
+                                    <tr class="algorithmSingle algorithmSingle2" data-week="{{ algorithm.week }}" data-name-id="{{ algorithm.name_id }}">
+                                        <td>{{ algorithm.week }}</td>
+                                        <td>{{ algorithm.name }}</td>
+                                        <td>All</td>
+                                        <td>All</td>
+                                        <td>{{ algorithm.getNum }}</td>
+                                        <td>{{ algorithm.allNum }}</td>
+                                        <td>{{ algorithm.drop }}</td>
+                                        <td>{{ algorithm.doNum }}</td>
+                                        <td>{{ algorithm.frequent }}</td>
+                                    </tr>
+                                {% endfor %}
+                                {% for algorithm in algorithm_list.a3 %}
+                                    <tr class="algorithmSingle algorithmSingle3" data-week="{{ algorithm.week }}" data-name-id="{{ algorithm.name_id }}" data-pos="{{ algorithm.pos }}">
+                                        <td>{{ algorithm.week }}</td>
+                                        <td>{{ algorithm.name }}</td>
+                                        <td>{{ algorithm.pos }}</td>
+                                        <td>All</td>
+                                        <td>{{ algorithm.getNum }}</td>
+                                        <td>{{ algorithm.allNum }}</td>
+                                        <td>{{ algorithm.drop }}</td>
+                                        <td>{{ algorithm.doNum }}</td>
+                                        <td>{{ algorithm.frequent }}</td>
+                                    </tr>
+                                {% endfor %}
+                                {% for algorithm in algorithm_list.a4 %}
+                                    <tr class="algorithmSingle algorithmSingle4" data-week="{{ algorithm.week }}" data-name-id="{{ algorithm.name_id }}" data-pos="{{ algorithm.pos }}" data-stats-id="{{ algorithm.stats_id }}">
+                                        <td>{{ algorithm.week }}</td>
+                                        <td>{{ algorithm.name }}</td>
+                                        <td>{{ algorithm.pos }}</td>
+                                        <td>{{ algorithm.stats }}</td>
+                                        <td>{{ algorithm.getNum }}</td>
+                                        <td>{{ algorithm.allNum }}</td>
+                                        <td>{{ algorithm.drop }}</td>
+                                        <td>{{ algorithm.doNum }}</td>
+                                        <td>{{ algorithm.frequent }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        var algorithmElementData = $(".algorithmSingle");
+        var choiceStatus = {
+            "weekType": 7,
+            "nameDisable": false,
+            "posDisable": false,
+            "statsDisable": false,
+        }
+
+        for(let i in algorithm) choiceStatus["algorithmId_" + i] = true;
+        for(let i in [1,2,3]) choiceStatus["algorithmPos_" + String(Number(i) + 1)] = true;
+        for(let i in attribute) choiceStatus["algorithmStatsId_" + i] = true;
+
+        var algorithm = {
+            "1_1": {
+                "name": "最小阈值",
+                "inTurn": 2,
+                "position": 3,
+                "attribute": 1,
+            },
+            "1_2": {
+                "name": "数据复原",
+                "inTurn": 5,
+                "position": 3,
+                "attribute": 1,
+            },
+            "1_3": {
+                "name": "异相回归",
+                "inTurn": 5,
+                "position": 3,
+                "attribute": 1,
+            },
+            "1_4": {
+                "name": "前馈",
+                "inTurn": 2,
+                "position": 2,
+                "attribute": 1,
+            },
+            "1_5": {
+                "name": "渐进",
+                "inTurn": 3,
+                "position": 2,
+                "attribute": 1,
+            },
+            "1_6": {
+                "name": "推演",
+                "inTurn": 4,
+                "position": 2,
+                "attribute": 1,
+            },
+            "2_1": {
+                "name": "代码封装",
+                "inTurn": 1,
+                "position": 3,
+                "attribute": 2,
+            },
+            "2_2": {
+                "name": "机器学习",
+                "inTurn": 1,
+                "position": 3,
+                "attribute": 2,
+            },
+            "2_3": {
+                "name": "补码溢出",
+                "inTurn": 2,
+                "position": 3,
+                "attribute": 2,
+            },
+            "2_4": {
+                "name": "感知",
+                "inTurn": 1,
+                "position": 2,
+                "attribute": 2,
+            },
+            "2_5": {
+                "name": "理性",
+                "inTurn": 2,
+                "position": 2,
+                "attribute": 2,
+            },
+            "2_6": {
+                "name": "连结",
+                "inTurn": 3,
+                "position": 2,
+                "attribute": 2,
+            },
+            "3_1": {
+                "name": "正向反馈",
+                "inTurn": 3,
+                "position": 3,
+                "attribute": 3,
+            },
+            "3_2": {
+                "name": "支持向量",
+                "inTurn": 3,
+                "position": 3,
+                "attribute": 3,
+            },
+            "3_3": {
+                "name": "矢量加速",
+                "inTurn": 4,
+                "position": 3,
+                "attribute": 3,
+            },
+            "3_4": {
+                "name": "矩阵结构",
+                "inTurn": 4,
+                "position": 3,
+                "attribute": 3,
+            },
+            "3_5": {
+                "name": "集束",
+                "inTurn": 5,
+                "position": 2,
+                "attribute": 3,
+            },
+            "3_6": {
+                "name": "启发",
+                "inTurn": 1,
+                "position": 2,
+                "attribute": 3,
+            },
+            "3_7": {
+                "name": "卷积",
+                "inTurn": 4,
+                "position": 2,
+                "attribute": 3,
+            },
+            "3_8": {
+                "name": "博弈",
+                "inTurn": 5,
+                "position": 2,
+                "attribute": 3,
+            },
+            "4_1": {
+                "name": "单件A区",
+                "inTurn": 0,
+                "position": 1,
+                "attribute": 4,
+            },
+            "4_2": {
+                "name": "单件B区",
+                "inTurn": 0,
+                "position": 1,
+                "attribute": 5,
+            },
+            "4_3": {
+                "name": "单件C区",
+                "inTurn": 0,
+                "position": 1,
+                "attribute": 6,
+            }
+        }
+
+        var attributeList = {
+            1: [1, 2, 3, 4, 5, 6, 7, 8],
+            2: [9, 10, 11, 12, 13, 14, 15],
+            3: [11, 12, 13, 14, 16, 17, 18, 19],
+            4: [20, 21, 22, 23, 24, 25, 26, 27],
+            5: [28, 29, 30, 31, 32, 33, 34],
+            6: [30, 31, 32, 33, 35, 36, 37, 38]
+        }
+
+        var attribute = {
+            1: "攻击力 12%",
+            2: "攻击力 54",
+            3: "算力 12%",
+            4: "算力 54",
+            5: "物理穿透 7.2%",
+            6: "物理穿透 20",
+            7: "算量穿透 7.2%",
+            8: "算量穿透 20",
+
+            9: "最大生命 12%",
+            10: "最大生命 1800",
+            11: "物理防御 7.2%",
+            12: "物理防御 56",
+            13: "算量防御 7.2%",
+            14: "算量防御 56",
+            15: "战后生命恢复 720",
+
+            16: "暴击率 8%",
+            17: "暴击伤害 16%",
+            18: "治疗效果 4%",
+            19: "技能急速 8%",
+
+            20: "攻击力 6%",
+            21: "攻击力 27",
+            22: "算力 6%",
+            23: "算力 27",
+            24: "物理穿透 3.6%",
+            25: "物理穿透 10",
+            26: "算量穿透 3.6%",
+            27: "算量穿透 10",
+
+            28: "最大生命 6%",
+            29: "最大生命 900",
+            30: "物理防御 3.6%",
+            31: "物理防御 28",
+            32: "算量防御 3.6%",
+            33: "算量防御 28",
+            34: "战后生命恢复 360",
+
+            35: "暴击率 4%",
+            36: "暴击伤害 8%",
+            37: "治疗效果 2%",
+            38: "技能急速 4%",
+        }
+
+        createCheckBox(true);
+        function createCheckBox(firstTime){
+            let attributeListHas = {}
+            let group_1 = $("#nameCheckBox").children(".ui.form").children(".grouped.fields");
+            group_1.children(".algorithmCheck").remove();
+            for(let algorithm_id in algorithm){
+                if(algorithm[algorithm_id]['inTurn'] == choiceStatus.weekType || algorithm[algorithm_id]['inTurn'] == 0 || choiceStatus.weekType == 7){
+                    group_1.append(`<div class="ui checkbox algorithmCheck" id="algorithmId_${algorithm_id}"><input type="checkbox" class="algorithmNameCheck" checked="checked">
+                        <label>${algorithm[algorithm_id]['name']}</label></div>`);
+                    attributeListHas[String(algorithm[algorithm_id]['attribute'])] = 1;
+                }
+            }
+
+            let group_3 = $("#statsCheckBox").children(".ui.form").children(".grouped.fields");
+            group_3.children(".algorithmCheck").remove();
+            for(let hasNum in attributeListHas){
+                for(let i in attributeList[Number(hasNum)]){
+                    group_3.append(`<div class="ui checkbox algorithmCheck" id="algorithmStatsId_${attributeList[Number(hasNum)][i]}"><input type="checkbox" class="algorithmStatsCheck" checked="checked">
+                        <label>${attribute[attributeList[Number(hasNum)][i]]}</label></div>`);
+                }
+            }
+
+            /* the toggle button is uncheck, please disable */
+            if(!firstTime && !choiceStatus["statsDisable"]){
+                for(let hasNum in attributeListHas){
+                    for(let i in attributeList[Number(hasNum)]){
+                        $(`#algorithmStatsId_${attributeList[Number(hasNum)][i]}`).checkbox("set disabled");
+                    }
+                }
+            }
+            
+            /* when user check the button, redraw dom */
+            $('.checkbox.algorithmCheck').checkbox({
+                onChecked: function() {
+                    updateDom();
+                },
+                onUnchecked: function() {
+                    updateDom();
+                }
+            });
+        }
+
+        initialTrigger();
+        function initialTrigger(){
+            /* weekType chose */
+            $(".weekType").click(function(){
+                choiceStatus["weekType"] = Number($(this).attr('id').replace("weekType", ""));
+                $(".weekType").removeClass("active");
+                $(this).addClass("active");
+                createCheckBox();
+                updateDom();
+            });
+
+            /* name pos stats up-down relation */
+            $('.toggle.checkbox.checkboxDisable').checkbox({
+                onChecked: function() {
+                    if($(this).parent().attr("id") == "nameCheckBoxDisable"){
+                        $("#posCheckBoxDisable").checkbox("set enabled");
+                    }
+                    if($(this).parent().attr("id") == "posCheckBoxDisable"){
+                        $("#statsCheckBoxDisable").checkbox("set enabled");
+                    }
+                    $(this).parent().parent().children(".mini.buttons").checkbox("set enabled");
+                    $(this).parent().parent().children(".ui.checkbox.algorithmCheck").checkbox("set enabled").click(function(){
+                        if($(this).hasClass("toggleButton")) buttonToggle(this);
+                        if($(this).hasClass("positiveButton")) buttonChecked(this);
+                        if($(this).hasClass("negativeButton")) buttonUnchecked(this);
+                    });
+                    updateDom();
+                },
+                onUnchecked: function() {
+                    if($(this).parent().attr("id") == "nameCheckBoxDisable"){
+                        $("#posCheckBoxDisable").checkbox("uncheck");
+                        $("#posCheckBoxDisable").checkbox("set disabled");
+                    }
+                    if($(this).parent().attr("id") == "posCheckBoxDisable"){
+                        $("#statsCheckBoxDisable").checkbox("uncheck");
+                        $("#statsCheckBoxDisable").checkbox("set disabled");
+                    }
+                    $(this).parent().parent().children(".ui.checkbox.algorithmCheck").checkbox("set disabled");
+                    $(this).parent().parent().children(".mini.buttons").children(".checkbox").unbind("click").checkbox("set disabled");
+                    updateDom();
+                }
+            });
+
+            /* initial */
+            $('.toggle.checkbox.checkboxDisable').checkbox("check");
+
+            /* name pos stats inside button */
+            $(".ui.toggleButton.button").click(function(){
+                buttonToggle(this);
+            });
+            $(".ui.positiveButton.button").click(function(){
+                buttonChecked(this);
+            });
+            $(".ui.negativeButton.button").click(function(){
+                buttonUnchecked(this);
+            });
+
+            /* radio check box select */
+            $('.ui.checkbox.algorithmCheck').click(function(){
+                updateDom();
+            });
+
+            /* sidebar */
+            $("#sidebarButton").click(function(){
+                $('.menu.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+            });
+        }
+
+        function buttonToggle(ele){
+            $(ele).parent().parent().children(".ui.checkbox.algorithmCheck").checkbox("toggle");
+            updateDom();
+        }
+
+        function buttonChecked(ele){
+            $(ele).parent().parent().children(".ui.checkbox.algorithmCheck").checkbox("set checked");
+            updateDom();
+        }
+
+        function buttonUnchecked(ele){
+            $(ele).parent().parent().children(".ui.checkbox.algorithmCheck").checkbox("set unchecked");
+            updateDom();
+        }
+
+        function updateDom(){
+            updateChoiceStatus();
+            showAlgorithm();
+        }
+
+        updateChoiceStatus();
+        function updateChoiceStatus(){
+            for(let key in choiceStatus) choiceStatus[key] = false;
+            choiceStatus["weekType"] = Number($(".item.weekType.active").attr('id').replace("weekType", ""));
+            choiceStatus["nameDisable"] = $("#nameCheckBoxDisable").checkbox("is checked");
+            choiceStatus["posDisable"] = $("#posCheckBoxDisable").checkbox("is checked");
+            choiceStatus["statsDisable"] = $("#statsCheckBoxDisable").checkbox("is checked");
+
+            let check = $(".ui.checkbox.algorithmCheck");
+            for(let i = 0; i < check.length; i ++){
+                choiceStatus[$(check[i]).attr('id')] = $(check[i]).checkbox("is checked");
+            }
+        }
+
+        showAlgorithm();
+        function showAlgorithm(){
+            /* decide which to show */
+            let algorithmElement = $(".algorithmSingle");
+            for(let ele = 0; ele < algorithmElement.length; ele ++){
+                let week = $(algorithmElement[ele]).data("week");
+                let name_id = $(algorithmElement[ele]).data("name-id");
+                let pos = $(algorithmElement[ele]).data("pos");
+                let stats_id = $(algorithmElement[ele]).data("stats-id");
+
+                let pass = true;
+                if(choiceStatus["weekType"] != Number(week) && choiceStatus["weekType"] != 7) pass = false;
+                if(choiceStatus["statsDisable"]){
+                    if(!$(algorithmElement[ele]).hasClass("algorithmSingle4")) pass = false;
+                    if(!choiceStatus["algorithmStatsId_" + String(stats_id)]) pass = false;
+                }
+                if(choiceStatus["posDisable"]){
+                    if(!choiceStatus["statsDisable"] && !$(algorithmElement[ele]).hasClass("algorithmSingle3")) pass = false;
+                    if(!choiceStatus["algorithmPos_" + String(pos)]) pass = false;
+                }
+                if(choiceStatus["nameDisable"]){
+                    if(!choiceStatus["statsDisable"] && !choiceStatus["posDisable"] && !$(algorithmElement[ele]).hasClass("algorithmSingle2")) pass = false;
+                    if(!choiceStatus["algorithmId_" + name_id]) pass = false;
+                }
+                if(!choiceStatus["statsDisable"] && !choiceStatus["posDisable"] && !choiceStatus["nameDisable"]){
+                    if(!$(algorithmElement[ele]).hasClass("algorithmSingle1")) pass = false;
+                }
+
+                if(pass) $(algorithmElement[ele]).show();
+                else $(algorithmElement[ele]).hide();
+            }
+        }
+    </script>
+</html>

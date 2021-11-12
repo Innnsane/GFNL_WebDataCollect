@@ -1,78 +1,126 @@
 <html>
-    <!--引入jQuery包用于使用ajax-->
-    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <head>
+        <!--引入jQuery包用于使用ajax-->
+        <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.css">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNLTT6XCXN"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
-    <style>
-        .algorithmDisplay1 {
-            background-color: #fff;
-            width: 500px;
-            max-width: 100%;
-            text-align: center;
-            margin: auto;
-            margin-top: 10px;
-            padding: 5px;
-            box-shadow: 0 0 3px -1px #888;
-            transition: all 1s ease;
-            user-select: none;
-            cursor: pointer;
-        }
-
-        div#algorithmDataAllDiv {
-            text-align: center;
-            background-color: #eaeaea;
-            padding: 20px;
-        }
-
-        .algorithmDisplay1:hover {
-            box-shadow: 1px 1px 4px #888;
-        }
-
-        .algorithmDisplay1:active {
-            background-color: #ddd;
-        }
-
-        .algorithmDisplay3 {
-            width: 400px;
-            margin: 6px auto;
-            padding: 5px 0px;
-            border-bottom: 1px solid;
-        }
-        .algorithmDisplay2 {
-            text-align: left;
-        }
-    </style>
-    <div id="algorithmDataAllDiv">
-        <div id='algorithmDataAllData' style='display: none;'>
-            {{ data }}
-        </div>
-    </div>
-
-    <script>
-        $(function(){
-            let data = JSON.parse($("#algorithmDataAllData").html().replace(/ /g, "").replace(/_/g, " "));
-            $("#algorithmDataAllData").remove();
-
-            let dom = ``;
-            for(let i = 0; i < data.length; i ++){
-                dom += `<div class='algorithmDisplay1' data-2-status='hide'>${data[i]["1"]}<\/div>`;
-                dom += `<div class='algorithmDisplay2' style='display:none;'>`;
-                for(let j = 0; j < data[i]["2"].length; j ++) dom += `<div class='algorithmDisplay3'>${data[i]["2"][j]}<\/div>`;
-                dom += `<\/div>`;
+            gtag('config', 'G-RNLTT6XCXN');
+        </script>
+        <style>
+            .ui.segment {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
             }
-            $("#algorithmDataAllDiv").append(dom);
 
+            .ui.menu.sidebar {
+                text-align: left;
+            }
 
-            $(".algorithmDisplay1").click(function(){
-                let status = $(this).data("2-status");
-                if(status == "hide"){
-                    $(this).data("2-status", "show");
-                    $(this).next(".algorithmDisplay2").slideDown(200);
-                } else {
-                    $(this).data("2-status", "hide");
-                    $(this).next(".algorithmDisplay2").slideUp(200);
-                }
-            });
+            div#sidebarButton {
+                float: left;
+                cursor: pointer;
+                padding: 2px;
+                text-align: center;
+                box-shadow: none;
+            }
+
+            h2.ui.header {
+                text-align: right;
+                margin: auto;
+            }
+
+            p.item.transition {
+                position: relative;
+                left: 40px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ui left vertical menu sidebar">
+            <div class="item">
+                <div class="header">算法</div>
+                <div class="menu">
+                  <a class="item" href="/">数据提交</a>
+                  <a class="item" href="/algorithm/query">算法掉落查询</a>
+                  <a class="item" href="/algorithm/display">近期提交记录</a>
+                </div>
+            </div>
+        </div>
+        <div class="pusher">
+            <br/>
+            <div class="ui segment">
+                <div class="ui basic button" tabindex="0" id="sidebarButton">
+                    <i class="th list big icon"></i>
+                </div>
+                <h2 class="ui header">
+                    <div class="content">
+                        近期提交记录
+                    </div>
+                </h2>
+            </div>
+            <div class="ui segment">
+                <div class="ui three statistics">
+                    <div class="statistic">
+                        <div class="value">
+                            {{ statistic.listNum }}
+                        </div>
+                        <div class="label">
+                            教授提交次数
+                        </div>
+                    </div>
+                    <div class="statistic">
+                        <div class="value">
+                            {{ statistic.doNum }}
+                        </div>
+                        <div class="label">
+                            总计采集次数
+                        </div>
+                    </div>
+                    <div class="statistic">
+                        <div class="value">
+                            {{ statistic.alNum }}
+                        </div>
+                        <div class="label">
+                            总计金色算法获得个数
+                        </div>
+                    </div>
+                </div>
+                <h4 class="ui horizontal divider header">
+                    History
+                </h4>
+                <div class="ui styled fluid accordion">
+                    {% for algorithm in algorithm_list %}
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            No.{{ algorithm.number }} 周{{ algorithm.weekType }} 掉落{{ algorithm.dropNum }}/执行{{ algorithm.doNum }}
+                            <small style="float: right;">{{ algorithm.time }}</small>
+                        </div>
+                        <div class="content ui ordered list">
+                            {% for algorithm_single in algorithm.data %}
+                                <p class="transition hidden item">
+                                    {{ algorithm_single.name }}-{{ algorithm_single.position }} {{ algorithm_single.stats }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <br/>
+    </body>
+    <script>
+        $('.ui.accordion').accordion();
+        /* sidebar */
+        $("#sidebarButton").click(function(){
+            $('.menu.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
         });
-
     </script>
 </html>

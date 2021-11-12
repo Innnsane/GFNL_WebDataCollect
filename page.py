@@ -1,9 +1,6 @@
 import os
 import ujson
-import pymysql
-from flask import Flask, render_template, Response, request, jsonify, send_from_directory
-from process import create_html
-from process import format_algorithm_single
+from flask import Flask, render_template, Response, request, send_from_directory
 from dicts import *
 from database import *
 
@@ -58,40 +55,33 @@ def algorithm_submit():
 
     # 如果获取的数据为空
     if not algorithm or not algorithm['algorithm']:
-        return {'message': "error!"}
-    algorithm_format = format_algorithm_single(algorithm['algorithm'])
+        return {'message': "算法为空!"}
+    if len(algorithm['algorithm']) < int(algorithm['doNumber']):
+        return {'message': "算法数量少于出击次数!"}
     length = len(algorithm['algorithm'])
     ip = request.remote_addr
 
-    sql_1 = "INSERT INTO algorithm_list VALUES "
-    sql_1 += f"(null, NOW(), '{ip}', {algorithm['doNumber']}, {algorithm['inTurnType']}, {length}, '{algorithm_json}');"
-    sql_2_part1 = "INSERT INTO algorithm_single VALUES "
+    try:
+        a = ATTRIBUTE[int(algorithm['algorithm'][0]['mainAttr'])]
+    except:
+        return {'message': "数据格式错误！"}
+
+    sql = "INSERT INTO algorithm_list VALUES "
+    sql += f"(null, NOW(), '{ip}', {algorithm['doNumber']}, {algorithm['inTurnType']}, {length}, '{algorithm_json}');"
 
     db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
     cursor = db.cursor()
 
     try:
-        print(sql_1)
-        cursor.execute(sql_1)
-        db.commit()
-
-        cursor.execute("SELECT LAST_INSERT_ID()")
-        last_id = cursor.fetchall()[0][0]
-
-        for keyname in algorithm_format.keys():
-            key = keyname.split("-")
-            sql_2_part2 = f"(null, {last_id}, NOW(), {algorithm['inTurnType']}, '{key[0]}', '{ALGORITHM[key[0]]['name']}', "
-            sql_2_part2 += f"{key[1]}, {key[2]}, '{ATTRIBUTE[int(key[2])].replace(' ', '_')}', "
-            sql_2_part2 += f"{algorithm_format[keyname]}, {algorithm['doNumber']});"
-            print(sql_2_part1 + sql_2_part2)
-            cursor.execute(sql_2_part1 + sql_2_part2)
+        print(sql)
+        cursor.execute(sql)
         db.commit()
 
     except Exception as e:
         db.rollback()
         cursor.close()
         db.close()
-        return {'status': "error", 'message': "code error"}
+        return {'status': "error", 'message': "数据库录入失败！"}
 
     cursor.close()
     db.close()
@@ -105,26 +95,118 @@ def algorithm_display():
     db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
     cursor = db.cursor()
 
+    statistic = {}
+    sql_statistic = f"SELECT COUNT(*) , SUM(do_number) , SUM(algorithm_number) FROM algorithm.algorithm_list"
+    cursor.execute(sql_statistic)
+    data = cursor.fetchall()[0]
+    statistic["listNum"] = data[0]
+    statistic["doNum"] = data[1]
+    statistic["alNum"] = data[2]
+
     limit = 20
-    sql = f"select * from algorithm_list order by id desc limit {limit} ;"
+    sql = f"select * from algorithm.algorithm_list order by id desc limit {limit} ;"
     cursor.execute(sql)
     algorithm_table = cursor.fetchall()
 
     html_list = []
     for row in algorithm_table:
         this_html_dict = {
-            "1": f"No.{row[0]}__周{row[4]}_执行{row[3]}次_掉落{row[5]}个算法_({str(row[1]).replace(' ', '_')})",
-            "2": []
+            "number": row[0],
+            "weekType": row[4],
+            "doNum": row[3],
+            "dropNum": row[5],
+            "time": row[1],
+            "data": []
         }
 
         algorithm_list = ujson.loads(row[6])
         for j in algorithm_list:
-            this_html_dict["2"].append(f"{ALGORITHM[j['id']]['name']}-{j['position']}_{ATTRIBUTE[int(j['mainAttr'])]}")
+            this_html_dict["data"].append({
+                "name": ALGORITHM[j['id']]['name'],
+                "position": j['position'],
+                "stats": ATTRIBUTE[int(j['mainAttr'])],
+            })
 
         html_list.append(this_html_dict)
 
-    return render_template("aldisplay.html", data=ujson.dumps(html_list))
+    return render_template("aldisplay.html", algorithm_list=html_list, statistic=statistic)
+
+
+# 通过python装饰器的方法定义路由地址
+@app.route("/algorithm/query")
+def algorithm_query():
+    algorithm_list = {"a1": [], "a2": [], "a3": [], "a4": []}
+    db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
+    cursor = db.cursor()
+
+    sql_4 = f"SELECT * FROM algorithm.algorithm_total WHERE algorithm_id IS NOT null AND algorithm_pos IS NOT null AND algorithm_stats IS NOT null;"
+    cursor.execute(sql_4)
+    algorithm_table_4 = cursor.fetchall()
+
+    for row in algorithm_table_4:
+        algorithm_list["a4"].append({
+            "week": row[1],
+            "name_id": row[2],
+            "name": ALGORITHM[row[2]]['name'],
+            "pos": row[3],
+            "stats_id": row[4],
+            "stats": ATTRIBUTE[row[4]],
+            "getNum": row[5],
+            "allNum": row[6],
+            "doNum": row[7],
+            "drop": "0%" if (row[6] == 0) else str(round(float(row[5]) / float(row[6]) * 100, 2)) + "%",
+            "frequent": "0%" if (row[7] == 0) else str(round(float(row[5]) / float(row[7]) * 100, 2)) + "%",
+        })
+
+    sql_3 = f"SELECT * FROM algorithm.algorithm_total WHERE algorithm_id IS NOT null AND algorithm_pos IS NOT null AND algorithm_stats IS null;"
+    cursor.execute(sql_3)
+    algorithm_table_3 = cursor.fetchall()
+
+    for row in algorithm_table_3:
+        algorithm_list["a3"].append({
+            "week": row[1],
+            "name_id": row[2],
+            "name": ALGORITHM[row[2]]['name'],
+            "pos": row[3],
+            "getNum": row[5],
+            "allNum": row[6],
+            "doNum": row[7],
+            "drop": "0%" if (row[6] == 0) else str(round(float(row[5]) / float(row[6]) * 100, 2)) + "%",
+            "frequent": "0%" if (row[7] == 0) else str(round(float(row[5]) / float(row[7]) * 100, 2)) + "%",
+        })
+
+    sql_2 = f"SELECT * FROM algorithm.algorithm_total WHERE algorithm_id IS NOT null AND algorithm_pos IS null AND algorithm_stats IS null;"
+    cursor.execute(sql_2)
+    algorithm_table_2 = cursor.fetchall()
+
+    for row in algorithm_table_2:
+        algorithm_list["a2"].append({
+            "week": row[1],
+            "name_id": row[2],
+            "name": ALGORITHM[row[2]]['name'],
+            "getNum": row[5],
+            "allNum": row[6],
+            "doNum": row[7],
+            "drop": "0%" if (row[6] == 0) else str(round(float(row[5]) / float(row[6]) * 100, 2)) + "%",
+            "frequent": "0%" if (row[7] == 0) else str(round(float(row[5]) / float(row[7]) * 100, 2)) + "%",
+        })
+
+    sql_1 = f"SELECT * FROM algorithm.algorithm_total WHERE algorithm_id IS null AND algorithm_pos IS null AND algorithm_stats IS null;"
+    cursor.execute(sql_1)
+    algorithm_table_1 = cursor.fetchall()
+
+    for row in algorithm_table_1:
+        algorithm_list["a1"].append({
+            "week": row[1],
+            "getNum": row[5],
+            "allNum": row[6],
+            "doNum": row[7],
+            "drop": "0%" if (row[6] == 0) else str(round(float(row[5]) / float(row[6]) * 100, 2)) + "%",
+            "frequent": "0%" if (row[7] == 0) else str(round(float(row[5]) / float(row[7]) * 100, 2)) + "%",
+        })
+
+    return render_template("alquery.html", algorithm_list=algorithm_list)
 
 
 # 定义app在4222端口运行
-app.run(port=4222)
+app.run(port=4222, debug=True)

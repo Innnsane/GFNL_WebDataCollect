@@ -1,144 +1,209 @@
 <html>
-    <!--引入jQuery包用于使用ajax-->
-    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <style>
-        body {
-            text-align: center;
-        }
-        
-        .doNumberDiv:before {
-            content: "次数:";
-        }
+    <head>
+        <!--引入jQuery包用于使用ajax-->
+        <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.css">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNLTT6XCXN"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
-        .doNumberDiv {
-            display: inline-block;
-            width: 100px;
-        }
+            gtag('config', 'G-RNLTT6XCXN');
+        </script>
+        <style>
+            body {
+                text-align: center;
+            }
 
-        #doNumber {
-            width: 50px;
-        }
+            /* -- Algorithm card -- */
+            .algorithmCardDiv {
+                width: 80px;
+                margin: 6px 3px;
+                display: inline-block;
+                text-align: center;
+                border: 1px solid #bdbdbd;
+                border-radius: 3px;
+                -webkit-box-shadow: 0px 1px 2px 0 rgb(34 36 38 / 15%);
+                box-shadow: 0px 1px 2px 0 rgb(34 36 38 / 15%);
+            }
 
-        .algorithmDiv {
-            width: 80px;
-            margin: 5px 2px;
-            display: inline-block;
-            text-align: center;
-            border: 1px solid #bdbdbd;
-            user-select: none;
-            cursor: pointer;
-            transition: box-shadow 0.5s ease;
-        }
+            img.algorithmImg {
+                width: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: 82%;
+                background-color: #bdbdbd;
+            }
 
-        img.algorithmImg {
-            width: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: 82%;
-            background-color: #bdbdbd;
-        }
+            .algorithmCardDiv.notInTurn {
+                display: none;
+            }
 
-        .algorithmDiv.notInTurn {
-            display: none;
-        }
+            .algorithmCardDiv .image{
+                user-select: none;
+                cursor: pointer;
+            }
 
-        #algorithmAllDiv {
-            max-width: 800px;
-            margin: auto;
-        }
+            .algorithmCardButton {
+                color: #292929 !important;
+                font-weight: bold;
+                user-select: none;
+            }
 
-        #algorithmDataAllDiv {
-            max-width: 908px;
-            margin: auto;
-            text-align: center;
-        }
+            .algorithmCardContent {
+                padding: 2px 0px;
+                font-weight: bold;
+            }
+            
+            /* -- Semantic UI -- */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button{
+                -webkit-appearance: none !important;
+                margin: 0;
+            }
 
-        .algorithmDiv:hover {
-            box-shadow: 0 0 3px 0px #bdbdbd;
-        }
+            .ui.segment {
+                width: 100%;
+                max-width: 1090px;
+                margin: 20px auto;
+            }
 
-        .algorithmLineDelete {
-            display: inline-block;
-            font-size: 12px;
-        }
+            .inTurnTypeSelect{
+                display: block;
+            }
 
-        .algorithmLine {
-            width: 280px;
-            text-align: center; 
-            padding: 5px;
-            margin: 5px auto;
-            border-radius: 2px;
-            border-bottom: 1px solid #888;
-        }
+            div#algorithmSelectDiv {
+                width: 100%;
+                max-width: fit-content;
+                margin: 10px auto;
+                padding: 10px;
+                text-align: center;
+            }
 
-        .lab42CollectSelect {
-            display: inline-block;
-            padding: 2px;
-            border: 1px solid #888;
-            background-color: #fff;
-        }
+            .algorithmLine div {
+                margin-right: 5px;
+            }
 
-        .lab42CollectSelect select {
-            border: none;
-            background-color: #fff;
-        }
+            .algorithmLine {
+                margin: auto;
+                margin-bottom: 15px;
+                width: fit-content;
+            }
+            
+            .ui.modal .content{
+                text-align: center;
+            }
 
-        .lab42CollectSelect select:focus-visible {
-            outline: none;
-        }
+            .ui.menu.sidebar {
+                text-align: left;
+            }
 
-        .lab42CollectSelect select option {
-            padding: 2px;
-        }
+            div#sidebarButton {
+                float: left;
+                cursor: pointer;
+                padding: 2px;
+                text-align: center;
+                box-shadow: none;
+            }
 
-        .algorithmLinePosSelect {
-            border-right: none;
-            width: 95px;
-        }
+            h2.ui.header {
+                text-align: right;
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ui left vertical menu sidebar">
+            <div class="item">
+                <div class="header">算法</div>
+                <div class="menu">
+                  <a class="item" href="/">数据提交</a>
+                  <a class="item" href="/algorithm/query">算法掉落查询</a>
+                  <a class="item" href="/algorithm/display">近期提交记录</a>
+                </div>
+            </div>
+        </div>
+        <div class="pusher">
+            <br/>
+            <div class="ui segment">
+                <div class="ui basic button" tabindex="0" id="sidebarButton">
+                    <i class="th list big icon"></i>
+                </div>
+                <h2 class="ui header">
+                    <div class="content">
+                        算法提交
+                    </div>
+                </h2>
+            </div>
+            <div class="ui segment">
+                <div id="algorithmSelectDiv">
+                    <div class="field">
+                        <div class="ui label">
+                            金色算法
+                        </div>
+                        <div class="ui label">
+                            算法掉落类型选择
+                        </div>
+                        <select class="ui dropdown"  id="inTurnTypeSelect">
+                            <option value="1">周一</option><!--（代码封装，机器学习，感知，启发）-->
+                            <option value="2">周二</option><!--（最小阈值，补码溢出，前馈，理性）-->
+                            <option value="3">周三</option><!--（正向反馈，支持向量，渐进，连结）-->
+                            <option value="4">周四</option><!--（矢量加速，矩阵结构，卷积，推演）-->
+                            <option value="5">周五</option><!--（数据复原，异相回归，集束，博弈）-->
+                            <option value="6">周六/日</option><!--（所有套装算法）-->
+                        </select><br/>
+                    </div>
 
-        .algorithmLineTypeSelect {
-            width: 132px;
-        }
+                    <div id="algorithmAllDiv"></div>
+                </div>
 
-        .algorithmLineDelete {
-            border: 1px solid #888;
-            margin: 0px 4px;
-            line-height: 17px;
-            padding: 2px 4px;
-            background-color: #fff;
-            cursor: pointer;
-        }
-        a#algorithmDisplay {
-            display: block;
-            margin-top: 20px;
-        }
-    </style>
-    <h1>Good morning professor.</h1>
-    <div class="doNumberDiv">
-        <input id="doNumber" type="number" value="0" min="1">
-    </div>
-    <div class="lab42CollectSelect">
-        <select id="inTurnTypeSelect">
-            <option id="1" class="inTurnTypeOption" value="1">周一</option>
-            <option id="2" class="inTurnTypeOption" value="2">周二</option>
-            <option id="3" class="inTurnTypeOption" value="3">周三</option>
-            <option id="4" class="inTurnTypeOption" value="4">周四</option>
-            <option id="5" class="inTurnTypeOption" value="5">周五</option>
-            <option id="6" class="inTurnTypeOption" value="6">周六/日</option>
-        </select>
-    </div>
-    <div>
-        点击算法图标进行条目添加
-    </div>
-    <div id="algorithmAllDiv">
-    </div>
-    
-    <div id="algorithmDataAllDiv">
-    </div>
-    <!--创建button按钮，点击则激发submit()事件-->
-    <button id="algorithmClear" onclick="algorithmDelete();">清空</button>
-    <button id="algorithmSubmit" onclick="algorithmSubmit();">提交</button>
-    <a href="/algorithm/display" id="algorithmDisplay">查看历史数据</a>
+                <div class="ui horizontal divider">
+                    Algorithm
+                </div>
+
+                <!-- 下面是算法创建和选择的位置 -->
+                <div id="algorithmDataAllDiv"></div>
+
+                <div class="ui error message algorithmDataErrorMessage" style="display: none;">
+                    <div class="header">提交失败</div>
+                    <p>当所需的全部信息都为合法值时，您的数据才可以被提交。</p>
+                </div>
+
+                <div class="ui action right labeled input">
+                    <div class="ui basic label">次数</div>
+                    <input id="doNumber" type="number" placeholder="出击次数..." value="0" min="1" step="1">
+                    <button class="ui icon button numberMinus">
+                        <i class="minus icon"></i>
+                    </button>
+                    <button class="ui icon button numberPlus">
+                        <i class="plus icon"></i>
+                    </button>
+                </div>
+                <button class="ui button" id="algorithmClear" onclick="algorithmDelete();">清空</button>
+                <button class="ui primary button" id="algorithmSubmit">提交</button>
+            </div>
+
+            <!-- 下面是提示框的设计 -->
+            <div class="ui tiny modal algorithmModal">
+                <div class="ui icon header">
+                    <i class="envelope icon"></i>Message
+                </div>
+                <div class="content">
+                    <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+                </div>
+                <div class="actions">
+                <div class="ui green ok inverted button">
+                    <i class="checkmark icon"></i>
+                    Yes
+                </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <!--<a href="/algorithm/display" id="algorithmDisplay">查看历史数据</a>--->
     <script>
         var algorithm = {
             "1_1": {
@@ -262,10 +327,22 @@
                 "attribute": 3,
             },
             "4_1": {
-                "name": "单件",
+                "name": "单件A区",
                 "inTurn": 0,
                 "position": 1,
                 "attribute": 4,
+            },
+            "4_2": {
+                "name": "单件B区",
+                "inTurn": 0,
+                "position": 1,
+                "attribute": 5,
+            },
+            "4_3": {
+                "name": "单件C区",
+                "inTurn": 0,
+                "position": 1,
+                "attribute": 6,
             }
         }
 
@@ -273,7 +350,9 @@
             1: [1, 2, 3, 4, 5, 6, 7, 8],
             2: [9, 10, 11, 12, 13, 14, 15],
             3: [11, 12, 13, 14, 16, 17, 18, 19],
-            4: [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
+            4: [20, 21, 22, 23, 24, 25, 26, 27],
+            5: [28, 29, 30, 31, 32, 33, 34],
+            6: [30, 31, 32, 33, 35, 36, 37, 38]
         }
 
         var attribute = {
@@ -324,15 +403,24 @@
 
         initial();
         function initial(){
+            $('.ui.modal').modal();
+            $('.ui.dropdown').dropdown();
+            $("#algorithmSubmit").click(algorithmSubmit);
 
             // create algorithm icon div
             let element = ``;
             for(let key in algorithm){
-                element += `<div class="algorithmDiv" data-id="${key}">`;
+                element += `<div class="card algorithmCardDiv" data-id="${key}"><div class="blurring dimmable image algorithmCardImage" data-id="${key}">`;
+                element += `<div class="ui inverted dimmer"><div class="content"><div class="center algorithmCardButton">添加</div></div></div>`;
                 element += `<img class="algorithmImg" src="./image/Icon_算法套装_单件.png" style="background-image:url(./image/Icon_算法套装_${algorithm[key]['name']}.png); "`;
-                element += `\/><div class="algorithmText">${algorithm[key]['name']}<\/div><\/div>`;
+                element += `\/></div><div class="content algorithmCardContent">${algorithm[key]['name']}<\/div><\/div>`;
             }
             $("#algorithmAllDiv").append(element);
+
+            // Semantic UI dimmer
+            $('.cards.algorithmCardDiv .image').dimmer({
+                on: 'hover'
+            });
 
             // day in a week
             $("#inTurnTypeSelect").change(function(){
@@ -340,15 +428,37 @@
                 algorithmDelete();
             });
             let date = new Date();
-            $("#inTurnTypeSelect").val(weekTypeHandle(date.getDay(), date.getHours()));
+            let dat_target = weekTypeHandle(date.getDay(), date.getHours());
+            $("#inTurnTypeSelect").val(dat_target);
+            $("#inTurnTypeSelect").parent().children(".text").html($("#inTurnTypeSelect option:selected").text());
+            $("#inTurnTypeSelect").parent().children(".menu").children(".active.selected").removeClass("active").removeClass("selected");
+            $("#inTurnTypeSelect").parent().children(".menu").children(".item[data-value='"+ dat_target +"']").addClass("active").addClass("selected");
             inTurnTypeSelectChange();
             
-            $(".algorithmDiv").click(function(){
+            // add algorithmLine
+            $(".algorithmCardImage").click(function(){
                 let algorithmType = $(this).data("id");
                 $("#algorithmDataAllDiv").append(creatAlgorithmLine(algorithmType));
                 $(".algorithmLineDelete").unbind("click").click(function(){
                     $(this).parent(".algorithmLine").remove();
                 });
+                $('.ui.dropdown').dropdown();
+            });
+
+            /* -- Semantic UI -- */
+            $(".numberMinus").click(function(){
+                let this_val = Number($(this).parent().children("input").val());
+                if(this_val <= 1) return;
+                else  $(this).parent().children("input").val(this_val - 1);
+            });
+            $(".numberPlus").click(function(){
+                let this_val = Number($(this).parent().children("input").val());
+                $(this).parent().children("input").val(this_val + 1);
+            });
+
+            /* sidebar */
+            $("#sidebarButton").click(function(){
+                $('.menu.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
             });
         }
 
@@ -360,35 +470,44 @@
         }
 
         function inTurnTypeSelectChange(){
-                let type = Number($("#inTurnTypeSelect").val());
-                let element = $(".algorithmDiv");
-                for(let i = 0; i < element.length; i ++){
-                    let thisTurnId = algorithm[$(element[i]).data("id")]['inTurn'];
-                    if(thisTurnId == 0 || type == 6) $(element[i]).removeClass("notInTurn");
-                    else if(thisTurnId == type) $(element[i]).removeClass("notInTurn");
-                    else $(element[i]).addClass("notInTurn");
-                }
+            let type = Number($("#inTurnTypeSelect").val());
+            let element = $(".algorithmCardDiv");
+            for(let i = 0; i < element.length; i ++){
+                let thisTurnId = algorithm[$(element[i]).data("id")]['inTurn'];
+                if(thisTurnId == 0 || type == 6) $(element[i]).removeClass("notInTurn");
+                else if(thisTurnId == type) $(element[i]).removeClass("notInTurn");
+                else $(element[i]).addClass("notInTurn");
+            }
+            
+            // Semantic UI dimmer
+            $('.algorithmCardDiv .image').dimmer({
+                on: 'hover'
+            });
         }
 
         function creatAlgorithmLine(algorithmType) {
             let dom = `<div class="algorithmLine" data-id="${algorithmType}">`;
+            let length_now = $(".algorithmLine").length
+            /* dom += `<div class="ui circular label algorithmLineLabel">${(length_now) ? length_now + 1 : 0}</div>`; */
 
-            dom += `<div class="lab42CollectSelect algorithmLinePosSelect">`;
-            dom += `<select>${(algorithm[algorithmType]['position'] == 1) ? `` : `<option disabled selected hidden>${algorithm[algorithmType]['name']}-?</option>`}`;
+            dom += `<div class="ui search selection dropdown"><input class="algorithmLinePosSelect" type="hidden" name="position"><i class="dropdown icon"></i>`;
+            dom += `<div class="default text">${algorithm[algorithmType]['name']}-选择位置</div>`;
+            dom += `<div class="menu">`;
             for(let i = 0; i < algorithm[algorithmType]['position']; i ++){
-                dom += `<option value="${i + 1}" ${(algorithm[algorithmType]['position'] == 1) ? `selected` : ``}>${algorithm[algorithmType]['name']}-${i + 1}<\/option>`;
+                dom += `<div class="item" data-value="${i + 1}">${algorithm[algorithmType]['name']}-${i + 1}</div>`;
             }
-            dom += `<\/select><\/div>`;
+            dom += `</div></div>`;
             
-            dom += `<div class="lab42CollectSelect algorithmLineTypeSelect"><select>`;
-            dom += `<option disabled selected hidden>请选择主属性</option>`;
             let algorithmAttr = attributeList[algorithm[algorithmType]['attribute']];
+            dom += `<div class="ui selection dropdown"><input class="algorithmLineTypeSelect" type="hidden" name="position"><i class="dropdown icon"></i>`;
+            dom += `<div class="default text">请选择主属性</div>`;
+            dom += `<div class="menu">`;
             for(let i = 0; i < algorithmAttr.length; i ++){
-                dom += `<option value="${algorithmAttr[i]}">${attribute[algorithmAttr[i]]}<\/option>`;
+                dom += `<div class="item" data-value="${algorithmAttr[i]}">${attribute[algorithmAttr[i]]}</div>`;
             }
-            dom += `<\/select><\/div>`;
+            dom += `</div></div>`;
 
-            dom += `<div class="algorithmLineDelete">删除<\/div>`;
+            dom += `<button class="ui button algorithmLineDelete">删除条目</button>`;
             dom += `<\/div>`;
             
             return dom
@@ -399,7 +518,9 @@
         }
 
         function algorithmSubmit(){
-            $("#algorithmSubmit").hide();
+            $("#algorithmSubmit").unbind("click").addClass("loading");
+            console.log(111);
+
             let algorithmLineData = $(".algorithmLine");
             let algorithmData = {
                 "doNumber": $("#doNumber").val(),
@@ -407,35 +528,43 @@
                 "algorithm": []
             }
 
+            let dataPass = true;
+            $(".ui.algorithmDataErrorMessage").addClass("error").hide();
             for(let i = 0; i < algorithmLineData.length; i ++){
-                let this_type = $(algorithmLineData[i]).children(".algorithmLineTypeSelect").children("select").val();
-                let this_pos = $(algorithmLineData[i]).children(".algorithmLinePosSelect").children("select").val();
-
-                if(!this_pos){
-                    notice(`请选择第${i+1}个算法的位置\nPlease select the ${i+1}th algorithm's position.`);
-                    $("#algorithmSubmit").show();
-                    return
-                } else if(!this_type){
-                    notice(`请选择第${i+1}个算法的主属性\nPlease select the ${i+1}th algorithm's main stats.`);
-                    $("#algorithmSubmit").show();
-                    return
+                let this_type = $(algorithmLineData[i]).children().children(".algorithmLineTypeSelect");
+                let this_pos = $(algorithmLineData[i]).children().children(".algorithmLinePosSelect");
+                
+                if(!this_pos.val()){
+                    this_pos.parent(".ui.dropdown").addClass("error");
+                    dataPass = false;
+                }
+                if(!this_type.val()){
+                    this_type.parent(".ui.dropdown").addClass("error");
+                    dataPass = false;
                 }
 
                 algorithmData['algorithm'].push({
                     "id": $(algorithmLineData[i]).data("id"),
-                    "mainAttr": this_type,
-                    "position": this_pos,
+                    "mainAttr": this_type.val(),
+                    "position": this_pos.val(),
                 });
             }
             algorithmData['algorithm'] = JSON.stringify(algorithmData['algorithm']);
 
             if(Number(algorithmData['doNumber']) < 1){
-                notice("请输入出击次数\nPlease type in your times.");
-                $("#algorithmSubmit").show();
-                return
+                $("#doNumber").parent(".ui.labeled.input").addClass("error");
+                dataPass = false;
             }
 
-            console.log(algorithmData);
+            if(!dataPass){
+                console.log(222)
+                $("#algorithmSubmit").removeClass("loading").click(algorithmSubmit);
+                $(".ui.algorithmDataErrorMessage").fadeIn(200);
+                $(".error").unbind("click").click(function(){
+                    $(this).removeClass("error");
+                });
+                return
+            }
 
             $.ajax({
                 url: "algorithm/submit",
@@ -445,17 +574,19 @@
                     if(result.message == "success"){
                         algorithmDelete();
                         $("#doNumber").val(0);
-                        notice("提交成功，感谢教授的贡献");
+                        notice("提交成功，感谢教授的贡献！", "<i class='thumbs up icon'></i>Good Job, Professor!");
                     } else {
-                        notice("提交失败" + result.message);
+                        notice("提交失败，" + result.message, "<i class='exclamation triangle icon'></i>Error!");
                     }
-                    $("#algorithmSubmit").show();
+                    $("#algorithmSubmit").removeClass("loading").click(algorithmSubmit);
                 }
             });
         }
 
-        function notice(text){
-            alert(text);
+        function notice(text, icon){
+            if(icon) $(".algorithmModal").children(".ui.icon.header").html(icon);
+            $(".algorithmModal").children(".content").children("p").html(text);
+            $('.ui.modal').modal('show');
         }
     </script>
 </html>
