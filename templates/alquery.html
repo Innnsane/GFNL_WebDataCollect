@@ -49,13 +49,9 @@
 
             div#sidebarButton {
                 float: left;
-                cursor: pointer;
-                padding: 2px;
-                text-align: center;
-                box-shadow: none;
             }
 
-            h2.ui.header {
+            h1.ui.header {
                 text-align: right;
                 margin: auto;
             }
@@ -75,14 +71,15 @@
         <div class="pusher">
             <br/>
             <div class="ui segment">
-                <div class="ui basic button" tabindex="0" id="sidebarButton">
-                    <i class="th list big icon"></i>
+                <div class="ui basic button" id="sidebarButton">
+                    <i class="th list icon"></i>
+                    Menu
                 </div>
-                <h2 class="ui header">
+                <h1 class="ui header">
                     <div class="content">
                         算法掉落查询
                     </div>
-                </h2>
+                </h1>
             </div>
             <div class="ui pointing menu">
                 <a class="item weekType" id="weekType1">周一</a>
@@ -239,6 +236,7 @@
         </div>
     </body>
     <script>
+        var algorithmData = {}
         var algorithmElementData = $(".algorithmSingle");
         var choiceStatus = {
             "weekType": 7,
@@ -445,6 +443,10 @@
             36: "暴击伤害 8%",
             37: "治疗效果 2%",
             38: "技能急速 4%",
+        }
+
+        function initialData(){
+
         }
 
         createCheckBox(true);
