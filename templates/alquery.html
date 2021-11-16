@@ -1,5 +1,6 @@
 <html>
     <head>
+        <title>算法掉落查询 - 绿洲气象观测站</title>
         <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.css">
@@ -16,7 +17,6 @@
             .ui.pointing.menu {
                 width: 100%;
                 max-width: 900px;
-                margin: 20px auto;
             }
 
             .ui.segment {
@@ -51,6 +51,11 @@
                 float: left;
             }
 
+            .ui.menu.sidebar {
+                text-align: left;
+                font-size: 16px;
+            }
+
             h1.ui.header {
                 text-align: right;
                 margin: auto;
@@ -63,8 +68,15 @@
                 <div class="header">算法</div>
                 <div class="menu">
                   <a class="item" href="/">数据提交</a>
-                  <a class="item" href="/algorithm/query">算法掉落查询</a>
+                  <a class="item" href="/algorithm/query">掉落查询</a>
                   <a class="item" href="/algorithm/display">近期提交记录</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">心智碎片</div>
+                <div class="menu">
+                <a class="item" href="/mind">数据提交</a>
+                <a class="item" href="/mind/display">数据展示</a>
                 </div>
             </div>
         </div>
@@ -80,15 +92,6 @@
                         算法掉落查询
                     </div>
                 </h1>
-            </div>
-            <div class="ui pointing menu">
-                <a class="item weekType" id="weekType1">周一</a>
-                <a class="item weekType" id="weekType2">周二</a>
-                <a class="item weekType" id="weekType3">周三</a>
-                <a class="item weekType" id="weekType4">周四</a>
-                <a class="item weekType" id="weekType5">周五</a>
-                <a class="item weekType" id="weekType6">周六/日</a>
-                <a class="item weekType active" id="weekType7">全部</a>
             </div>
             <div class="ui segment">
                 <div class="ui grid">
@@ -154,13 +157,22 @@
                                         <button class="mini ui negativeButton button">清除</button>
                                     </div>
                                     <div class="ui horizontal divider">
-                                        Status
+                                        Double Grids
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="eleven wide column">
+                    <div class="twelve wide column">
+                        <div class="ui pointing menu">
+                            <a class="item weekType" id="weekType1">周一</a>
+                            <a class="item weekType" id="weekType2">周二</a>
+                            <a class="item weekType" id="weekType3">周三</a>
+                            <a class="item weekType" id="weekType4">周四</a>
+                            <a class="item weekType" id="weekType5">周五</a>
+                            <a class="item weekType" id="weekType6">周六/日</a>
+                            <a class="item weekType active" id="weekType7">全部</a>
+                        </div>
                         <table id="algorithmTable" class="ui single line table">
                             <thead>
                                 <tr>
@@ -176,47 +188,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for algorithm in algorithm_list.a1 %}
-                                    <tr class="algorithmSingle algorithmSingle1" data-week="{{ algorithm.week }}">
-                                        <td>{{ algorithm.week }}</td>
-                                        <td>All</td>
-                                        <td>All</td>
-                                        <td>All</td>
-                                        <td>{{ algorithm.getNum }}</td>
-                                        <td>{{ algorithm.allNum }}</td>
-                                        <td>{{ algorithm.drop }}</td>
-                                        <td>{{ algorithm.doNum }}</td>
-                                        <td>{{ algorithm.frequent }}</td>
-                                    </tr>
-                                {% endfor %}
-                                {% for algorithm in algorithm_list.a2 %}
-                                    <tr class="algorithmSingle algorithmSingle2" data-week="{{ algorithm.week }}" data-name-id="{{ algorithm.name_id }}">
-                                        <td>{{ algorithm.week }}</td>
-                                        <td>{{ algorithm.name }}</td>
-                                        <td>All</td>
-                                        <td>All</td>
-                                        <td>{{ algorithm.getNum }}</td>
-                                        <td>{{ algorithm.allNum }}</td>
-                                        <td>{{ algorithm.drop }}</td>
-                                        <td>{{ algorithm.doNum }}</td>
-                                        <td>{{ algorithm.frequent }}</td>
-                                    </tr>
-                                {% endfor %}
-                                {% for algorithm in algorithm_list.a3 %}
-                                    <tr class="algorithmSingle algorithmSingle3" data-week="{{ algorithm.week }}" data-name-id="{{ algorithm.name_id }}" data-pos="{{ algorithm.pos }}">
-                                        <td>{{ algorithm.week }}</td>
-                                        <td>{{ algorithm.name }}</td>
-                                        <td>{{ algorithm.pos }}</td>
-                                        <td>All</td>
-                                        <td>{{ algorithm.getNum }}</td>
-                                        <td>{{ algorithm.allNum }}</td>
-                                        <td>{{ algorithm.drop }}</td>
-                                        <td>{{ algorithm.doNum }}</td>
-                                        <td>{{ algorithm.frequent }}</td>
-                                    </tr>
-                                {% endfor %}
-                                {% for algorithm in algorithm_list.a4 %}
-                                    <tr class="algorithmSingle algorithmSingle4" data-week="{{ algorithm.week }}" data-name-id="{{ algorithm.name_id }}" data-pos="{{ algorithm.pos }}" data-stats-id="{{ algorithm.stats_id }}">
+                                {% for algorithm in algorithm_list %}
+                                    <tr class="algorithmSingle"
+                                        data-week="{{ algorithm.week }}"
+                                        data-name-id="{{ algorithm.name_id }}"
+                                        data-pos="{{ algorithm.pos }}"
+                                        data-stats-id="{{ algorithm.stats_id }}"
+                                        data-getnum="{{ algorithm.getNum }}"
+                                        data-allnum="{{ algorithm.allNum }}"
+                                        data-donum="{{ algorithm.doNum }}">
                                         <td>{{ algorithm.week }}</td>
                                         <td>{{ algorithm.name }}</td>
                                         <td>{{ algorithm.pos }}</td>
@@ -236,19 +216,6 @@
         </div>
     </body>
     <script>
-        var algorithmData = {}
-        var algorithmElementData = $(".algorithmSingle");
-        var choiceStatus = {
-            "weekType": 7,
-            "nameDisable": false,
-            "posDisable": false,
-            "statsDisable": false,
-        }
-
-        for(let i in algorithm) choiceStatus["algorithmId_" + i] = true;
-        for(let i in [1,2,3]) choiceStatus["algorithmPos_" + String(Number(i) + 1)] = true;
-        for(let i in attribute) choiceStatus["algorithmStatsId_" + i] = true;
-
         var algorithm = {
             "1_1": {
                 "name": "最小阈值",
@@ -445,39 +412,48 @@
             38: "技能急速 4%",
         }
 
-        function initialData(){
-
+        var choiceStatus = {
+            "weekType": 7,
+            "nameDisable": false,
+            "posDisable": false,
+            "statsDisable": false,
         }
 
-        createCheckBox(true);
-        function createCheckBox(firstTime){
-            let attributeListHas = {}
+        for(let i in algorithm) choiceStatus["algorithmId_" + i] = true;
+        for(let i in [1,2,3]) choiceStatus["algorithmPos_" + String(Number(i) + 1)] = true;
+        for(let i in attribute) choiceStatus["algorithmStatsId_" + i] = true;
+
+        var algorithmData = [];
+        var algorithmElementData = $(".algorithmSingle");
+
+        initialData();
+        function initialData(){
+            for(let i = 0; i < algorithmElementData.length; i++){
+                algorithmData.push({
+                    "week": $(algorithmElementData[i]).data("week"),
+                    "name_id": $(algorithmElementData[i]).data("name-id"),
+                    "pos": $(algorithmElementData[i]).data("pos"),
+                    "stats_id": $(algorithmElementData[i]).data("stats-id"),
+                    "getnum": Number($(algorithmElementData[i]).data("getnum")),
+                    "allnum": Number($(algorithmElementData[i]).data("allnum")),
+                    "donum": Number($(algorithmElementData[i]).data("donum")),
+                });
+            }
+        }
+
+        initialCheckBox();
+        function initialCheckBox(){
             let group_1 = $("#nameCheckBox").children(".ui.form").children(".grouped.fields");
-            group_1.children(".algorithmCheck").remove();
             for(let algorithm_id in algorithm){
-                if(algorithm[algorithm_id]['inTurn'] == choiceStatus.weekType || algorithm[algorithm_id]['inTurn'] == 0 || choiceStatus.weekType == 7){
-                    group_1.append(`<div class="ui checkbox algorithmCheck" id="algorithmId_${algorithm_id}"><input type="checkbox" class="algorithmNameCheck" checked="checked">
-                        <label>${algorithm[algorithm_id]['name']}</label></div>`);
-                    attributeListHas[String(algorithm[algorithm_id]['attribute'])] = 1;
-                }
+                group_1.append(`<div class="ui checkbox algorithmCheck" id="algorithmId_${algorithm_id}"><input type="checkbox" class="algorithmNameCheck" checked="checked">
+                    <label>${algorithm[algorithm_id]['name']}</label></div>`);
             }
 
             let group_3 = $("#statsCheckBox").children(".ui.form").children(".grouped.fields");
-            group_3.children(".algorithmCheck").remove();
-            for(let hasNum in attributeListHas){
-                for(let i in attributeList[Number(hasNum)]){
-                    group_3.append(`<div class="ui checkbox algorithmCheck" id="algorithmStatsId_${attributeList[Number(hasNum)][i]}"><input type="checkbox" class="algorithmStatsCheck" checked="checked">
-                        <label>${attribute[attributeList[Number(hasNum)][i]]}</label></div>`);
-                }
-            }
-
-            /* the toggle button is uncheck, please disable */
-            if(!firstTime && !choiceStatus["statsDisable"]){
-                for(let hasNum in attributeListHas){
-                    for(let i in attributeList[Number(hasNum)]){
-                        $(`#algorithmStatsId_${attributeList[Number(hasNum)][i]}`).checkbox("set disabled");
-                    }
-                }
+            for(let stats in attribute){
+                if(stats == 20) group_3.append(`<div class="ui horizontal divider">Single Grid</div>`);
+                group_3.append(`<div class="ui checkbox algorithmCheck" id="algorithmStatsId_${stats}"><input type="checkbox" class="algorithmStatsCheck" checked="checked">
+                    <label>${attribute[stats]}</label></div>`);
             }
             
             /* when user check the button, redraw dom */
@@ -491,6 +467,27 @@
             });
         }
 
+        function updateCheckBox(){
+            let attributeListHas = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0};
+            for(let algorithm_id in algorithm){
+                if(algorithm[algorithm_id]['inTurn'] == choiceStatus.weekType || algorithm[algorithm_id]['inTurn'] == 0 || choiceStatus.weekType == 7 || choiceStatus.weekType == 6){
+                    $(`#algorithmId_${algorithm_id}`).show().checkbox("set checked");
+                    attributeListHas[Number(algorithm[algorithm_id]['attribute'])] = 1;
+                } else $(`#algorithmId_${algorithm_id}`).hide().checkbox("set unchecked");
+            }
+
+            let attributePushedList = [];
+            for(let num in attributeListHas){
+                for(let i in attributeList[Number(num)]){
+                    if(attributeListHas[num]){
+                        attributePushedList.push(attributeList[Number(num)][i]);
+                        $(`#algorithmStatsId_${attributeList[Number(num)][i]}`).show().checkbox("set checked");
+                    }
+                    else if(!(attributeList[Number(num)][i] in attributePushedList)) $(`#algorithmStatsId_${attributeList[Number(num)][i]}`).hide().checkbox("set unchecked");
+                }
+            }
+        }
+
         initialTrigger();
         function initialTrigger(){
             /* weekType chose */
@@ -498,19 +495,13 @@
                 choiceStatus["weekType"] = Number($(this).attr('id').replace("weekType", ""));
                 $(".weekType").removeClass("active");
                 $(this).addClass("active");
-                createCheckBox();
+                updateCheckBox();
                 updateDom();
             });
 
             /* name pos stats up-down relation */
             $('.toggle.checkbox.checkboxDisable').checkbox({
                 onChecked: function() {
-                    if($(this).parent().attr("id") == "nameCheckBoxDisable"){
-                        $("#posCheckBoxDisable").checkbox("set enabled");
-                    }
-                    if($(this).parent().attr("id") == "posCheckBoxDisable"){
-                        $("#statsCheckBoxDisable").checkbox("set enabled");
-                    }
                     $(this).parent().parent().children(".mini.buttons").checkbox("set enabled");
                     $(this).parent().parent().children(".ui.checkbox.algorithmCheck").checkbox("set enabled").click(function(){
                         if($(this).hasClass("toggleButton")) buttonToggle(this);
@@ -520,14 +511,6 @@
                     updateDom();
                 },
                 onUnchecked: function() {
-                    if($(this).parent().attr("id") == "nameCheckBoxDisable"){
-                        $("#posCheckBoxDisable").checkbox("uncheck");
-                        $("#posCheckBoxDisable").checkbox("set disabled");
-                    }
-                    if($(this).parent().attr("id") == "posCheckBoxDisable"){
-                        $("#statsCheckBoxDisable").checkbox("uncheck");
-                        $("#statsCheckBoxDisable").checkbox("set disabled");
-                    }
                     $(this).parent().parent().children(".ui.checkbox.algorithmCheck").checkbox("set disabled");
                     $(this).parent().parent().children(".mini.buttons").children(".checkbox").unbind("click").checkbox("set disabled");
                     updateDom();
@@ -535,7 +518,7 @@
             });
 
             /* initial */
-            $('.toggle.checkbox.checkboxDisable').checkbox("check");
+            $('.toggle.checkbox.checkboxDisable').checkbox("set checked");
 
             /* name pos stats inside button */
             $(".ui.toggleButton.button").click(function(){
@@ -593,37 +576,100 @@
             }
         }
 
-        showAlgorithm();
+        // showAlgorithm();
         function showAlgorithm(){
             /* decide which to show */
-            let algorithmElement = $(".algorithmSingle");
-            for(let ele = 0; ele < algorithmElement.length; ele ++){
-                let week = $(algorithmElement[ele]).data("week");
-                let name_id = $(algorithmElement[ele]).data("name-id");
-                let pos = $(algorithmElement[ele]).data("pos");
-                let stats_id = $(algorithmElement[ele]).data("stats-id");
+            let aData_1 = []
 
-                let pass = true;
-                if(choiceStatus["weekType"] != Number(week) && choiceStatus["weekType"] != 7) pass = false;
-                if(choiceStatus["statsDisable"]){
-                    if(!$(algorithmElement[ele]).hasClass("algorithmSingle4")) pass = false;
-                    if(!choiceStatus["algorithmStatsId_" + String(stats_id)]) pass = false;
+            for(let i in algorithmData){
+                if(choiceStatus["weekType"] == Number(algorithmData[i].week) || choiceStatus["weekType"] == 7){
+                    let thisAl = {}
+                    for(let key in algorithmData[i]) thisAl[key] = algorithmData[i][key];
+                    aData_1.push(thisAl);
                 }
-                if(choiceStatus["posDisable"]){
-                    if(!choiceStatus["statsDisable"] && !$(algorithmElement[ele]).hasClass("algorithmSingle3")) pass = false;
-                    if(!choiceStatus["algorithmPos_" + String(pos)]) pass = false;
-                }
-                if(choiceStatus["nameDisable"]){
-                    if(!choiceStatus["statsDisable"] && !choiceStatus["posDisable"] && !$(algorithmElement[ele]).hasClass("algorithmSingle2")) pass = false;
-                    if(!choiceStatus["algorithmId_" + name_id]) pass = false;
-                }
-                if(!choiceStatus["statsDisable"] && !choiceStatus["posDisable"] && !choiceStatus["nameDisable"]){
-                    if(!$(algorithmElement[ele]).hasClass("algorithmSingle1")) pass = false;
-                }
-
-                if(pass) $(algorithmElement[ele]).show();
-                else $(algorithmElement[ele]).hide();
             }
+
+            // calculate stats
+            let aData_2 = []
+            if(!choiceStatus["statsDisable"]){
+                for(let i in aData_1){
+                    let sign = false;
+
+                    for(let j in aData_2){
+                        if(aData_1[i].week == aData_2[j].week && aData_1[i].name_id == aData_2[j].name_id && aData_1[i].pos == aData_2[j].pos){
+                            aData_2[j]["getnum"] += aData_1[i]["getnum"];
+                            sign = true; 
+                            break; 
+                        }
+                    }
+                    if(!sign){ 
+                        aData_1[i]["stats_id"] = "All"; 
+                        aData_2.push(aData_1[i]); 
+                    }
+                }
+            } else aData_2 = aData_1;
+
+            // calculate pos
+            let aData_3 = []
+            if(!choiceStatus["posDisable"]){
+                for(let i in aData_2){
+                    let sign = false;
+
+                    for(let j in aData_3){
+                        if(aData_2[i].week == aData_3[j].week && aData_2[i].name_id == aData_3[j].name_id && aData_2[i].stats_id == aData_3[j].stats_id){
+                            aData_3[j]["getnum"] += aData_2[i]["getnum"]; 
+                            sign = true; 
+                            break; 
+                        }
+                    }
+                    if(!sign){ 
+                        aData_2[i]["pos"] = "All"; 
+                        aData_3.push(aData_2[i]); 
+                    }
+                }
+            } else aData_3 = aData_2;
+            
+
+            // calculate algorithm name
+            let aData_4 = []
+            if(!choiceStatus["nameDisable"]){
+                for(let i in aData_3){
+                    let sign = false;
+
+                    for(let j in aData_4){
+                        if(aData_3[i].week == aData_4[j].week && aData_3[i].pos == aData_4[j].pos && aData_3[i].stats_id == aData_4[j].stats_id){
+                            aData_4[j]["getnum"] += aData_3[i]["getnum"]; 
+                            sign = true; 
+                            break; 
+                        }
+                    }
+                    if(!sign){ 
+                        aData_3[i]["name_id"] = "All"; 
+                        aData_4.push(aData_3[i]);
+                    }
+                }
+            } else aData_4 = aData_3;
+
+            let table = "";
+            for(let i in aData_4){
+                let pass = true;
+                if(choiceStatus["statsDisable"] && !choiceStatus["algorithmStatsId_" + aData_4[i].stats_id]) pass = false;
+                if(choiceStatus["posDisable"] && !choiceStatus["algorithmPos_" + aData_4[i].pos]) pass = false;
+                if(choiceStatus["nameDisable"] && !choiceStatus["algorithmId_" + aData_4[i].name_id]) pass = false;
+                if(pass) table += createAlgorithmSingle(aData_4[i]);
+            }
+
+            $("#algorithmTable").children("tbody").children(".algorithmSingle").remove();
+            $("#algorithmTable").children("tbody").html(table);
+        }
+
+        function createAlgorithmSingle(alData){
+            let dom = `<tr class="algorithmSingle""><td>${alData.week}</td><td>${(alData.name_id == "All") ? "All" : algorithm[alData.name_id].name}</td><td>${alData.pos}</td>`;
+            dom += `<td>${(alData.stats_id == "All") ? "All" : attribute[alData.stats_id]}</td><td>${alData.getnum}</td>`;
+            dom += `<td>${alData.allnum}</td><td>${(Number(alData.allnum) == 0 ? 0 : (Number(alData.getnum) / Number(alData.allnum) * 100).toFixed(2))}%</td>`;
+            dom += `<td>${alData.donum}</td><td>${(Number(alData.donum) == 0 ? 0 : (Number(alData.getnum) / Number(alData.donum) * 100).toFixed(2))}%</td></tr>`;
+
+            return dom
         }
     </script>
 </html>

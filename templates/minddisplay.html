@@ -1,0 +1,558 @@
+<html>
+    <head>
+        <title>碎片搜索数据展示 - 绿洲气象观测站</title>
+        <!--引入jQuery包用于使用ajax-->
+        <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.css">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNLTT6XCXN"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-RNLTT6XCXN');
+        </script>
+        <style>
+            body {
+                text-align: center;
+            }
+
+            div#fragmentDispalyAll {
+                margin: 20px;
+            }
+
+
+            .ui.workItemDiv {
+                text-align: left;
+            }
+
+            /* -- Semantic UI -- */
+            .ui.segment {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+            }
+
+            .ui.menu.sidebar {
+                text-align: left;
+                font-size: 16px;
+            }
+
+            div#sidebarButton {
+                float: left;
+            }
+
+            h1.ui.header {
+                text-align: right;
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ui left vertical menu sidebar">
+            <div class="item">
+                <div class="header">算法</div>
+                <div class="menu">
+                  <a class="item" href="/">数据提交</a>
+                  <a class="item" href="/algorithm/query">掉落查询</a>
+                  <a class="item" href="/algorithm/display">近期提交记录</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">心智碎片</div>
+                <div class="menu">
+                <a class="item" href="/mind">数据提交</a>
+                <a class="item" href="/mind/display">数据展示</a>
+                </div>
+            </div>
+        </div>
+        <div class="pusher">
+            <br/>
+            <div class="ui segment">
+                <div class="ui basic button" id="sidebarButton">
+                    <i class="th list icon"></i>
+                    Menu
+                </div>
+                <h1 class="ui header">
+                    <div class="content">
+                        心智碎片搜索数据展示
+                    </div>
+                </h1>
+            </div>
+            <div class="ui segment" style="min-height: 1200px;">
+                <div class="ui five statistics">
+                    <div class="statistic" id="statistic_stage">
+                        <div class="value">
+                            Default
+                        </div>
+                        <div class="label">
+                            搜索次数
+                        </div>
+                    </div>
+                    <div class="statistic" id="statistic_fragment">
+                        <div class="value">
+                            Default
+                        </div>
+                        <div class="label">
+                            碎片获取
+                        </div>
+                    </div>
+                    <div class="statistic" id="statistic_gift1">
+                        <div class="value">
+                            Default
+                        </div>
+                        <div class="label">
+                            礼物(橙)获取
+                        </div>
+                    </div>
+                    <div class="statistic" id="statistic_gift2">
+                        <div class="value">
+                            Default
+                        </div>
+                        <div class="label">
+                            礼物(紫)获取
+                        </div>
+                    </div>
+                    <div class="statistic" id="statistic_gift3">
+                        <div class="value">
+                            Default
+                        </div>
+                        <div class="label">
+                            礼物(蓝)获取
+                        </div>
+                    </div>
+                </div>
+                <div id="fragmentDispalyAll">
+                </div>
+
+                <div class="ui horizontal divider">
+                    EACH DOLL
+                </div>
+
+                <div class="ui secondary pointing menu">
+                    <a class="item active workItem" id="work_1">
+                        守卫
+                    </a>
+                    <a class="item workItem" id="work_2">
+                        射手
+                    </a>
+                    <a class="item workItem" id="work_3">
+                        战士
+                    </a>
+                    <a class="item workItem" id="work_4">
+                        特种
+                    </a>
+                    <a class="item workItem" id="work_5">
+                        医师
+                    </a>
+                    <!--
+                        <div class="right menu">
+                            <a class="ui item workItem"  id="work_0">
+                                Logout
+                            </a>
+                        </div>
+                    -->
+                </div>
+                <div class="ui styled fluid workItemDiv accordion">
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        var work = {
+            "1": "守卫",
+            "2": "射手",
+            "3": "战士",
+            "4": "特种",
+            "5": "医师",
+        }
+        var doll = {
+            "1001": {
+                "name": "帕斯卡",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/f/f8/ICON_Item_2001.png",
+            },
+            "1002": {
+                "name": "安冬妮娜",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/4/47/ICON_Item_2002.png",
+            },
+            "1003": {
+                "name": "苏尔",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/9/99/ICON_Item_2003.png",
+            },
+            "1004": {
+                "name": "席摩",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/4/4f/ICON_Item_2004.png",
+            },
+            "1005": {
+                "name": "克罗琦",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/9/97/ICON_Item_2005.png",
+            },
+            "1006": {
+                "name": "菲涅尔",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/f/f7/ICON_Item_2006.png",
+            },
+            "1007": {
+                "name": "炽",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/1/12/ICON_Item_2007.png",
+            },
+            "1008": {
+                "name": "琴",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/c/c5/ICON_Item_2008.png",
+            },
+            "1009": {
+                "name": "迈迈",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/3/34/ICON_Item_2009.png",
+            },
+            "1010": {
+                "name": "伊芙琳",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/4/46/ICON_Item_2010.png",
+            },
+            "1011": {
+                "name": "薮春",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/9/9b/ICON_Item_2011.png",
+            },
+            "1012": {
+                "name": "麦克斯",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/4/4e/ICON_Item_2012.png",
+            },
+            "1013": {
+                "name": "贝蒂",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/d/de/ICON_Item_2013.png",
+            },
+            "1014": {
+                "name": "巧可",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/e/e8/ICON_Item_2014.png",
+            },
+            "1015": {
+                "name": "帕那刻亚",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/f/fb/ICON_Item_2015.png",
+            },
+            "1016": {
+                "name": "坂口希",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/f/f9/ICON_Item_2016.png",
+            },
+            "1017": {
+                "name": "安吉拉",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/8/82/ICON_Item_2017.png",
+            },
+            "1018": {
+                "name": "芙洛伦",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/6/63/ICON_Item_2018.png",
+            },
+            "1019": {
+                "name": "芬恩",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/f/f9/ICON_Item_2019.png",
+            },
+            "1020": {
+                "name": "扬尼",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/0/00/ICON_Item_2020.png",
+            },
+            "1021": {
+                "name": "音流",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/5/57/ICON_Item_2021.png",
+            },
+            "1022": {
+                "name": "秋",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/1/11/ICON_Item_2022.png",
+            },
+            "1023": {
+                "name": "波妮",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/c/c8/ICON_Item_2023.png",
+            },
+            "1024": {
+                "name": "埃尔赫",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/b/be/ICON_Item_2024.png",
+            },
+            "1025": {
+                "name": "缠枝",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/8/8e/ICON_Item_2025.png",
+            },
+            "1026": {
+                "name": "七花",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/7/70/ICON_Item_2026.png",
+            },
+            "1027": {
+                "name": "希安",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/4/44/ICON_Item_2027.png",
+            },
+            "1028": {
+                "name": "薇",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/9/97/ICON_Item_2028.png",
+            },
+            "1029": {
+                "name": "薇洛儿",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/4/48/ICON_Item_2029.png",
+            },
+            "1030": {
+                "name": "科谢尼娅",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/3/3d/ICON_Item_2030.png",
+            },
+            "1031": {
+                "name": "伊姆赫特",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/0/0c/ICON_Item_2031.png",
+            },
+            "1032": {
+                "name": "奥托金",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/7/74/ICON_Item_2032.png",
+            },
+            "1033": {
+                "name": "莉丝",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/7/72/ICON_Item_2033.png",
+            },
+            "1034": {
+                "name": "阿比盖尔",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/b/b2/ICON_Item_2034.png",
+            },
+            "1035": {
+                "name": "洁西",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/5/57/ICON_Item_2035.png",
+            },
+            "1036": {
+                "name": "拉姆",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/3/32/ICON_Item_2036.png",
+            },
+            "1037": {
+                "name": "赫波",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/c/ce/ICON_Item_2037.png",
+            },
+            "1038": {
+                "name": "咲耶",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/3/38/ICON_Item_2038.png",
+            },
+            "1039": {
+                "name": "桑朵莱希",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/b/b6/ICON_Item_2039.png",
+            },
+            "1040": {
+                "name": "杜莎妮",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/d/d6/ICON_Item_2040.png",
+            },
+            "1041": {
+                "name": "德菈赛",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/6/65/ICON_Item_2041.png",
+            },
+            "1042": {
+                "name": "初尘",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/1/17/ICON_Item_2042.png",
+            }
+        }
+
+        var fragment = {{ fragment_dict | safe }};
+
+        initialTrigger();
+        function initialTrigger(){
+            $('.ui.dropdown').dropdown();
+            $('.ui.accordion').accordion();
+
+            /* workType chose */
+            $(".workItem").click(function(){
+                $(".workItem").removeClass("active");
+                $(this).addClass("active");
+                createEachWork();
+            });
+
+            /* sidebar */
+            $("#sidebarButton").click(function(){
+                $('.menu.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+            });
+        }
+
+        createAllStatus();
+        function createAllStatus(){
+            let status = {
+                "fragment": 0,
+                "gift1": 0,
+                "gift2": 0,
+                "gift3": 0,
+                "stage": 0,
+            }
+
+            for(let dollid in fragment){
+                for(let key in status){
+                    status[key] += fragment[dollid][key];
+                }
+            }
+
+            for(let key in status){
+                $("#statistic_" + key).children(".value").html(status[key]);
+            }
+
+            let table = 
+            `<table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>统计</th>
+                        <th>出击</th>
+                        <th>碎片获取</th>
+                        <th>礼物(橙)获取</th>
+                        <th>礼物(紫)获取</th>
+                        <th>礼物(蓝)获取</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>数量</td>
+                        <td>${status["stage"]}</td>
+                        <td>${status["fragment"]}</td>
+                        <td>${status["gift1"]}</td>
+                        <td>${status["gift2"]}</td>
+                        <td>${status["gift3"]}</td>
+                    </tr>
+                    <tr>
+                        <td>频率</td>
+                        <td>${(status["stage"] / status["stage"] * 100).toFixed(2)}%</td>
+                        <td>${(status["fragment"] / status["stage"] * 100).toFixed(2)}%</td>
+                        <td>${(status["gift1"] / status["stage"] * 100).toFixed(2)}%</td>
+                        <td>${(status["gift2"] / status["stage"] * 100).toFixed(2)}%</td>
+                        <td>${(status["gift3"] / status["stage"] * 100).toFixed(2)}%</td>
+                    </tr>
+                </tbody>
+            </table>`;
+
+            $("#fragmentDispalyAll").append(table);
+        }
+
+        createEachWork();
+        function createEachWork(){
+            let work_id = $(".workItem.active").attr("id").replace("work_", "");
+            $(".workItemDiv").children(".dollFragment").remove();
+            for(let doll_id in doll){
+                if(doll[doll_id]["job"] == work_id){
+                    $(".workItemDiv").append(createEachDoll(doll_id));
+                }
+            }
+        }
+
+        function createEachDoll(doll_id){
+            let frequent = (Number(fragment[doll_id]["stage"]) == 0 ? 0 : fragment[doll_id]["fragment"] / fragment[doll_id]["stage"]).toFixed(2)
+
+            let table = 
+            `<div class="dollFragment title">
+                <i class="dropdown icon"></i>
+                ${doll[doll_id]["name"]}
+                <small style="float: right;">${frequent} * ${fragment[doll_id]["stage"]} ( mean * quantity ) </small>
+            </div>
+            <div class="dollFragment content">
+                <table class="ui sortable celled table">
+                    <thead>
+                        <tr>
+                            <th>物品</th>
+                            <th>均值</th>
+                            <th>总计</th>
+                            <th>Stage1</th>
+                            <th>Stage2</th>
+                            <th>Stage3</th>
+                            <th>Stage4</th>
+                            <th>Stage5</th>
+                            <th>Stage6</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>搜索次数</td>
+                            <td>${(fragment[doll_id]["stage"] / fragment[doll_id]["stage"]).toFixed(2)}</td>
+                            <td>${fragment[doll_id]["stage"]}</td>
+                            <td>${fragment[doll_id]["stage1"]}</td>
+                            <td>${fragment[doll_id]["stage2"]}</td>
+                            <td>${fragment[doll_id]["stage3"]}</td>
+                            <td>${fragment[doll_id]["stage4"]}</td>
+                            <td>${fragment[doll_id]["stage5"]}</td>
+                            <td>${fragment[doll_id]["stage6"]}</td>
+                        </tr>
+                        <tr>
+                            <td>碎片获取均值</td>
+                            <td>${(fragment[doll_id]["fragment"] / fragment[doll_id]["stage"]).toFixed(2)}</td>
+                            <td>${fragment[doll_id]["fragment"]}</td>
+                            <td>${fragment[doll_id]["s1_f"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s2_f"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s3_f"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s4_f"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s5_f"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s6_f"].toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td>礼物(橙)获取均值</td>
+                            <td>${(fragment[doll_id]["gift1"] / fragment[doll_id]["stage"]).toFixed(2)}</td>
+                            <td>${fragment[doll_id]["gift1"]}</td>
+                            <td>${fragment[doll_id]["s1_g1"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s2_g1"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s3_g1"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s4_g1"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s5_g1"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s6_g1"].toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td>礼物(紫)获取均值</td>
+                            <td>${(fragment[doll_id]["gift2"] / fragment[doll_id]["stage"]).toFixed(2)}</td>
+                            <td>${fragment[doll_id]["gift2"]}</td>
+                            <td>${fragment[doll_id]["s1_g2"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s2_g2"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s3_g2"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s4_g2"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s5_g2"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s6_g2"].toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td>礼物(蓝)获取均值</td>
+                            <td>${(fragment[doll_id]["gift3"] / fragment[doll_id]["stage"]).toFixed(2)}</td>
+                            <td>${fragment[doll_id]["gift3"]}</td>
+                            <td>${fragment[doll_id]["s1_g3"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s2_g3"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s3_g3"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s4_g3"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s5_g3"].toFixed(2)}</td>
+                            <td>${fragment[doll_id]["s6_g3"].toFixed(2)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>`;
+
+            return table
+        }
+
+    </script>
+</html>

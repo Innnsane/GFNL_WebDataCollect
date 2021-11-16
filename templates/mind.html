@@ -1,0 +1,817 @@
+<html>
+    <head>
+        <title>心智碎片数据提交 - 绿洲气象观测站</title>
+        <!--引入jQuery包用于使用ajax-->
+        <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.css">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNLTT6XCXN"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-RNLTT6XCXN');
+        </script>
+        <style>
+            body {
+                text-align: center;
+            }
+
+            /* -- Algorithm card -- */
+            .dollCard {
+                display: inline-block;
+                position: relative;
+                width: 136px;
+                height: 38px;
+                background-color: rgb(234 234 234 / 50%);
+                box-shadow: 1px 2px 4px #888, 0px 0px 1px #888, inset 20px 0px 40px -40px #888;
+                margin: 5px;
+                border-radius: 2px;
+                user-select: none;
+                transition: background-color 0.5s ease;
+                cursor: pointer;
+            }
+
+            .dollCardImg {
+                width: 60%;
+                height: 100%;
+                background-repeat: no-repeat;
+                background-size: 100%;
+                background-position-y: center;
+            }
+
+            .dollCardText {
+                position: absolute;
+                bottom: 0px;
+                right: 5px;
+                font-size: 12px;
+            }
+
+            .dollCard:hover {
+                background-color: #d1d1d1;
+            }
+
+            .dollDisplayImg {
+                width: 100%;
+                height: 100%;
+                background-repeat: no-repeat;
+                background-position-y: center;
+                border-radius: 4px;
+                box-shadow: inset 0 -240px 240px -240px #555, 0px 1px 4px -1px #999;
+            }
+
+            div#dollMindDataDivDoll {
+                position: relative;
+            }
+
+            .dollDisplayText {
+                position: absolute;
+                bottom: 25px;
+                right: calc(1rem + 15px);
+                font-weight: bold;
+                width: calc(100% - 30px - 2rem);
+                padding: 2px;
+                background-color: rgb(255 255 255 / 80%);
+                box-shadow: 0 0 3px #eaeaea;
+            }
+            /* -- Semantic UI -- */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button{
+                -webkit-appearance: none !important;
+                margin: 0;
+            }
+
+            input[type=number]{
+                width: 100px;
+            }
+
+            .dollDisplay{
+                text-align: left;
+            }
+
+            .ui.segment {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+            }
+
+            .ui.compact.segment {
+                width: unset;
+                margin: 0px 7px;
+                margin-top: 10px;
+                display: inline-block;
+                float: none;
+            }
+
+            .ui.button {
+                vertical-align: middle;
+            }
+            
+            .ui.basic.label {
+                width: 82px;
+            }
+
+            .floating.ui.circular.label {
+                left: inherit;
+                right: 100%;
+                margin: 0em -1em 0em 0em !important;
+            }
+
+            .ui.field {
+                margin: 10px;
+            }
+            .ui.modal .content{
+                text-align: center;
+            }
+
+            .ui.menu.sidebar {
+                text-align: left;
+                font-size: 16px;
+            }
+
+            div#sidebarButton {
+                float: left;
+            }
+
+            h1.ui.header {
+                text-align: right;
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ui left vertical menu sidebar">
+            <div class="item">
+                <div class="header">算法</div>
+                <div class="menu">
+                  <a class="item" href="/">数据提交</a>
+                  <a class="item" href="/algorithm/query">掉落查询</a>
+                  <a class="item" href="/algorithm/display">近期提交记录</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">心智碎片</div>
+                <div class="menu">
+                <a class="item" href="/mind">数据提交</a>
+                <a class="item" href="/mind/display">数据展示</a>
+                </div>
+            </div>
+        </div>
+        <div class="pusher">
+            <br/>
+            <div class="ui segment">
+                <div class="ui basic button" id="sidebarButton">
+                    <i class="th list icon"></i>
+                    Menu
+                </div>
+                <h1 class="ui header">
+                    <div class="content">
+                        心智碎片数据提交
+                    </div>
+                </h1>
+            </div>
+            <div class="ui segment">
+                <div class="ui grid">
+                    <div class="four wide column">
+                      <div class="ui vertical fluid tabular menu">
+                            <a class="item dollWorkType" id="dollWorkType_1">
+                                守卫
+                            </a>
+                            <a class="item dollWorkType" id="dollWorkType_2">
+                                射手
+                            </a>
+                            <a class="item dollWorkType" id="dollWorkType_3">
+                                战士
+                            </a>
+                            <a class="item dollWorkType" id="dollWorkType_4">
+                                特种
+                            </a>
+                            <a class="item dollWorkType active" id="dollWorkType_5">
+                                医师
+                            </a>
+                        </div>
+                    </div>
+                    <div class="twelve wide stretched column">
+                        <div class="ui segment dollDisplay">
+                        </div>
+                    </div>
+                  </div>
+
+                <div class="ui horizontal divider">
+                    Details
+                </div>
+
+                <!-- 下面是心智碎片创建和选择的位置 -->
+                <div class="ui grid" id="dollMindDataDiv">
+                    <div class="four wide column" id="dollMindDataDivDoll">
+                        <div class="dollDisplayImg"></div>
+                        <div class="dollDisplayText">请选择人形</div>
+                    </div>
+                    <div class="twelve wide column">
+                        <div class="ui segment">
+                            <div>
+                                <div class="ui left floated compact segment">
+                                    <div class="ui fitted checkbox" id="checkbox_1">
+                                        <input type="checkbox">
+                                        <label></label>
+                                    </div>
+                                    <div class="floating ui circular label">E1</div>
+                                </div>
+                                <div class="ui left floated compact segment">
+                                    <div class="ui fitted checkbox" id="checkbox_2">
+                                        <input type="checkbox">
+                                        <label></label>
+                                    </div>
+                                    <div class="floating ui circular label">E2</div>
+                                </div>
+                                <div class="ui left floated compact segment">
+                                    <div class="ui fitted checkbox" id="checkbox_3">
+                                        <input type="checkbox">
+                                        <label></label>
+                                    </div>
+                                    <div class="floating ui circular label">E3</div>
+                                </div>
+                                <div class="ui left floated compact segment">
+                                    <div class="ui fitted checkbox" id="checkbox_4">
+                                        <input type="checkbox">
+                                        <label></label>
+                                    </div>
+                                    <div class="floating ui circular label">E4</div>
+                                </div>
+                                <div class="ui left floated compact segment">
+                                    <div class="ui fitted checkbox" id="checkbox_5">
+                                        <input type="checkbox">
+                                        <label></label>
+                                    </div>
+                                    <div class="floating ui circular label">E5</div>
+                                </div>
+                                <div class="ui left floated compact segment">
+                                    <div class="ui fitted checkbox" id="checkbox_6">
+                                        <input type="checkbox">
+                                        <label></label>
+                                    </div>
+                                    <div class="floating ui circular label">E6</div>
+                                </div>
+                            </div>
+                            
+                            <div class="ui field">
+                                <button class="ui icon button" id="numberMinusLeft">
+                                    <i class="minus icon"></i>
+                                </button>
+                                <button class="ui icon button" id="numberPlusLeft">
+                                    <i class="plus icon"></i>
+                                </button>
+                                <button class="ui button" id="stageSeAll" onclick="stageSeAll();">全选</button>
+                                <button class="ui button" id="stageClear" onclick="stageClear();">清除</button>
+                                <button class="ui icon button" id="numberMinusRight">
+                                    <i class="minus icon"></i>
+                                </button>
+                                <button class="ui icon button" id="numberPlusRight">
+                                    <i class="plus icon"></i>
+                                </button>
+                            </div>
+
+                            <div class="ui field">
+                                <div class="ui action right labeled input">
+                                    <div class="ui basic label">礼物(橙)</div>
+                                    <input id="giftNum1" type="number" placeholder="..." value="0" min="0" max="20" step="1">
+                                    <button class="ui icon button numberMinus">
+                                        <i class="minus icon"></i>
+                                    </button>
+                                    <button class="ui icon button numberPlus">
+                                        <i class="plus icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ui field">
+                                <div class="ui action right labeled input">
+                                    <div class="ui basic label">礼物(紫)</div>
+                                    <input id="giftNum2" type="number" placeholder="..." value="0" min="0" max="20" step="1">
+                                    <button class="ui icon button numberMinus">
+                                        <i class="minus icon"></i>
+                                    </button>
+                                    <button class="ui icon button numberPlus">
+                                        <i class="plus icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ui field">
+                                <div class="ui action right labeled input">
+                                    <div class="ui basic label">礼物(蓝)</div>
+                                    <input id="giftNum3" type="number" placeholder="..." value="0" min="0" max="20" step="1">
+                                    <button class="ui icon button numberMinus">
+                                        <i class="minus icon"></i>
+                                    </button>
+                                    <button class="ui icon button numberPlus">
+                                        <i class="plus icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ui field">
+                                <div class="ui action right labeled input">
+                                    <div class="ui basic label">获得碎片</div>
+                                    <input id="getNum" type="number" placeholder="碎片获得数量..." value="0" min="0" max="12" step="1">
+                                    <button class="ui icon button numberMinus">
+                                        <i class="minus icon"></i>
+                                    </button>
+                                    <button class="ui icon button numberPlus">
+                                        <i class="plus icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ui field">
+                                <button class="ui primary button" id="stageSubmit">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui error message stageDataErrorMessage" style="display: none;">
+                    <div class="header">提交失败</div>
+                    <p>当所需的全部信息都为合法值时，您的数据才可以被提交。</p>
+                </div>
+            </div>
+
+            <!-- 下面是提示框的设计 -->
+            <div class="ui tiny modal algorithmModal">
+                <div class="ui icon header">
+                    <i class="envelope icon"></i>Message
+                </div>
+                <div class="content">
+                    <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+                </div>
+                <div class="actions">
+                <div class="ui green ok inverted button">
+                    <i class="checkmark icon"></i>
+                    Yes
+                </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        var work = {
+            "1": "守卫",
+            "2": "射手",
+            "3": "战士",
+            "4": "特种",
+            "5": "医师",
+        }
+        var doll = {
+            "1001": {
+                "name": "帕斯卡",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/f/f8/ICON_Item_2001.png",
+                "card": "http://wiki.42lab.cloud/images/6/66/Npic_persicaria.png",
+            },
+            "1002": {
+                "name": "安冬妮娜",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/4/47/ICON_Item_2002.png",
+                "card": "http://wiki.42lab.cloud/images/c/cd/Npic_anna.png",
+            },
+            "1003": {
+                "name": "苏尔",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/9/99/ICON_Item_2003.png",
+                "card": "http://wiki.42lab.cloud/images/1/1f/Npic_sol.png",
+            },
+            "1004": {
+                "name": "席摩",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/4/4f/ICON_Item_2004.png",
+                "card": "http://wiki.42lab.cloud/images/a/a2/Npic_simo.png",
+            },
+            "1005": {
+                "name": "克罗琦",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/9/97/ICON_Item_2005.png",
+                "card": "http://wiki.42lab.cloud/images/a/af/Npic_croque.png",
+            },
+            "1006": {
+                "name": "菲涅尔",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/f/f7/ICON_Item_2006.png",
+                "card": "http://wiki.42lab.cloud/images/6/6d/Npic_fresnel.png",
+            },
+            "1007": {
+                "name": "炽",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/1/12/ICON_Item_2007.png",
+                "card": "http://wiki.42lab.cloud/images/6/63/Npic_chelsea.png",
+            },
+            "1008": {
+                "name": "琴",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/c/c5/ICON_Item_2008.png",
+                "card": "http://wiki.42lab.cloud/images/a/ab/Npic_gin.png",
+            },
+            "1009": {
+                "name": "迈迈",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/3/34/ICON_Item_2009.png",
+                "card": "http://wiki.42lab.cloud/images/4/4f/Npic_mai.png",
+            },
+            "1010": {
+                "name": "伊芙琳",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/4/46/ICON_Item_2010.png",
+                "card": "http://wiki.42lab.cloud/images/5/59/Npic_evelyn.png",
+            },
+            "1011": {
+                "name": "薮春",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/9/9b/ICON_Item_2011.png",
+                "card": "http://wiki.42lab.cloud/images/0/01/Npic_camellia.png",
+            },
+            "1012": {
+                "name": "麦克斯",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/4/4e/ICON_Item_2012.png",
+                "card": "http://wiki.42lab.cloud/images/2/2d/Npic_max.png",
+            },
+            "1013": {
+                "name": "贝蒂",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/d/de/ICON_Item_2013.png",
+                "card": "http://wiki.42lab.cloud/images/9/9a/Npic_betty.png",
+            },
+            "1014": {
+                "name": "巧可",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/e/e8/ICON_Item_2014.png",
+                "card": "http://wiki.42lab.cloud/images/5/57/Npic_choco.png",
+            },
+            "1015": {
+                "name": "帕那刻亚",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/f/fb/ICON_Item_2015.png",
+                "card": "http://wiki.42lab.cloud/images/8/8c/Npic_panakeia.png",
+            },
+            "1016": {
+                "name": "坂口希",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/f/f9/ICON_Item_2016.png",
+                "card": "http://wiki.42lab.cloud/images/4/40/Npic_banxsy.png",
+            },
+            "1017": {
+                "name": "安吉拉",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/8/82/ICON_Item_2017.png",
+                "card": "http://wiki.42lab.cloud/images/f/f0/Npic_angela.png",
+            },
+            "1018": {
+                "name": "芙洛伦",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/6/63/ICON_Item_2018.png",
+                "card": "http://wiki.42lab.cloud/images/8/83/Npic_florence.png",
+            },
+            "1019": {
+                "name": "芬恩",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/f/f9/ICON_Item_2019.png",
+                "card": "http://wiki.42lab.cloud/images/4/4f/Npic_fern.png",
+            },
+            "1020": {
+                "name": "扬尼",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/0/00/ICON_Item_2020.png",
+                "card": "http://wiki.42lab.cloud/images/a/a4/Npic_yanny.png",
+            },
+            "1021": {
+                "name": "音流",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/5/57/ICON_Item_2021.png",
+                "card": "http://wiki.42lab.cloud/images/b/bb/Npic_groove.png",
+            },
+            "1022": {
+                "name": "秋",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/1/11/ICON_Item_2022.png",
+                "card": "http://wiki.42lab.cloud/images/0/04/Npic_aki.png",
+            },
+            "1023": {
+                "name": "波妮",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/c/c8/ICON_Item_2023.png",
+                "card": "http://wiki.42lab.cloud/images/e/e8/Npic_bonee.png",
+            },
+            "1024": {
+                "name": "埃尔赫",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/b/be/ICON_Item_2024.png",
+                "card": "http://wiki.42lab.cloud/images/1/1c/Npic_earhart.png",
+            },
+            "1025": {
+                "name": "缠枝",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/8/8e/ICON_Item_2025.png",
+                "card": "http://wiki.42lab.cloud/images/8/83/Npic_twigs.png",
+            },
+            "1026": {
+                "name": "七花",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/7/70/ICON_Item_2026.png",
+                "card": "http://wiki.42lab.cloud/images/6/6f/Npic_nanaka.png",
+            },
+            "1027": {
+                "name": "希安",
+                "job": "1",
+                "icon": "http://wiki.42lab.cloud/images/4/44/ICON_Item_2027.png",
+                "card": "http://wiki.42lab.cloud/images/7/7c/Npic_zion.png",
+            },
+            "1028": {
+                "name": "薇",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/9/97/ICON_Item_2028.png",
+                "card": "http://wiki.42lab.cloud/images/c/cb/Npic_vee.png",
+            },
+            "1029": {
+                "name": "薇洛儿",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/4/48/ICON_Item_2029.png",
+                "card": "http://wiki.42lab.cloud/images/b/bf/Npic_willow.png",
+            },
+            "1030": {
+                "name": "科谢尼娅",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/3/3d/ICON_Item_2030.png",
+                "card": "http://wiki.42lab.cloud/images/d/da/Npic_ksenia.png",
+            },
+            "1031": {
+                "name": "伊姆赫特",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/0/0c/ICON_Item_2031.png",
+                "card": "http://wiki.42lab.cloud/images/6/6f/Npic_imhotep.png",
+            },
+            "1032": {
+                "name": "奥托金",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/7/74/ICON_Item_2032.png",
+                "card": "http://wiki.42lab.cloud/images/8/80/Npic_octogen.png",
+            },
+            "1033": {
+                "name": "莉丝",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/7/72/ICON_Item_2033.png",
+                "card": "http://wiki.42lab.cloud/images/a/ab/Npic_rise.png",
+            },
+            "1034": {
+                "name": "阿比盖尔",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/b/b2/ICON_Item_2034.png",
+                "card": "http://wiki.42lab.cloud/images/9/94/Npic_abigail.png",
+            },
+            "1035": {
+                "name": "洁西",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/5/57/ICON_Item_2035.png",
+                "card": "http://wiki.42lab.cloud/images/c/c6/Npic_jessie.png",
+            },
+            "1036": {
+                "name": "拉姆",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/3/32/ICON_Item_2036.png",
+                "card": "http://wiki.42lab.cloud/images/b/b8/Npic_lam.png",
+            },
+            "1037": {
+                "name": "赫波",
+                "job": "2",
+                "icon": "http://wiki.42lab.cloud/images/c/ce/ICON_Item_2037.png",
+                "card": "http://wiki.42lab.cloud/images/8/85/Npic_hubble.png",
+            },
+            "1038": {
+                "name": "咲耶",
+                "job": "4",
+                "icon": "http://wiki.42lab.cloud/images/3/38/ICON_Item_2038.png",
+                "card": "http://wiki.42lab.cloud/images/8/84/Npic_sakuya.png",
+            },
+            "1039": {
+                "name": "桑朵莱希",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/b/b6/ICON_Item_2039.png",
+                "card": "http://wiki.42lab.cloud/images/3/3d/Npic_centaureissi.png",
+            },
+            "1040": {
+                "name": "杜莎妮",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/d/d6/ICON_Item_2040.png",
+                "card": "http://wiki.42lab.cloud/images/3/3f/Npic_dusevnyj.png",
+            },
+            "1041": {
+                "name": "德菈赛",
+                "job": "5",
+                "icon": "http://wiki.42lab.cloud/images/6/65/ICON_Item_2041.png",
+                "card": "http://wiki.42lab.cloud/images/9/97/Npic_delacey.png",
+            },
+            "1042": {
+                "name": "初尘",
+                "job": "3",
+                "icon": "http://wiki.42lab.cloud/images/1/17/ICON_Item_2042.png",
+                "card": "http://wiki.42lab.cloud/images/4/48/Npic_hatsuchiri.png",
+            }
+        }
+        var idList = ["1", "2", "3", "4", "5", "6"];
+        var dollSelect = "";
+        var checkList = {
+            "1": false,
+            "2": false,
+            "3": false,
+            "4": false,
+            "5": false,
+            "6": false,
+        }
+
+        initial();
+        function initial(){
+            $('.ui.modal').modal();
+            $('.ui.dropdown').dropdown();
+            $("#stageSubmit").click(stageSubmit);
+
+            /* workType chose */
+            $(".dollWorkType").click(function(){
+                $(".dollWorkType").removeClass("active");
+                $(this).addClass("active");
+                dollCardCreate();
+            });
+
+            for(let id in checkList) {
+                $(`#checkbox_${id}`).checkbox({
+                    onChecked: function() {
+                        checkList[id] = true;
+                        stageChange();
+                    },
+                    onUnchecked: function() {
+                        checkList[id] = false;
+                        stageChange();
+                    }
+                });
+            }
+
+            $("#numberPlusLeft").click(function(){
+                for(let id in idList) {
+                    if(!$(`#checkbox_${idList[id]}`).checkbox("is checked")){
+                        $(`#checkbox_${idList[id]}`).checkbox("check");
+                        break;
+                    }
+                }
+            });
+            $("#numberMinusLeft").click(function(){
+                for(let id in idList.reverse()) {
+                    if($(`#checkbox_${idList[id]}`).checkbox("is checked")){
+                        $(`#checkbox_${idList[id]}`).checkbox("uncheck");
+                        idList.reverse();
+                        break;
+                    }
+                }
+            });
+
+            $("#numberPlusRight").click(function(){
+                for(let id in idList.reverse()) {
+                    if(!$(`#checkbox_${idList[id]}`).checkbox("is checked")){
+                        $(`#checkbox_${idList[id]}`).checkbox("check");
+                        idList.reverse();
+                        break;
+                    }
+                }
+            });
+            $("#numberMinusRight").click(function(){
+                for(let id in idList) {
+                    if($(`#checkbox_${idList[id]}`).checkbox("is checked")){
+                        $(`#checkbox_${idList[id]}`).checkbox("uncheck");
+                        break;
+                    }
+                }
+            });
+
+            /* -- Semantic UI -- */
+            $(".numberMinus").click(function(){
+                let targetInput = $(this).parent().children("input");
+                let this_val = Number(targetInput.val());
+                if(this_val > Number(targetInput.attr("min"))) targetInput.val(this_val - 1);
+            });
+            $(".numberPlus").click(function(){
+                let targetInput = $(this).parent().children("input");
+                let this_val = Number(targetInput.val());
+                if(this_val < Number(targetInput.attr("max"))) targetInput.val(this_val + 1);
+            });
+
+            /* sidebar */
+            $("#sidebarButton").click(function(){
+                $('.menu.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+            });
+        }
+
+        dollCardCreate();
+        function dollCardCreate(target){
+            let div = $(".dollDisplay");
+            div.children(".dollCard").remove();
+            let workNow = $(".dollWorkType.active").attr("id");
+            for(let id in doll){
+                if("dollWorkType_" + doll[id]["job"] == workNow){
+                    div.append(`<div class="dollCard" id="doll_${id}">
+                        <div class="dollCardImg" style="background-image:url(${doll[id]["icon"]})"></div>
+                        <div class="dollCardText">${doll[id]["name"]}</div></div>`);
+                }
+            }
+            dollCardTrigger();
+        }
+
+        dollCardTrigger();
+        function dollCardTrigger(){
+            $(".dollCard").click(function(){
+                let doll_id = $(this).attr("id").replace("doll_", "");
+                dollSelect = doll_id;
+                let dom = `<div class="dollDisplayImg" style="background-image:url(${doll[doll_id]["card"]})"></div><div class="dollDisplayText">${doll[doll_id]["name"]}</div>`;
+                $("#dollMindDataDivDoll").html(dom);
+            })
+        }
+
+        function stageSeAll(){
+            for(let id in checkList) $(`#checkbox_${id}`).checkbox("check");
+        }
+
+        function stageClear(){
+            for(let id in checkList) $(`#checkbox_${id}`).checkbox("uncheck");
+            $("#giftNum1").val("0");
+            $("#giftNum2").val("0");
+            $("#giftNum3").val("0");
+        }
+
+        function stageChange(){
+            let numLess = 0;
+            for(let id in checkList) if(checkList[id]) numLess ++;
+            $("#getNum").attr("min", String(numLess)).attr("max", String(numLess * 2));
+            if(Number($("#getNum").val()) < numLess) $("#getNum").val(String(numLess));
+            else if(Number($("#getNum").val()) > numLess * 2) $("#getNum").val(String(numLess * 2));
+        }
+
+        function stageSubmit(){
+            $("#stageSubmit").unbind("click").addClass("loading");
+
+
+            let dataPass = false;
+            $(".ui.stageDataErrorMessage").addClass("error").hide();
+            
+            let numLess = 0;
+            let mindGetNum = $("#getNum").val();
+            let giftGetNum = [$("#giftNum1").val(), $("#giftNum2").val(), $("#giftNum3").val()];
+            for(let id in checkList) if(checkList[id]) numLess ++;
+
+            if(numLess == 0){
+                $(".columncheckbox").addClass("error");
+                dataPass = false;
+            } else dataPass = true;
+
+            if(mindGetNum < numLess || mindGetNum > numLess * 2){
+                $("#doNumber").parent(".ui.labeled.input").addClass("error");
+                dataPass = false;
+            }
+
+            if(!dollSelect){
+                $("#dollMindDataDivDoll").addClass("error");
+                dataPass = false;
+            }
+
+            if(!dataPass){
+                $("#stageSubmit").removeClass("loading").click(stageSubmit);
+                $(".ui.stageDataErrorMessage").fadeIn(200);
+                $(".error").unbind("click").click(function(){
+                    $(this).removeClass("error");
+                });
+                return
+            }
+
+            $.ajax({
+                url: "mind/submit",
+                type: "POST",
+                data: {
+                    "doll_id": dollSelect, 
+                    "stage": JSON.stringify(checkList), 
+                    "frag_num": mindGetNum, 
+                    "gift_num1": giftGetNum[0],
+                    "gift_num2": giftGetNum[1],
+                    "gift_num3": giftGetNum[2],
+                },
+                success: function (result) {
+                    if(result.message == "success"){
+                        stageClear();
+                        $("#getNum").val(0);
+                        notice("提交成功，感谢教授的贡献！", "<i class='thumbs up icon'></i>Good Job, Professor!");
+                    } else {
+                        notice("提交失败，" + result.message, "<i class='exclamation triangle icon'></i>Error!");
+                    }
+                    $("#stageSubmit").removeClass("loading").click(stageSubmit);
+                }
+            });
+        }
+
+        function notice(text, icon){
+            if(icon) $(".algorithmModal").children(".ui.icon.header").html(icon);
+            $(".algorithmModal").children(".content").children("p").html(text);
+            $('.ui.modal').modal('show');
+        }
+    </script>
+</html>

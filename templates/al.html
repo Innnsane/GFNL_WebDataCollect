@@ -1,7 +1,9 @@
 <html>
     <head>
+        <title>算法提交 - 绿洲气象观测站</title>
         <!--引入jQuery包用于使用ajax-->
         <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/blueimp-md5/2.18.0/js/md5.min.js"></script>
         <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.css">
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -99,6 +101,7 @@
 
             .ui.menu.sidebar {
                 text-align: left;
+                font-size: 16px;
             }
 
             div#sidebarButton {
@@ -117,8 +120,15 @@
                 <div class="header">算法</div>
                 <div class="menu">
                   <a class="item" href="/">数据提交</a>
-                  <a class="item" href="/algorithm/query">算法掉落查询</a>
+                  <a class="item" href="/algorithm/query">掉落查询</a>
                   <a class="item" href="/algorithm/display">近期提交记录</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">心智碎片</div>
+                <div class="menu">
+                <a class="item" href="/mind">数据提交</a>
+                <a class="item" href="/mind/display">数据展示</a>
                 </div>
             </div>
         </div>
@@ -407,9 +417,12 @@
             // create algorithm icon div
             let element = ``;
             for(let key in algorithm){
+                let icon = `Icon_算法套装_${algorithm[key]['name']}.png`;
+                let wikipath = "http://wiki.42lab.cloud/images"
+                let md5path = md5(icon).slice(0,2);
                 element += `<div class="card algorithmCardDiv" data-id="${key}"><div class="blurring dimmable image algorithmCardImage" data-id="${key}">`;
                 element += `<div class="ui inverted dimmer"><div class="content"><div class="center algorithmCardButton">添加</div></div></div>`;
-                element += `<img class="algorithmImg" src="./image/Icon_算法套装_单件.png" style="background-image:url(./image/Icon_算法套装_${algorithm[key]['name']}.png); "`;
+                element += `<img class="algorithmImg" src="${wikipath}/d/d2/Blank.png" style="background-image:url(${wikipath}/${md5path[0]}/${md5path}/${icon}); "`;
                 element += `\/></div><div class="content algorithmCardContent">${algorithm[key]['name']}<\/div><\/div>`;
             }
             $("#algorithmAllDiv").append(element);
@@ -460,8 +473,9 @@
         }
 
         function weekTypeHandle(day, hour){
+            console.log(day, hour);
             if(day == 1 && hour < 5) return "6"
-            else if(day == 7) return "6"
+            else if(day == 0) return "6"
             else if(hour < 5) return String(day - 1)
             else return String(day)
         }

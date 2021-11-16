@@ -13,7 +13,7 @@ DATA = "./data"
 @app.route("/")
 # 定义方法 用jinjia2引擎来渲染页面，并返回一个index.html页面
 def root():
-    return render_template("web.html")
+    return render_template("al.html")
 
 
 # 设置网站icon
@@ -81,7 +81,7 @@ def algorithm_submit():
         db.rollback()
         cursor.close()
         db.close()
-        return {'status': "error", 'message': "数据库录入失败！"}
+        return {'status': "error", 'message': ",数据库录入失败！<br/>" + str(e)}
 
     cursor.close()
     db.close()
@@ -135,7 +135,7 @@ def algorithm_display():
 # 通过python装饰器的方法定义路由地址
 @app.route("/algorithm/query")
 def algorithm_query():
-    algorithm_list = {"a1": [], "a2": [], "a3": [], "a4": []}
+    algorithm_list = []
     db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
     cursor = db.cursor()
 
@@ -144,7 +144,7 @@ def algorithm_query():
     algorithm_table_4 = cursor.fetchall()
 
     for row in algorithm_table_4:
-        algorithm_list["a4"].append({
+        algorithm_list.append({
             "week": row[1],
             "name_id": row[2],
             "name": ALGORITHM[row[2]]['name'],
@@ -158,55 +158,97 @@ def algorithm_query():
             "frequent": "0%" if (row[7] == 0) else str(round(float(row[5]) / float(row[7]) * 100, 2)) + "%",
         })
 
-    sql_3 = f"SELECT * FROM algorithm.algorithm_total WHERE algorithm_id IS NOT null AND algorithm_pos IS NOT null AND algorithm_stats IS null;"
-    cursor.execute(sql_3)
-    algorithm_table_3 = cursor.fetchall()
-
-    for row in algorithm_table_3:
-        algorithm_list["a3"].append({
-            "week": row[1],
-            "name_id": row[2],
-            "name": ALGORITHM[row[2]]['name'],
-            "pos": row[3],
-            "getNum": row[5],
-            "allNum": row[6],
-            "doNum": row[7],
-            "drop": "0%" if (row[6] == 0) else str(round(float(row[5]) / float(row[6]) * 100, 2)) + "%",
-            "frequent": "0%" if (row[7] == 0) else str(round(float(row[5]) / float(row[7]) * 100, 2)) + "%",
-        })
-
-    sql_2 = f"SELECT * FROM algorithm.algorithm_total WHERE algorithm_id IS NOT null AND algorithm_pos IS null AND algorithm_stats IS null;"
-    cursor.execute(sql_2)
-    algorithm_table_2 = cursor.fetchall()
-
-    for row in algorithm_table_2:
-        algorithm_list["a2"].append({
-            "week": row[1],
-            "name_id": row[2],
-            "name": ALGORITHM[row[2]]['name'],
-            "getNum": row[5],
-            "allNum": row[6],
-            "doNum": row[7],
-            "drop": "0%" if (row[6] == 0) else str(round(float(row[5]) / float(row[6]) * 100, 2)) + "%",
-            "frequent": "0%" if (row[7] == 0) else str(round(float(row[5]) / float(row[7]) * 100, 2)) + "%",
-        })
-
-    sql_1 = f"SELECT * FROM algorithm.algorithm_total WHERE algorithm_id IS null AND algorithm_pos IS null AND algorithm_stats IS null;"
-    cursor.execute(sql_1)
-    algorithm_table_1 = cursor.fetchall()
-
-    for row in algorithm_table_1:
-        algorithm_list["a1"].append({
-            "week": row[1],
-            "getNum": row[5],
-            "allNum": row[6],
-            "doNum": row[7],
-            "drop": "0%" if (row[6] == 0) else str(round(float(row[5]) / float(row[6]) * 100, 2)) + "%",
-            "frequent": "0%" if (row[7] == 0) else str(round(float(row[5]) / float(row[7]) * 100, 2)) + "%",
-        })
-
     return render_template("alquery.html", algorithm_list=algorithm_list)
+
+
+@app.route("/mind")
+def mind_submit_page():
+    return render_template("mind.html")
+
+
+@app.route("/mind/submit", methods=["POST"])
+def mind_submit():
+    fragment = {
+        "doll_id": request.form.get('doll_id'),
+        "stage_json": request.form.get('stage'),
+        "stage_num": 0,
+        "fragment": request.form.get('frag_num'),
+        "gift1": request.form.get('gift_num1'),
+        "gift2": request.form.get('gift_num2'),
+        "gift3": request.form.get('gift_num3'),
+        "ip": request.remote_addr,
+    }
+
+    try:
+        fragment["stage"] = ujson.loads(fragment["stage_json"])
+        for num in fragment["stage"].keys():
+            if fragment["stage"][num]:
+                fragment["stage_num"] += 1
+
+        print(fragment["doll_id"], fragment["stage"], fragment["fragment"])
+    except Exception as e:
+        return {'status': "error", 'message': "数据格式错误！<br/>" + str(e)}
+
+    sql = "INSERT INTO algorithm.mindfragment_list VALUES "
+    sql += f"(null, NOW(), '{fragment['ip']}', {fragment['doll_id']}, {fragment['fragment']}, " \
+           f"{fragment['gift1']}, {fragment['gift2']}, {fragment['gift3']}, {fragment['stage_num']}, "
+    for num in fragment["stage"].keys():
+        if fragment["stage"][num]:
+            sql += f"1, "
+        else:
+            sql += "0, "
+    sql = sql[:-2] + f") ;"
+
+    print(sql)
+    db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(sql)
+        db.commit()
+
+    except Exception as e:
+        db.rollback()
+        cursor.close()
+        db.close()
+        return {'status': "error", 'message': ",数据库录入失败！<br/>" + str(e)}
+
+    cursor.close()
+    db.close()
+
+    return {'message': "success"}
+
+
+@app.route("/mind/display")
+def mind_display():
+    db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
+    cursor = db.cursor()
+
+    sql = f"SELECT * FROM algorithm.mindfragment_total;"
+    cursor.execute(sql)
+    fragment_table = cursor.fetchall()
+
+    fragment_dict = {}
+    for row in fragment_table:
+        fragment_dict[row[0]] = {
+            "doll_id": row[0],
+            "fragment": row[1],
+            "stage": row[2],
+            "gift1": row[3],
+            "gift2": row[4],
+            "gift3": row[5],
+        }
+
+        for i in [1, 2, 3, 4, 5, 6]:
+            fragment_dict[row[0]][f"stage{i}"] = row[i + 5]
+            fragment_dict[row[0]][f"s{i}_f"] = row[i + 11]
+            fragment_dict[row[0]][f"s{i}_g1"] = row[i + 17]
+            fragment_dict[row[0]][f"s{i}_g2"] = row[i + 23]
+            fragment_dict[row[0]][f"s{i}_g3"] = row[i + 29]
+
+    return render_template("minddisplay.html", fragment_dict=fragment_dict)
 
 
 # 定义app在4222端口运行
 app.run(port=4222, debug=True)
+
