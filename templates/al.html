@@ -1,11 +1,10 @@
 <html>
     <head>
-        <title>算法提交 - 绿洲气象观测站</title>
-        <!--引入jQuery包用于使用ajax-->
-        <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <title>算法提交 | 绿洲气象观测站</title>
+        <script type="text/javascript" src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/blueimp-md5/2.18.0/js/md5.min.js"></script>
         <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.css">
+        <link rel="stylesheet" type="text/css" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.css">
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNLTT6XCXN"></script>
         <script>
@@ -117,9 +116,15 @@
     <body>
         <div class="ui left vertical menu sidebar">
             <div class="item">
+                <div class="header">绿洲气象观测站</div>
+                <div class="menu">
+                    <a class="item" href="/">首页</a>
+                </div>
+            </div>
+            <div class="item">
                 <div class="header">算法</div>
                 <div class="menu">
-                  <a class="item" href="/">数据提交</a>
+                  <a class="item" href="/algorithm">数据提交</a>
                   <a class="item" href="/algorithm/query">掉落查询</a>
                   <a class="item" href="/algorithm/display">近期提交记录</a>
                 </div>
@@ -129,6 +134,12 @@
                 <div class="menu">
                 <a class="item" href="/mind">数据提交</a>
                 <a class="item" href="/mind/display">数据展示</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">基础检索</div>
+                <div class="menu">
+                <a class="item" href="/retrieval">数据提交</a>
                 </div>
             </div>
         </div>
@@ -473,7 +484,6 @@
         }
 
         function weekTypeHandle(day, hour){
-            console.log(day, hour);
             if(day == 1 && hour < 5) return "6"
             else if(day == 0) return "6"
             else if(hour < 5) return String(day - 1)
@@ -530,7 +540,6 @@
 
         function algorithmSubmit(){
             $("#algorithmSubmit").unbind("click").addClass("loading");
-            console.log(111);
 
             let algorithmLineData = $(".algorithmLine");
             let algorithmData = {
@@ -542,6 +551,7 @@
             let dataPass = true;
             $(".ui.algorithmDataErrorMessage").addClass("error").hide();
             for(let i = 0; i < algorithmLineData.length; i ++){
+                let this_id = $(algorithmLineData[i]).data("id");
                 let this_type = $(algorithmLineData[i]).children().children(".algorithmLineTypeSelect");
                 let this_pos = $(algorithmLineData[i]).children().children(".algorithmLinePosSelect");
                 
@@ -553,6 +563,13 @@
                     this_type.parent(".ui.dropdown").addClass("error");
                     dataPass = false;
                 }
+                if(String(algorithm[this_id]["inTurn"]) != algorithmData["inTurnType"] && algorithmData["inTurnType"] != "6" && String(algorithm[this_id]["inTurn"]) != "0"){
+                    notice(`非常抱歉，您输入的算法和当前选择的日期不符合。<br>您选择的日期：周${algorithmData["inTurnType"]}，您选择的算法：周${algorithm[this_id]["inTurn"]}。<br>如果这是BUG，欢迎教授对遇到的问题进行反馈。`, 
+                        "<i class='frown outline icon'></i>Error!");
+                    this_pos.parent(".ui.dropdown").addClass("error");
+                    this_type.parent(".ui.dropdown").addClass("error");
+                    dataPass = false;
+                }
 
                 algorithmData['algorithm'].push({
                     "id": $(algorithmLineData[i]).data("id"),
@@ -560,6 +577,8 @@
                     "position": this_pos.val(),
                 });
             }
+
+            console.log(algorithmData);
             algorithmData['algorithm'] = JSON.stringify(algorithmData['algorithm']);
 
             if(Number(algorithmData['doNumber']) < 1){
@@ -568,7 +587,6 @@
             }
 
             if(!dataPass){
-                console.log(222)
                 $("#algorithmSubmit").removeClass("loading").click(algorithmSubmit);
                 $(".ui.algorithmDataErrorMessage").fadeIn(200);
                 $(".error").unbind("click").click(function(){

@@ -9,11 +9,9 @@ app = Flask(__name__)
 DATA = "./data"
 
 
-# 通过python装饰器的方法定义路由地址
 @app.route("/")
-# 定义方法 用jinjia2引擎来渲染页面，并返回一个index.html页面
 def root():
-    return render_template("al.html")
+    return render_template("mainpage.html")
 
 
 # 设置网站icon
@@ -33,9 +31,12 @@ def get_frame(image_id):
         return resp
 
 
-# app的路由地址"/algorithm/submit"即为ajax中定义的url地址，采用POST、GET方法均可提交
+@app.route("/algorithm")
+def algorithm_submit_page():
+    return render_template("al.html")
+
+
 @app.route("/algorithm/submit", methods=["GET", "POST"])
-# 从这里定义具体的函数 返回值均为json格式
 def algorithm_submit():
     algorithm = {}
     # 由于POST、GET获取数据的方式不同，需要使用if语句进行判断
@@ -88,9 +89,7 @@ def algorithm_submit():
     return {'message': "success"}
 
 
-# 通过python装饰器的方法定义路由地址
 @app.route("/algorithm/display")
-# 定义方法 用jinjia2引擎来渲染页面，并返回一个index.html页面
 def algorithm_display():
     db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
     cursor = db.cursor()
@@ -132,7 +131,6 @@ def algorithm_display():
     return render_template("aldisplay.html", algorithm_list=html_list, statistic=statistic)
 
 
-# 通过python装饰器的方法定义路由地址
 @app.route("/algorithm/query")
 def algorithm_query():
     algorithm_list = []
@@ -247,6 +245,63 @@ def mind_display():
             fragment_dict[row[0]][f"s{i}_g3"] = row[i + 29]
 
     return render_template("minddisplay.html", fragment_dict=fragment_dict)
+
+
+@app.route("/retrieval")
+def retrieval_submit_display():
+    return render_template("ret.html")
+
+
+@app.route("/retrieval/submit", methods=["POST"])
+def retrieval_submit():
+    retrieval = {
+        "number": request.form.get('number'),
+        "get_json": request.form.get('get'),
+    }
+    get_list = []
+    ip = request.remote_addr
+
+    try:
+        retrieval["get_list"] = ujson.loads(retrieval["get_json"])
+        if len(retrieval["get_list"]) > 10:
+            return {'status': "error", 'message': "数据大于10项！<br/>"}
+        for get in get_list:
+            get_item = get.split("_")[0]
+            test = ITEM[get_item][get]
+    except Exception as e:
+        return {'status': "error", 'message': "数据格式错误！<br/>" + str(e)}
+
+    sql = "INSERT INTO algorithm.retrieval_list VALUES "
+    sql += f"(null, NOW(), '{ip}', {retrieval['number']}, "
+
+    i = 0
+    while i < 10:
+        if i < len(retrieval["get_list"]):
+            sql += f"'{retrieval['get_list'][i]}', "
+        else:
+            sql += "'', "
+        i += 1
+
+    sql = sql[:-2] + f") ;"
+
+    print(sql)
+    db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
+    cursor = db.cursor()
+
+    try:
+        cursor.execute(sql)
+        db.commit()
+
+    except Exception as e:
+        db.rollback()
+        cursor.close()
+        db.close()
+        return {'status': "error", 'message': ",数据库录入失败！<br/>" + str(e)}
+
+    cursor.close()
+    db.close()
+
+    return {'message': "success"}
 
 
 # 定义app在4222端口运行

@@ -1,0 +1,226 @@
+<html>
+    <head>
+        <title>绿洲气象观测站</title>
+        <script type="text/javascript" src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.css">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RNLTT6XCXN"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-RNLTT6XCXN');
+        </script>
+        <style>
+            body {
+                text-align: center;
+            }
+
+            /* -- Semantic UI -- */
+            .ui.segment.inside {
+                width: 100%;
+                max-width: 850px;
+                margin: 20px auto;
+            }
+
+            a.ui.image.label {
+                box-shadow: 0 0 3px -1px #000;
+            }
+
+            img.ccicon {
+                width: 20px;
+                filter: invert(1);
+            }
+
+            .ui.menu.sidebar {
+                text-align: left;
+                font-size: 16px;
+            }
+
+            div#sidebarButton {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ui left vertical menu sidebar">
+            <div class="item">
+                <div class="header">绿洲气象观测站</div>
+                <div class="menu">
+                    <a class="item" href="/">首页</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">算法</div>
+                <div class="menu">
+                  <a class="item" href="/algorithm">数据提交</a>
+                  <a class="item" href="/algorithm/query">掉落查询</a>
+                  <a class="item" href="/algorithm/display">近期提交记录</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">心智碎片</div>
+                <div class="menu">
+                <a class="item" href="/mind">数据提交</a>
+                <a class="item" href="/mind/display">数据展示</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">基础检索</div>
+                <div class="menu">
+                <a class="item" href="/retrieval">数据提交</a>
+                </div>
+            </div>
+        </div>
+        <div class="pusher">
+            <div class="ui basic button" id="sidebarButton">
+                <i class="th list icon"></i>
+                Menu
+            </div><br/>
+
+            <div class="ui raised segment inside">
+                <h2 class="ui center aligned icon header">
+                    <img src="./favicon.ico"/>
+                    <div class="content">
+                        绿洲气象观测站
+                        <div class="sub header">OASIS Meteorological Observation Station</div>
+                    </div>
+                </h2>
+            </div>
+
+            <div class="ui raised segment inside">
+                <div>
+                    <i class="folder open outline icon"></i>
+                    <span class="content" style="font-weight: bold;">网站内容</span>
+                </div><br/>
+                本网站<span class="criticaltext"><绿洲气象观测站></span>是收集、整理、展示<span class="criticaltext"><少女前线:云图计划></span>游戏内相关数据的非盈利非官方网站。<br/>
+                其中近期提交记录类型的数据会实时刷新，而数据统计和查询等内容每10分钟刷新一次，请大家稍安勿躁。<br/>
+                本人囿于繁忙的生活，没有大量的时间制作和完善网站，加上UI、数据库等方面都需要不断迭代，如有更新缓慢的问题还请谅解。
+            </div>
+            
+            <div class="ui raised segment inside">
+                <div>
+                    <i class="paper plane outline icon"></i>
+                    <span class="content" style="font-weight: bold;">联系我</span>
+                </div><br/>
+                若有提交网站BUG、发现问题、提出建设性建议、检举坏数据等情况，可以通过以下方式联系我。<br/>
+                同时，由于本身项目较小而且用户群体不大，服务器和域名费用在个人承受范围之内，所以不需要额外的经济援助。<br/>
+                <div class="ui horizontal bulleted list">
+                    <a class="item" href="https://ngabbs.com/read.php?tid=29371622">
+                        NGA
+                    </a>
+                    <a class="item" href="https://github.com/Innnsane/GFNL_WebDataCollect">
+                        Github
+                    </a>
+                    <a class="item" href="tencent://message/?uin=2010315256">
+                        QQ
+                    </a>
+                    <a class="item" href="https://www.gfwiki.org/w/%E7%94%A8%E6%88%B7:%E8%8E%B9lolo">
+                        GFWIKI
+                    </a>
+                </div>
+            </div>
+            
+            <div class="ui raised segment inside">
+                <div>
+                    <i class="copyright outline icon"></i>
+                    <span class="content" style="font-weight: bold;">图片资源版权声明</span>
+                </div><br/>
+                本网站的图片大部分采用外链的方式呈现，而实际的图片资源位于42Lab WIKI内。<br/>
+                其中的游戏图像、文本或其他直接或间接来源于<少女前线:云图计划>的游戏资源或官方文件，仅用于内容识别、提升使用体验。<br/>
+                所涉及到的相关内容的版权属于上海暗冬网络科技有限公司，请勿在未经授权的情况下擅自演绎和再分发此类文件或内容。
+            </div>
+
+            <div class="ui raised segment inside">
+                <div>
+                    <span class="content" style="font-weight: bold;">许可协议</span><br/>
+                    <img class="ccicon" src="https://creativecommons.org/images/deed/cc_icon_white_x2.png" alt="CC"/>
+                    <img class="ccicon" src="https://creativecommons.org/images/deed/attribution_icon_white_x2.png" alt="BY"/>
+                    <img class="ccicon" src="https://creativecommons.org/images/deed/nc_white_x2.png" alt="NC"/>
+                    <img class="ccicon" src="https://creativecommons.org/images/deed/sa_white_x2.png" alt="SA"/>
+                </div>
+                网站其他内容采用知识共享署名-非商业性使用-相同方式共享授权。<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+            </div>
+            
+            <div class="ui raised segment inside">
+                <div>
+                    <i class="paperclip icon"></i>
+                    <span class="content" style="font-weight: bold;">友情链接</span>
+                </div><br/>
+                <a class="ui image label" href="https://42lab.sunborngame.com/">
+                    <img class="ui image radius" src="https://42lab.cdn.sunborngame.com/website/officialWebsite/imgs/web_head.png">
+                    少女前线:云图计划官网
+                </a>
+                <a class="ui image label" href="http://wiki.42lab.cloud/w/%E9%A6%96%E9%A1%B5">
+                    <img class="ui image radius" src="http://wiki.42lab.cloud/images/8/86/42LAB-wikilogo.png">
+                    42Lab 云图计划WIKI
+                </a>
+                <a class="ui image label" href="https://www.gfwiki.org/w/%E9%A6%96%E9%A1%B5">
+                    <img class="ui image radius" src="https://www.gfwiki.org/favicon.ico">
+                    GFWIKI 少前百科
+                </a>
+                <a class="ui image label" href="https://ngabbs.com/thread.php?fid=-60157311">
+                    <img class="ui image radius" src="https://ngabbs.com/favicon.ico">
+                    NGA 少前:云图计划
+                </a>
+            </div>
+            
+            <div class="ui raised segment inside">
+                <div>
+                    <i class="archive icon"></i>
+                    <span class="content" style="font-weight: bold;">资源 / 代码 / 工具</span>
+                </div><br/>
+                <a class="ui image label" href="http://cdn.bytedance.com/">
+                    <img class="ui image radius" src="http://cdn.bytedance.com/src/res/favicon.png">
+                    字节跳动静态资源公共库
+                </a>
+                <a class="ui image label" href="https://jquery.com/">
+                    <img class="ui image radius" src="https://jquery.com/jquery-wp-content/themes/jquery.com/i/favicon.ico">
+                    jQuery
+                </a>
+                <a class="ui image label" href="https://www.python.org/">
+                    <img class="ui image radius" src="https://www.python.org/static/favicon.ico">
+                    Python
+                </a>
+                <a class="ui image label" href="https://semantic-ui.com/">
+                    <img class="ui image radius" src="https://semantic-ui.com/favicon.ico">
+                    Semantic UI
+                </a>
+                <a class="ui image label" href="https://flask.palletsprojects.com/en/2.0.x/">
+                    <img class="ui image radius" src="https://flask.palletsprojects.com/en/2.0.x/_static/flask-icon.png">
+                    Flask
+                </a>
+                <a class="ui image label" href="https://www.mysql.com/">
+                    <img class="ui image radius" src="https://labs.mysql.com/common/themes/sakila/favicon.ico">
+                    MySQL
+                </a>
+                <a class="ui image label" href="https://developers.google.cn/analytics?hl=zh-cn">
+                    <img class="ui image radius" src="https://www.gstatic.cn/devrel-devsite/prod/v8fd805b581ccd4ea25bb3c9d6fd75d38ac1dfcb55016a4d660f139190a81898b/developers/images/favicon.png">
+                    Google Analytics
+                </a>
+            </div>
+
+            <div class="ui raised segment inside">
+                <div>
+                    <span class="content" style="font-weight: bold;">结语</span>
+                </div>
+                理想主义者不会畏惧黑暗。哪怕无力扭转现实的走向，哪怕看似毫无意义。但是我们不曾放弃。
+            </div>
+            <br/>
+            <br/>
+        </div>
+    </body>
+    <script>
+        initial();
+        function initial(){
+            /* sidebar */
+            $("#sidebarButton").click(function(){
+                $('.menu.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+            });
+        }
+    </script>
+</html>
