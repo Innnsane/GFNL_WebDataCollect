@@ -12,8 +12,6 @@ def algorithm_query_update():
     db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
     cursor = db.cursor()
 
-    # 暂时使用 algorithm_single
-
     algorithmDict = {"1": {}, "2": {}, "3": {}, "4": {}, "5": {}, "6": {}}
     for weekType in algorithmDict.keys():
         sql_list = f"SELECT SUM(do_number) , SUM(algorithm_number) FROM algorithm.algorithm_list WHERE week_type = {weekType};"
@@ -26,27 +24,30 @@ def algorithm_query_update():
         cursor.execute(sql)
         algorithm_table = cursor.fetchall()
 
+        for atype in ALGORITHM.keys():
+            if str(ALGORITHM[atype]["inTurn"]) == weekType or weekType == "6" or ALGORITHM[atype]["inTurn"] == 0:
+                algorithmDict[weekType][atype] = {}
+
+                for pos in [1, 2, 3]:
+                    if ALGORITHM[atype]["position"] < pos:
+                        break
+                    algorithmDict[weekType][atype][str(pos)] = {}
+
+                    for statsDefault in ATTRIBUTELIST[ALGORITHM[atype]['attribute']]:
+                        algorithmDict[weekType][atype][str(pos)][str(statsDefault)] = 0
+
         for row in algorithm_table:
             al_list = ujson.loads(row[0])
             for al in al_list:
-                if al['id'] not in algorithmDict[weekType]:
-                    algorithmDict[weekType][al['id']] = {}
-                if al['position'] not in algorithmDict[weekType][al['id']].keys():
-                    algorithmDict[weekType][al['id']][al['position']] = {}
-                if al['mainAttr'] not in algorithmDict[weekType][al['id']][al['position']].keys():
-                    algorithmDict[weekType][al['id']][al['position']][al['mainAttr']] = 0
                 algorithmDict[weekType][al['id']][al['position']][al['mainAttr']] += 1
 
         # 同时更新存在的和不存在的
         for atype in algorithmDict[weekType].keys():
             for pos in algorithmDict[weekType][atype].keys():
-                for statsDefault in ATTRIBUTELIST[ALGORITHM[atype]['attribute']]:
-                    single = 0
-                    if str(statsDefault) in algorithmDict[weekType][atype][pos].keys():
-                        single = algorithmDict[weekType][atype][pos][str(statsDefault)]
-
+                for stats in algorithmDict[weekType][atype][pos].keys():
+                    single = algorithmDict[weekType][atype][pos][stats]
                     sql = f"UPDATE algorithm.algorithm_total SET has = {single} WHERE " \
-                          f"week_type = {weekType} AND algorithm_id = '{atype}' AND algorithm_pos = {pos} AND algorithm_stats = {statsDefault}"
+                          f"week_type = {weekType} AND algorithm_id = '{atype}' AND algorithm_pos = {pos} AND algorithm_stats = {stats}"
                     cursor.execute(sql)
 
         sql_week = f"UPDATE algorithm.algorithm_total SET allal = {algorithm_al_num} , done = {algorithm_do_num} WHERE week_type = {weekType} "
@@ -122,8 +123,8 @@ def mind_fragment_query_update():
 
 
 if __name__ == "__main__":
-    # algorithm_query_update()
-    mind_fragment_query_update()
+    algorithm_query_update()
+    # mind_fragment_query_update()
     # job = scheduler.add_job(algorithm_query_update, "interval", seconds=600)
     # job.modify(max_instances=1)
     # scheduler.start()
