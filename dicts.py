@@ -927,3 +927,488 @@ ITEM = {
         },
     }
 }
+
+ITEM_ALL = {
+    "doll_1008": {
+        "name": "琴",
+        "threshold": 0
+    },
+    "doll_1009": {
+        "name": "迈迈",
+        "threshold": 0.8
+    },
+    "doll_1013": {
+        "name": "贝蒂",
+        "threshold": 0
+    },
+    "doll_1016": {
+        "name": "坂口希",
+        "threshold": 0
+    },
+    "doll_1017": {
+        "name": "安吉拉",
+        "threshold": 0
+    },
+    "doll_1023": {
+        "name": "波妮",
+        "threshold": 0
+    },
+    "doll_1024": {
+        "name": "埃尔赫",
+        "threshold": 0
+    },
+    "doll_1031": {
+        "name": "伊姆赫特",
+        "threshold": 0
+    },
+    "doll_1035": {
+        "name": "洁西",
+        "threshold": 0
+    },
+    "mindf_1001": {
+        "name": "帕斯卡",
+        "threshold": 0
+    },
+    "mindf_1002": {
+        "name": "安冬妮娜",
+        "threshold": 0
+    },
+    "mindf_1003": {
+        "name": "苏尔",
+        "threshold": 0
+    },
+    "mindf_1004": {
+        "name": "席摩",
+        "threshold": 0
+    },
+    "mindf_1005": {
+        "name": "克罗琦",
+        "threshold": 0
+    },
+    "mindf_1006": {
+        "name": "菲涅尔",
+        "threshold": 0
+    },
+    "mindf_1007": {
+        "name": "炽",
+        "threshold": 0
+    },
+    "mindf_1008": {
+        "name": "琴",
+        "threshold": 0
+    },
+    "mindf_1009": {
+        "name": "迈迈",
+        "threshold": 0
+    },
+    "mindf_1010": {
+        "name": "伊芙琳",
+        "threshold": 0
+    },
+    "mindf_1011": {
+        "name": "薮春",
+        "threshold": 0
+    },
+    "mindf_1012": {
+        "name": "麦克斯",
+        "threshold": 0
+    },
+    "mindf_1013": {
+        "name": "贝蒂",
+        "threshold": 0
+    },
+    "mindf_1014": {
+        "name": "巧可",
+        "threshold": 0
+    },
+    "mindf_1015": {
+        "name": "帕那刻亚",
+        "threshold": 0
+    },
+    "mindf_1016": {
+        "name": "坂口希",
+        "threshold": 0
+    },
+    "mindf_1017": {
+        "name": "安吉拉",
+        "threshold": 0
+    },
+    "mindf_1018": {
+        "name": "芙洛伦",
+        "threshold": 0
+    },
+    "mindf_1019": {
+        "name": "芬恩",
+        "threshold": 0
+    },
+    "mindf_1020": {
+        "name": "扬尼",
+        "threshold": 0
+    },
+    "mindf_1021": {
+        "name": "音流",
+        "threshold": 0
+    },
+    "mindf_1022": {
+        "name": "秋",
+        "threshold": 0
+    },
+    "mindf_1023": {
+        "name": "波妮",
+        "threshold": 0
+    },
+    "mindf_1024": {
+        "name": "埃尔赫",
+        "threshold": 0
+    },
+    "mindf_1025": {
+        "name": "缠枝",
+        "threshold": 0
+    },
+    "mindf_1026": {
+        "name": "七花",
+        "threshold": 0
+    },
+    "mindf_1027": {
+        "name": "希安",
+        "threshold": 0
+    },
+    "mindf_1028": {
+        "name": "薇",
+        "threshold": 0
+    },
+    "mindf_1029": {
+        "name": "薇洛儿",
+        "threshold": 0
+    },
+    "mindf_1030": {
+        "name": "科谢尼娅",
+        "threshold": 0
+    },
+    "mindf_1031": {
+        "name": "伊姆赫特",
+        "threshold": 0
+    },
+    "mindf_1032": {
+        "name": "奥托金",
+        "threshold": 0
+    },
+    "mindf_1033": {
+        "name": "莉丝",
+        "threshold": 0
+    },
+    "mindf_1034": {
+        "name": "阿比盖尔",
+        "threshold": 0
+    },
+    "mindf_1035": {
+        "name": "洁西",
+        "threshold": 0
+    },
+    "mindf_1036": {
+        "name": "拉姆",
+        "threshold": 0
+    },
+    "mindf_1037": {
+        "name": "赫波",
+        "threshold": 0
+    },
+    "mindf_1038": {
+        "name": "咲耶",
+        "threshold": 0
+    },
+    "mindf_1039": {
+        "name": "桑朵莱希",
+        "threshold": 0
+    },
+    "mindf_1040": {
+        "name": "杜莎妮",
+        "threshold": 0
+    },
+    "mindf_1041": {
+        "name": "德菈赛",
+        "threshold": 0
+    },
+    "mindf_1042": {
+        "name": "初尘",
+        "threshold": 0
+    },
+    "mindf_1043": {
+        "name": "派森",
+        "job": "1",
+    },
+    "minds_1": {
+        "name": "心智构件",
+        "threshold": 0.96
+    },
+    "minds_2": {
+        "name": "心智构件",
+        "threshold": 0.96
+    },
+    "minds_4": {
+        "name": "心智构件",
+        "threshold": 0.96
+    },
+    "factory_1_1": {
+        "name": "低模方形数据",
+        "threshold": 0.9
+    },
+    "factory_1_2": {
+        "name": "低模三角数据",
+        "threshold": 0.9
+    },
+    "factory_1_3": {
+        "name": "低模菱形数据",
+        "threshold": 0.9
+    },
+    "factory_2_1": {
+        "name": "中模方形数据",
+        "threshold": 0
+    },
+    "factory_2_2": {
+        "name": "中模三角数据",
+        "threshold": 0
+    },
+    "factory_2_3": {
+        "name": "中模菱形数据",
+        "threshold": 0
+    },
+    "factory_3_1": {
+        "name": "高模方形数据",
+        "threshold": 0
+    },
+    "factory_3_2": {
+        "name": "高模三角数据",
+        "threshold": 0
+    },
+    "factory_3_3": {
+        "name": "高模菱形数据",
+        "threshold": 0
+    },
+    "xp_1_1": {
+        "name": "作战经验*100",
+        "number": "1",
+        "threshold": 0.895
+    },
+    "xp_1_3": {
+        "name": "作战经验*100",
+        "number": "3",
+        "threshold": 0.9
+    },
+    "xp_2_1": {
+        "name": "作战经验*600",
+        "number": "1",
+        "threshold": 0.9
+    },
+    "xp_2_2": {
+        "name": "作战经验*600",
+        "number": "2",
+        "threshold": 0.89
+    },
+    "xp_2_3": {
+        "name": "作战经验*600",
+        "number": "3",
+        "threshold": 0.87
+    },
+    "xp_3_1": {
+        "name": "作战经验*3600",
+        "number": "1",
+        "threshold": 0.9
+    },
+    "gift_1_1": {
+        "name": "包子",
+        "threshold": 0
+    },
+    "gift_1_2": {
+        "name": "快餐",
+        "threshold": 0
+    },
+    "gift_1_3": {
+        "name": "小块蛋糕",
+        "threshold": 0
+    },
+    "gift_1_4": {
+        "name": "蜂蜜",
+        "threshold": 0
+    },
+    "gift_1_5": {
+        "name": "关东煮",
+        "threshold": 0
+    },
+    "gift_1_6": {
+        "name": "毛绒挂饰",
+        "threshold": 0
+    },
+    "gift_1_7": {
+        "name": "数码积木",
+        "threshold": 0
+    },
+    "gift_1_8": {
+        "name": "练习竹剑",
+        "threshold": 0
+    },
+    "gift_2_1": {
+        "name": "一笼包子",
+        "threshold": 0
+    },
+    "gift_2_2": {
+        "name": "工作套餐",
+        "threshold": 0
+    },
+    "gift_2_3": {
+        "name": "加量蛋糕",
+        "threshold": 0
+    },
+    "gift_2_4": {
+        "name": "巧克力圣代",
+        "threshold": 0
+    },
+    "gift_2_5": {
+        "name": "草莓蛋糕",
+        "threshold": 0.9
+    },
+    "gift_2_6": {
+        "name": "卡通玩偶",
+        "threshold": 0
+    },
+    "gift_2_7": {
+        "name": "瓶中飞船",
+        "threshold": 0
+    },
+    "gift_2_8": {
+        "name": "实用军刀",
+        "threshold": 0
+    },
+    "gift_3_1": {
+        "name": "一屉包子",
+        "threshold": 0
+    },
+    "gift_3_2": {
+        "name": "双人套餐",
+        "threshold": 0
+    },
+    "gift_3_3": {
+        "name": "豪华蛋糕",
+        "threshold": 0
+    },
+    "gift_3_4": {
+        "name": "咖啡",
+        "threshold": 0
+    },
+    "gift_3_5": {
+        "name": "下午茶",
+        "threshold": 0
+    },
+    "gift_3_6": {
+        "name": "玩具大熊",
+        "threshold": 0
+    },
+    "gift_3_7": {
+        "name": "手办模型",
+        "threshold": 0
+    },
+    "gift_3_8": {
+        "name": "典藏名刀",
+        "threshold": 0
+    },
+    "ctrl_1_1": {
+        "name": "简化突破控件·守卫",
+        "threshold": 0.92
+    },
+    "ctrl_1_2": {
+        "name": "简化突破控件·射手",
+        "threshold": 0.945
+    },
+    "ctrl_1_3": {
+        "name": "简化突破控件·战士",
+        "threshold": 0.94
+    },
+    "ctrl_1_4": {
+        "name": "简化突破控件·特种",
+        "threshold": 0.94
+    },
+    "ctrl_1_5": {
+        "name": "简化突破控件·医师",
+        "threshold": 0.97
+    },
+    "ctrl_2_1": {
+        "name": "标准突破控件·守卫",
+        "threshold": 0.945
+    },
+    "ctrl_2_2": {
+        "name": "标准突破控件·射手",
+        "threshold": 0.95
+    },
+    "ctrl_2_3": {
+        "name": "标准突破控件·战士",
+        "threshold": 0.96
+    },
+    "ctrl_2_4": {
+        "name": "标准突破控件·特种",
+        "threshold": 0.945
+    },
+    "ctrl_2_5": {
+        "name": "标准突破控件·医师",
+        "threshold": 0.96
+    },
+    "ctrl_3_1": {
+        "name": "高级突破控件·守卫",
+        "threshold": 0
+    },
+    "ctrl_3_2": {
+        "name": "高级突破控件·射手",
+        "threshold": 0
+    },
+    "ctrl_3_3": {
+        "name": "高级突破控件·战士",
+        "threshold": 0.94
+    },
+    "ctrl_3_4": {
+        "name": "高级突破控件·特种",
+        "threshold": 0.94
+    },
+    "ctrl_3_5": {
+        "name": "高级突破控件·医师",
+        "threshold": 0
+    },
+    "ctrl_4_1": {
+        "name": "特级突破控件·守卫",
+        "threshold": 0.955
+    },
+    "ctrl_4_2": {
+        "name": "特级突破控件·射手",
+        "threshold": 0.945
+    },
+    "ctrl_4_3": {
+        "name": "特级突破控件·战士",
+        "threshold": 0.94
+    },
+    "ctrl_4_4": {
+        "name": "特级突破控件·特种",
+        "threshold": 0.94
+    },
+    "ctrl_4_5": {
+        "name": "特级突破控件·医师",
+        "threshold": 0
+    },
+    "ctrl_5_1": {
+        "name": "尖端突破控件·守卫",
+        "threshold": 0.94
+    },
+    "ctrl_5_2": {
+        "name": "尖端突破控件·射手",
+        "threshold": 0.94
+    },
+    "ctrl_5_3": {
+        "name": "尖端突破控件·战士",
+        "threshold": 0
+    },
+    "ctrl_5_4": {
+        "name": "尖端突破控件·特种",
+        "threshold": 0.92
+    },
+    "ctrl_5_5": {
+        "name": "尖端突破控件·医师",
+        "threshold": 0
+    }
+}

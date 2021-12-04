@@ -50,13 +50,13 @@ def algorithm_submit():
     algorithm = {}
     # 由于POST、GET获取数据的方式不同，需要使用if语句进行判断
     if request.method == "POST":
-        algorithm['doNumber'] = request.form.get('doNumber')
-        algorithm['inTurnType'] = request.form.get('inTurnType')
+        algorithm['doNumber'] = int(request.form.get('doNumber'))
+        algorithm['inTurnType'] = int(request.form.get('inTurnType'))
         algorithm_json = request.form.get('algorithm')
         algorithm['algorithm'] = ujson.loads(algorithm_json)
     elif request.method == "GET":
-        algorithm['doNumber'] = request.args.get('doNumber')
-        algorithm['inTurnType'] = request.args.get('inTurnType')
+        algorithm['doNumber'] = int(request.args.get('doNumber'))
+        algorithm['inTurnType'] = int(request.args.get('inTurnType'))
         algorithm_json = request.args.get('algorithm')
         algorithm['algorithm'] = ujson.loads(algorithm_json)
     else:
@@ -76,16 +76,14 @@ def algorithm_submit():
     except:
         return {'message': "数据格式错误！"}
 
-    sql = "INSERT INTO algorithm_list VALUES "
-    sql += f"(null, NOW(), '{ip}', {algorithm['doNumber']}, {algorithm['inTurnType']}, {length}, '{algorithm_json}');"
-
+    sql = "INSERT INTO algorithm_list VALUES (null, NOW(), %s, %s, %s, %s, %s);"
     db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
     cursor = db.cursor()
 
     try:
-        print(sql)
-        cursor.execute(sql)
-        # cursor.execute(sql, (ip, str(algorithm['doNumber']), str(algorithm['inTurnType']), str(length), str(algorithm_json)))
+        # 防止SQL注入 采用Python的格式化字符串功能
+        print("algorithm -", ip, algorithm['doNumber'], algorithm['inTurnType'], length)
+        cursor.execute(sql, (ip, algorithm['doNumber'], algorithm['inTurnType'], length, algorithm_json))
         db.commit()
 
     except Exception as e:
@@ -199,22 +197,18 @@ def mind_submit():
     except Exception as e:
         return {'status': "error", 'message': "数据格式错误！<br/>" + str(e)}
 
-    sql = "INSERT INTO algorithm.mindfragment_list VALUES "
-    sql += f"(null, NOW(), '{fragment['ip']}', {fragment['doll_id']}, {fragment['fragment']}, " \
-           f"{fragment['gift1']}, {fragment['gift2']}, {fragment['gift3']}, {fragment['stage_num']}, "
+    sql = "INSERT INTO algorithm.mindfragment_list VALUES (null, NOW(), %s, %s, %s, %s, %s, %s, %s, "
     for num in fragment["stage"].keys():
-        if fragment["stage"][num]:
-            sql += f"1, "
-        else:
-            sql += "0, "
+        sql += f"1, " if fragment["stage"][num] else "0, "
     sql = sql[:-2] + f") ;"
 
-    print(sql)
     db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
     cursor = db.cursor()
 
     try:
-        cursor.execute(sql)
+        print(sql)
+        cursor.execute(sql, (fragment['ip'], fragment['doll_id'], fragment['fragment'], fragment['gift1'],
+                             fragment['gift2'], fragment['gift3'], fragment['stage_num']))
         db.commit()
 
     except Exception as e:
@@ -285,12 +279,13 @@ def retrieval_submit():
     except Exception as e:
         return {'status': "error", 'message': "数据格式错误！<br/>" + str(e)}
 
-    sql = "INSERT INTO algorithm.retrieval_list VALUES "
-    sql += f"(null, NOW(), '{ip}', {retrieval['number']}, "
+    sql = "INSERT INTO algorithm.retrieval_list VALUES (null, NOW(), %s, %s, "
 
     i = 0
     while i < 10:
         if i < len(retrieval["get_list"]):
+            if retrieval['get_list'][i] not in ITEM_ALL.keys():
+                return {'status': "error", 'message': "数据格式错误！"}
             sql += f"'{retrieval['get_list'][i]}', "
         else:
             sql += "'', "
@@ -298,12 +293,12 @@ def retrieval_submit():
 
     sql = sql[:-2] + f") ;"
 
-    print(sql)
     db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
     cursor = db.cursor()
 
     try:
-        cursor.execute(sql)
+        print(sql)
+        cursor.execute(sql, (ip, retrieval['number']))
         db.commit()
 
     except Exception as e:
@@ -392,5 +387,5 @@ def retrieval_opencv():
 
 
 # 定义app在4222端口运行
-app.run(port=4222, debug=True)
+app.run(port=83, debug=True)
 
