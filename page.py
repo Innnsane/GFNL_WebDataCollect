@@ -1,6 +1,7 @@
 import os
 import ujson
 from flask import Flask, render_template, Response, request, send_from_directory
+from flask import abort
 from dicts import *
 from database import *
 
@@ -14,13 +15,13 @@ def root():
     return render_template("mainpage.html")
 
 
-# 设置网站icon
+# 网站icon的返回
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
-# 请求图片
+# 请求图片 暂时不使用服务器内的资源 图片展示采用外链的方式
 @app.route("/image/<image_id>.png")
 def get_frame(image_id):
     # 去对应的文件夹找到对应名字的图片
@@ -30,6 +31,14 @@ def get_frame(image_id):
         resp = Response(image, mimetype="image/png")
         return resp
 
+
+# 请求静态资源 如CSS、和JavaScript资源
+@app.route("/src/<src_id>")
+def get_src(src_id):
+    return send_from_directory(os.path.join(app.root_path, 'static'), src_id)
+
+
+# 算法相关内容的提交与展示
 
 @app.route("/algorithm")
 def algorithm_submit_page():
@@ -76,6 +85,7 @@ def algorithm_submit():
     try:
         print(sql)
         cursor.execute(sql)
+        # cursor.execute(sql, (ip, str(algorithm['doNumber']), str(algorithm['inTurnType']), str(length), str(algorithm_json)))
         db.commit()
 
     except Exception as e:
@@ -158,6 +168,8 @@ def algorithm_query():
 
     return render_template("alquery.html", algorithm_list=algorithm_list)
 
+
+# 心智碎片相关内容的提交与展示
 
 @app.route("/mind")
 def mind_submit_page():
@@ -247,6 +259,8 @@ def mind_display():
     return render_template("minddisplay.html", fragment_dict=fragment_dict)
 
 
+# 基础检索相关内容的提交与展示
+
 @app.route("/retrieval")
 def retrieval_submit_display():
     return render_template("ret.html")
@@ -302,6 +316,79 @@ def retrieval_submit():
     db.close()
 
     return {'message': "success"}
+
+
+@app.route("/retrieval/display")
+def retrieval_display():
+    db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
+    cursor = db.cursor()
+
+    statistic = {}
+    sql_statistic = f"SELECT COUNT(*) , SUM(number) FROM algorithm.retrieval_list"
+    cursor.execute(sql_statistic)
+    data = cursor.fetchall()[0]
+    statistic["listNum"] = data[0]
+    statistic["getNum"] = data[1]
+
+    limit = 20
+    sql = f"select * from algorithm.retrieval_list order by id desc limit {limit} ;"
+    cursor.execute(sql)
+    algorithm_table = cursor.fetchall()
+
+    html_list = []
+    for row in algorithm_table:
+        this_html_dict = {
+            "no": row[0],
+            "time": row[1],
+            "number": row[3],
+            "data": []
+        }
+
+        i = 0
+        while i < 10:
+            this_html_dict["data"].append(row[i + 4])
+            i += 1
+
+        html_list.append(this_html_dict)
+
+    return render_template("retdisplay.html", retrieval_list=html_list, statistic=statistic)
+
+
+@app.route("/retrieval/query")
+def retrieval_query():
+    db = pymysql.connect(host=host, user=user, password=password, database="algorithm")
+    cursor = db.cursor()
+
+    sql_total = f"SELECT SUM(number) FROM algorithm.retrieval_list;"
+    cursor.execute(sql_total)
+    item_total = cursor.fetchall()[0][0]
+
+    sql = f"SELECT * FROM algorithm.retrieval_total;"
+    cursor.execute(sql)
+    table = cursor.fetchall()
+
+    item_dict = {}
+    for row in table:
+        item_dict[row[0]] = row[1]
+
+    return render_template("retquery.html", item_dict=item_dict, item_total=item_total)
+
+
+# 为截图识别服务的图片资源传输 若图片模板不存在则返回404
+@app.route("/retrieval/template/<name>")
+def retrieval_template(name):
+    try:
+        with open(r'./template/{}'.format(name), 'rb') as f:
+            image = f.read()
+            resp = Response(image, mimetype="image/png")
+            return resp
+    except:
+        abort(404)
+
+
+@app.route("/retrieval/screenshot")
+def retrieval_opencv():
+    return render_template("retopencv.html")
 
 
 # 定义app在4222端口运行

@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>基础检索数据提交 | 绿洲气象观测站</title>
+        <title>基础检索提交记录 | 绿洲气象观测站</title>
         <script type="text/javascript" src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/blueimp-md5/2.18.0/js/md5.min.js"></script>
         <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
@@ -15,17 +15,42 @@
             gtag('config', 'G-EFRP4XN134');
         </script>
         <style>
-            body {
-                text-align: center;
+            .ui.segment {
+                width: 100%;
+                max-width: 1000px;
+                margin: 20px auto;
             }
+
+            .ui.menu.sidebar {
+                text-align: left;
+                font-size: 16px;
+            }
+
+            div#sidebarButton {
+                float: left;
+            }
+
+            h1.ui.header {
+                text-align: right;
+                margin: auto;
+            }
+
+            p.item.transition {
+                position: relative;
+                left: 40px;
+            }
+
             .itemDiv {
                 position: relative;
                 display: inline-block;
-                margin: 5px;
+                margin: 4px;
+                width: 82px;
+                vertical-align: top;
             }
 
             .itemText {
                 font-size: 12px;
+                text-align: center;
             }
 
             .itemIcon {
@@ -35,7 +60,6 @@
                 font-size: 2rem;
                 width: 80px;
                 min-width: 64px;
-                cursor: pointer;
                 user-select: none;
             }
 
@@ -161,90 +185,6 @@
             .itemIcon.dollSquare.rarity3 {
                 box-shadow: inset 10px -10px 20px -10px #5cb7ec;
             }
-
-            div#itemDisplay {
-                text-align: left;
-                height: 400px;
-                overflow-y: scroll;
-                box-shadow: none;
-                border: none;
-                margin-top: 0px !important;
-                margin-bottom: 0px !important;
-            }
-
-            div#itemChosen {
-                box-shadow: none;
-                border: none;
-                min-height: 152px;
-            }
-
-            /* -- Semantic UI -- */
-            input::-webkit-outer-spin-button,
-            input::-webkit-inner-spin-button{
-                -webkit-appearance: none !important;
-                margin: 0;
-            }
-
-            input[type=number]{
-                width: 100px;
-            }
-
-            .dollDisplay{
-                text-align: left;
-            }
-
-            .ui.segment {
-                width: 100%;
-                max-width: 1000px;
-                margin: 20px auto !important;
-            }
-
-            .ui.vertical.menu {
-                width: 12rem;
-            }
-
-            .ui.compact.segment {
-                width: unset;
-                margin: 0px 7px;
-                margin-top: 10px;
-                display: inline-block;
-                float: none;
-            }
-
-            .ui.button {
-                vertical-align: middle;
-            }
-            
-            .ui.basic.label {
-                width: 82px;
-            }
-
-            .floating.ui.circular.label {
-                left: inherit;
-                right: 100%;
-                margin: 0em -1em 0em 0em !important;
-            }
-
-            .ui.field {
-                margin: 10px;
-            }
-            .ui.modal .content{
-                text-align: center;
-            }
-
-            .ui.menu.sidebar {
-                text-align: left;
-                font-size: 16px;
-            }
-
-            div#sidebarButton {
-                float: left;
-            }
-
-            h1.ui.header {
-                text-align: right;
-                margin: auto;
-            }
         </style>
     </head>
     <body>
@@ -281,103 +221,65 @@
             </div>
         </div>
         <div class="pusher">
-            <div class="ui raised segment">
+            <br/>
+            <div class="ui segment">
                 <div class="ui basic button" id="sidebarButton">
                     <i class="th list icon"></i>
                     Menu
                 </div>
                 <h1 class="ui header">
                     <div class="content">
-                        基础检索数据提交
+                        近期提交记录
                     </div>
                 </h1>
             </div>
-            <div class="ui raised segment">
-                <div class="ui grid">
-                    <div class="three wide column">
-                        <div class="ui secondary vertical pointing menu">
-                            <a class="active item itemType" id="itemType_doll">
-                                角色
-                            </a>
-                            <a class="item itemType" id="itemType_mindf">
-                                心智碎片
-                            </a>
-                            <a class="item itemType" id="itemType_minds">
-                                心智构件
-                            </a>
-                            <a class="item itemType" id="itemType_factory">
-                                工厂材料
-                            </a>
-                            <a class="item itemType" id="itemType_xp">
-                                经验
-                            </a>
-                            <a class="item itemType" id="itemType_gift">
-                                礼物
-                            </a>
-                            <a class="item itemType" id="itemType_ctrl">
-                                突破控件
-                            </a>
-                            <!--
-                                <div class="right menu">
-                                    <div class="item">
-                                        <div class="ui transparent icon input">
-                                        <input type="text" placeholder="Search users...">
-                                        <i class="search link icon"></i>
-                                        </div>
-                                    </div>
+            <div class="ui segment">
+                <div class="ui two statistics">
+                    <div class="statistic">
+                        <div class="value">
+                            {{ statistic.listNum }}
+                        </div>
+                        <div class="label">
+                            教授提交次数
+                        </div>
+                    </div>
+                    <div class="statistic">
+                        <div class="value">
+                            {{ statistic.getNum }}
+                        </div>
+                        <div class="label">
+                            总计检索次数
+                        </div>
+                    </div>
+                </div>
+                <h4 class="ui horizontal divider header">
+                    History
+                </h4>
+                <div class="ui styled fluid accordion">
+                    {% for retrieval in retrieval_list %}
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            No.{{ retrieval.no }} 检索{{ retrieval.number }}次
+                            <small style="float: right;">{{ retrieval.time }}</small>
+                        </div>
+                        <div class="content ui list retrievalDiv">
+                            {% for retrieval_single in retrieval.data %}
+                                <div class="transition hidden item retrievalId">
+                                    {{ retrieval_single }}
                                 </div>
-                            -->
+                            {% endfor %}
                         </div>
-                    </div>
-                    <div class="thirteen wide stretched column">
-                        <div class="ui segment" id="itemDisplay">
-                            <p></p>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            </div>
-            
-            <div class="ui raised segment">
-                <div class="ui segment" id="itemChosen">
-                    <p></p>
-                </div>
-                <div class="ui error message dataErrorMessage" style="display: none;">
-                    <div class="header">提交失败</div>
-                    <p>请填入十个</p>
-                </div>
-                <div class="ui section divider"></div>
-                <button class="ui button" id="retrievalClear" onclick="retrievalDelete();">清空</button>
-                <button class="ui primary button" id="retrievalSubmit">提交</button>
             </div>
             
             <a href="https://beian.miit.gov.cn/" style="position: fixed; bottom: 10px; right: 20px; color: #888;">
                 冀ICP备2021026039号-1
             </a>
-            <!-- 下面是提示框的设计 -->
-            <div class="ui tiny modal retrievalModal">
-                <div class="ui icon header">
-                    <i class="envelope icon"></i>Message
-                </div>
-                <div class="content">
-                    <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
-                </div>
-                <div class="actions">
-                <div class="ui green ok inverted button">
-                    <i class="checkmark icon"></i>
-                    Yes
-                </div>
-                </div>
-            </div>
         </div>
+        <br/>
     </body>
     <script>
-        var work = {
-            "1": "守卫",
-            "2": "射手",
-            "3": "战士",
-            "4": "特种",
-            "5": "医师",
-        }
         var item = {
             "doll": {
                 "doll_1008": {
@@ -885,117 +787,88 @@
                 },
             }
         }
-        
+
 
         initial();
         function initial(){
-            $('.ui.modal').modal();
-            $("#retrievalSubmit").click(retrievalSubmit);
-
-            /* itemType chose */
-            $(".itemType").click(function(){
-                $(".itemType").removeClass("active");
-                $(this).addClass("active");
-                itemTypeAllCreate();
-            });
-            $("#itemType_gift").click();
-
+            $('.ui.accordion').accordion();
             /* sidebar */
             $("#sidebarButton").click(function(){
                 $('.menu.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
             });
+
+            let element_div = $(".retrievalDiv");
+            for(let i = 0; i < element_div.length; i ++){
+                let this_dom = ``;
+                let element_id = $(element_div[i]).children(".retrievalId");
+
+                for(let j = 0; j < element_id.length; j ++){
+                    let this_id = $(element_id[j]).html().replace(/[ \n]/g, "");
+                    this_dom += itemTypeAllCreate(this_id);
+                }
+
+                $(element_div[i]).html(this_dom);
+            }
+
         }
 
-        itemTypeAllCreate();
-        function itemTypeAllCreate(){
-            let itemType = $(".itemType.active").attr("id");
+        function itemTypeAllCreate(id){
+            let itemType = id.split("_")[0];
             let dom = ``;
             
-            switch(itemType){
+            switch("itemType_" + itemType){
                 case "itemType_doll":{
-                    for(let id in item.doll){
-                        dom += dollSquareCreate(id, item["doll"][id]["name"], item["doll"][id]["card"], false, item["doll"][id]["rarity"], false);
-                    }
+                    dom = dollSquareCreate(id, item["doll"][id]["name"], item["doll"][id]["card"], false, item["doll"][id]["rarity"], false);
                 } break;
                 case "itemType_mindf":{
-                    for(let id in item.mindf){
-                        let img_name = "ICON_Item_" + String(Number(id.split("_")[1]) + 1000) + ".png";
-                        let img_md5 = md5(img_name).slice(0,2);
-                        let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
-                        let icon_path = "http://wiki.42lab.cloud/images/3/3f/%E9%80%9A%E7%94%A8_%E7%A2%8E%E7%89%87.png";
-                        dom += itemSquareCreate(id, "心智碎片", img_path, 1, 4, icon_path);
-                    }
+                    let img_name = "ICON_Item_" + String(Number(id.split("_")[1]) + 1000) + ".png";
+                    let img_md5 = md5(img_name).slice(0,2);
+                    let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                    let icon_path = "http://wiki.42lab.cloud/images/3/3f/%E9%80%9A%E7%94%A8_%E7%A2%8E%E7%89%87.png";
+                    dom = itemSquareCreate(id, "心智碎片", img_path, 1, 4, icon_path);
                 } break;
                 case "itemType_minds":{
-                    for(let id in item.minds){
-                        let img_path = `http://wiki.42lab.cloud/images/a/a7/ICON_Item_%E5%BF%83%E6%99%BA%E6%9E%84%E4%BB%B6.png`;
-                        let icon_path = "http://wiki.42lab.cloud/images/1/10/ICON_small_Item_%E5%BF%83%E6%99%BA%E6%9E%84%E4%BB%B6.png";
-                        dom += itemSquareCreate(id, item["minds"][id]["name"], img_path, item["minds"][id]["number"], 5, icon_path);
-                    }
+                    let img_path = `http://wiki.42lab.cloud/images/a/a7/ICON_Item_%E5%BF%83%E6%99%BA%E6%9E%84%E4%BB%B6.png`;
+                    let icon_path = "http://wiki.42lab.cloud/images/1/10/ICON_small_Item_%E5%BF%83%E6%99%BA%E6%9E%84%E4%BB%B6.png";
+                    dom = itemSquareCreate(id, item["minds"][id]["name"], img_path, item["minds"][id]["number"], 5, icon_path);
                 } break;
                 case "itemType_factory":{
-                    let last_rarity = "2";
-                    for(let id in item.factory){
-                        let img_name = "ICON_Item_" + item["factory"][id]["name"] + ".png";
-                        let img_md5 = md5(img_name).slice(0,2);
-                        let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
-                        
-                        if(last_rarity != item["factory"][id]["rarity"]) dom += "<br/>"
-                        dom += itemSquareCreate(id, item["factory"][id]["name"], img_path, 5, item["factory"][id]["rarity"], false);
-                        last_rarity = item["factory"][id]["rarity"];
-                    }
+                    let img_name = "ICON_Item_" + item["factory"][id]["name"] + ".png";
+                    let img_md5 = md5(img_name).slice(0,2);
+                    let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                    
+                    dom = itemSquareCreate(id, item["factory"][id]["name"], img_path, 5, item["factory"][id]["rarity"], false);
                 } break;
                 case "itemType_xp":{
-                    for(let id in item.xp){
-                        let img_name = "ICON_Item_" + item["xp"][id]["name"] + ".png";
-                        let img_md5 = md5(img_name).slice(0,2);
-                        let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
-                        let icon_path = "http://wiki.42lab.cloud/images/3/3d/ICON_small_Item_%E4%BD%9C%E6%88%98%E7%BB%8F%E9%AA%8C_2.png";
-                        dom += itemSquareCreate(id, item["xp"][id]["name"], img_path, item["xp"][id]["number"], item["xp"][id]["rarity"], icon_path);
-                    }
+                    let img_name = "ICON_Item_" + item["xp"][id]["name"] + ".png";
+                    let img_md5 = md5(img_name).slice(0,2);
+                    let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                    let icon_path = "http://wiki.42lab.cloud/images/3/3d/ICON_small_Item_%E4%BD%9C%E6%88%98%E7%BB%8F%E9%AA%8C_2.png";
+                    dom = itemSquareCreate(id, item["xp"][id]["name"], img_path, item["xp"][id]["number"], item["xp"][id]["rarity"], icon_path);
                 } break;
                 case "itemType_gift":{
-                    let last_rarity = "3";
-                    for(let id in item.gift){
-                        let img_name = "Icon_gift_" + item["gift"][id]["name"] + ".png";
-                        let img_md5 = md5(img_name).slice(0,2);
-                        let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
-                        if(last_rarity != item["gift"][id]["rarity"]) dom += "<br/>"
-                        dom += itemSquareCreate(id, item["gift"][id]["name"], img_path, 1, item["gift"][id]["rarity"], false);
-                        last_rarity = item["gift"][id]["rarity"];
-                    }
+                    let img_name = "Icon_gift_" + item["gift"][id]["name"] + ".png";
+                    let img_md5 = md5(img_name).slice(0,2);
+                    let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                    dom = itemSquareCreate(id, item["gift"][id]["name"], img_path, 1, item["gift"][id]["rarity"], false);
                 } break;
                 case "itemType_ctrl":{
-                    let last_rarity = "1";
-                    for(let id in item.ctrl){
-                        let img_name = "ICON_Item_" + item["ctrl"][id]["name"] + ".png";
-                        let img_md5 = md5(img_name).slice(0,2);
-                        let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
-                        
-                        let icon_name = "ICON_small_Item_" + item["ctrl"][id]["name"].slice(2, item["ctrl"][id]["name"].length) + ".png";
-                        let icon_md5 = md5(icon_name).slice(0,2);
-                        let icon_path = `http://wiki.42lab.cloud/images/${icon_md5[0]}/${icon_md5}/${icon_name}`;
+                    let img_name = "ICON_Item_" + item["ctrl"][id]["name"] + ".png";
+                    let img_md5 = md5(img_name).slice(0,2);
+                    let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                    
+                    let icon_name = "ICON_small_Item_" + item["ctrl"][id]["name"].slice(2, item["ctrl"][id]["name"].length) + ".png";
+                    let icon_md5 = md5(icon_name).slice(0,2);
+                    let icon_path = `http://wiki.42lab.cloud/images/${icon_md5[0]}/${icon_md5}/${icon_name}`;
 
-                        if(last_rarity != item["ctrl"][id]["rarity"]) dom += "<br/>"
-                        dom += itemSquareCreate( id, item["ctrl"][id]["name"], img_path, 1, item["ctrl"][id]["rarity"], icon_path);
-                        last_rarity = item["ctrl"][id]["rarity"];
-                    }
+                    dom = itemSquareCreate(id, item["ctrl"][id]["name"], img_path, 1, item["ctrl"][id]["rarity"], icon_path);
                 } break;
             }
 
-            $("#itemDisplay").html(dom);
-
-            $("#itemDisplay").children(".itemDiv").children(".itemIcon").click(function(){
-                let square = $(this).parent(".itemDiv").html();
-                $("#itemChosen").append(`<div class="itemDiv">${square}<div class="floating ui black label">0</div></div>`);
-                $("#itemChosen").children(".itemDiv").children(".itemIcon").unbind("click").click(function(){
-                    $(this).parent(".itemDiv").remove();
-                    dollLabelCreate();
-                });
-                dollLabelCreate();
-            });
+            return dom
         }
 
+        
         function itemSquareCreate(id, text, img, num, rarity, icon){
             return `
             <div class="itemDiv">
@@ -1029,63 +902,6 @@
             for(let i = 0; i < element.length; i++){
                 $(element[i]).children(".floating.label").html(i + 1);
             }
-        }
-
-        function retrievalDelete(){
-            $("#itemChosen").children(".itemDiv").remove();
-        }
-
-        function retrievalSubmit(){
-            $("#retrievalSubmit").unbind("click").addClass("loading");
-
-            let dataPass = true;
-            $(".ui.dataErrorMessage").addClass("error").hide();
-            
-            let element = $("#itemChosen").children(".itemDiv").children(".itemIcon");
-            if(element.length != 10) dataPass = false;
-
-            let data = [];
-            for(let i = 0; i < element.length; i ++){
-                let id = $(element[i]).data("id");
-                data.push($(element[i]).data("id"));
-                if(!(id in item[id.split("_")[0]])) {
-                    dataPass = false
-                }
-            }
-
-            console.log(data)
-            if(!dataPass){
-                $("#retrievalSubmit").removeClass("loading").click(retrievalSubmit);
-                $(".ui.dataErrorMessage").fadeIn(200);
-                $(".error").unbind("click").click(function(){
-                    $(this).removeClass("error");
-                });
-                return
-            }
-
-            $.ajax({
-                url: "retrieval/submit",
-                type: "POST",
-                data: {
-                    "number": element.length, 
-                    "get": JSON.stringify(data),
-                },
-                success: function (result) {
-                    if(result.message == "success"){
-                        retrievalDelete();
-                        notice("提交成功，感谢教授的贡献！", "<i class='thumbs up icon'></i>Good Job, Professor!");
-                    } else {
-                        notice("提交失败，" + result.message, "<i class='exclamation triangle icon'></i>Error!");
-                    }
-                    $("#retrievalSubmit").removeClass("loading").click(retrievalSubmit);
-                }
-            });
-        }
-
-        function notice(text, icon){
-            if(icon) $(".retrievalModal").children(".ui.icon.header").html(icon);
-            $(".retrievalModal").children(".content").children("p").html(text);
-            $('.ui.modal').modal('show');
         }
     </script>
 </html>

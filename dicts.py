@@ -400,7 +400,7 @@ DOLL = {
     },
     "1040": {
         "name": "杜莎妮",
-        "job": "3",
+        "job": "4",
         "icon": "http://wiki.42lab.cloud/images/d/d6/ICON_Item_2040.png",
     },
     "1041": {
@@ -412,6 +412,11 @@ DOLL = {
         "name": "初尘",
         "job": "3",
         "icon": "http://wiki.42lab.cloud/images/1/17/ICON_Item_2042.png",
+    },
+    "1043": {
+        "name": "派森",
+        "job": "1",
+        "icon": "http://wiki.42lab.cloud/images/1/17/ICON_Item_2043.png",
     }
 }
 
@@ -631,19 +636,23 @@ ITEM = {
         "mindf_1042": {
             "name": "初尘",
             "job": "3",
+        },
+        "mindf_1043": {
+            "name": "派森",
+            "job": "1",
         }
     },
     "minds": {
         "minds_1": {
-            "name": "心智构件×1",
+            "name": "心智构件",
             "number": "1",
         },
         "minds_2": {
-            "name": "心智构件×2",
+            "name": "心智构件",
             "number": "2",
         },
         "minds_4": {
-            "name": "心智构件×4",
+            "name": "心智构件",
             "number": "4",
         }
     },

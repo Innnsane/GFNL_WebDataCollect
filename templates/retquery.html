@@ -1,0 +1,1353 @@
+<html>
+    <head>
+        <title>基础检索数据展示 | 绿洲气象观测站</title>
+        <script type="text/javascript" src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.css">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-EFRP4XN134"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-EFRP4XN134');
+        </script>
+        <style>
+            body {
+                text-align: center;
+            }
+
+            div#retrievalDispalyAll {
+                margin: 20px;
+            }
+
+
+            .ui.workItemDiv {
+                text-align: left;
+            }
+
+            table.ui.table {
+                text-align: right;
+            }
+
+            /* -- Semantic UI -- */
+            .ui.segment {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+            }
+
+            .ui.menu.sidebar {
+                text-align: left;
+                font-size: 16px;
+            }
+
+            div#sidebarButton {
+                float: left;
+            }
+
+            h1.ui.header {
+                text-align: right;
+                margin: auto;
+            }
+
+            .accordion {
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ui left vertical menu sidebar">
+            <div class="item">
+                <div class="header">绿洲气象观测站</div>
+                <div class="menu">
+                    <a class="item" href="/">首页</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">算法</div>
+                <div class="menu">
+                  <a class="item" href="/algorithm">数据提交</a>
+                  <a class="item" href="/algorithm/query">掉落查询</a>
+                  <a class="item" href="/algorithm/display">近期提交记录</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">心智碎片</div>
+                <div class="menu">
+                <a class="item" href="/mind">数据提交</a>
+                <a class="item" href="/mind/display">数据展示</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">基础检索</div>
+                <div class="menu">
+                <a class="item" href="/retrieval">数据提交</a>
+                <a class="item" href="/retrieval/screenshot">截图识别</a>
+                <a class="item" href="/retrieval/query">数据统计</a>
+                <a class="item" href="/retrieval/display">近期提交记录</a>
+                </div>
+            </div>
+        </div>
+        <div class="pusher">
+            <br/>
+            <div class="ui segment">
+                <div class="ui basic button" id="sidebarButton">
+                    <i class="th list icon"></i>
+                    Menu
+                </div>
+                <h1 class="ui header">
+                    <div class="content">
+                        基础检索数据展示
+                    </div>
+                </h1>
+            </div>
+            <div class="ui segment" style="min-height: 1200px;">
+                <div id="retrievalDispalyAll">
+                </div>
+
+                <div class="ui horizontal divider">
+                    EACH Category
+                </div>
+                
+                <div id="retrievalDispalySingle">
+                </div>
+            </div>
+            
+            <a href="https://beian.miit.gov.cn/" style="position: fixed; bottom: 10px; right: 20px; color: #888;">
+                冀ICP备2021026039号-1
+            </a>
+        </div>
+    </body>
+    <script>
+        var item = {
+            "doll": {
+                "doll_1008": {
+                    "name": "琴",
+                    "rarity": "5",
+                    "card": "http://wiki.42lab.cloud/images/a/ab/Npic_gin.png",
+                },
+                "doll_1009": {
+                    "name": "迈迈",
+                    "rarity": "3",
+                    "card": "http://wiki.42lab.cloud/images/4/4f/Npic_mai.png",
+                },
+                "doll_1013": {
+                    "name": "贝蒂",
+                    "rarity": "4",
+                    "card": "http://wiki.42lab.cloud/images/9/9a/Npic_betty.png",
+                },
+                "doll_1016": {
+                    "name": "坂口希",
+                    "rarity": "5",
+                    "card": "http://wiki.42lab.cloud/images/4/40/Npic_banxsy.png",
+                },
+                "doll_1017": {
+                    "name": "安吉拉",
+                    "rarity": "4",
+                    "card": "http://wiki.42lab.cloud/images/f/f0/Npic_angela.png",
+                },
+                "doll_1023": {
+                    "name": "波妮",
+                    "rarity": "3",
+                    "card": "http://wiki.42lab.cloud/images/e/e8/Npic_bonee.png",
+                },
+                "doll_1024": {
+                    "name": "埃尔赫",
+                    "rarity": "4",
+                    "card": "http://wiki.42lab.cloud/images/1/1c/Npic_earhart.png",
+                },
+                "doll_1031": {
+                    "name": "伊姆赫特",
+                    "rarity": "4",
+                    "card": "http://wiki.42lab.cloud/images/6/6f/Npic_imhotep.png",
+                },
+                "doll_1035": {
+                    "name": "洁西",
+                    "rarity": "3",
+                    "card": "http://wiki.42lab.cloud/images/c/c6/Npic_jessie.png",
+                }
+            },
+            "mindf": {
+                "mindf_1001": {
+                    "name": "帕斯卡",
+                    "job": "5",
+                    "rarity": "4",
+                },
+                "mindf_1002": {
+                    "name": "安冬妮娜",
+                    "job": "4",
+                    "rarity": "4",
+                },
+                "mindf_1003": {
+                    "name": "苏尔",
+                    "job": "3",
+                    "rarity": "4",
+                },
+                "mindf_1004": {
+                    "name": "席摩",
+                    "job": "2",
+                    "rarity": "3",
+                },
+                "mindf_1005": {
+                    "name": "克罗琦",
+                    "job": "1",
+                    "rarity": "5",
+                },
+                "mindf_1006": {
+                    "name": "菲涅尔",
+                    "job": "2",
+                    "rarity": "4",
+                },
+                "mindf_1007": {
+                    "name": "炽",
+                    "job": "3",
+                    "rarity": "3",
+                },
+                "mindf_1008": {
+                    "name": "琴",
+                    "job": "5",
+                    "rarity": "5",
+                },
+                "mindf_1009": {
+                    "name": "迈迈",
+                    "job": "4",
+                    "rarity": "3",
+                },
+                "mindf_1010": {
+                    "name": "伊芙琳",
+                    "job": "1",
+                    "rarity": "5",
+                },
+                "mindf_1011": {
+                    "name": "薮春",
+                    "job": "1",
+                    "rarity": "4",
+                },
+                "mindf_1012": {
+                    "name": "麦克斯",
+                    "job": "2",
+                    "rarity": "3",
+                },
+                "mindf_1013": {
+                    "name": "贝蒂",
+                    "job": "3",
+                    "rarity": "4",
+                },
+                "mindf_1014": {
+                    "name": "巧可",
+                    "job": "5",
+                    "rarity": "3",
+                },
+                "mindf_1015": {
+                    "name": "帕那刻亚",
+                    "job": "5",
+                    "rarity": "4",
+                },
+                "mindf_1016": {
+                    "name": "坂口希",
+                    "job": "4",
+                    "rarity": "5",
+                },
+                "mindf_1017": {
+                    "name": "安吉拉",
+                    "job": "4",
+                    "rarity": "4",
+                },
+                "mindf_1018": {
+                    "name": "芙洛伦",
+                    "job": "5",
+                    "rarity": "5",
+                },
+                "mindf_1019": {
+                    "name": "芬恩",
+                    "job": "3",
+                    "rarity": "4",
+                },
+                "mindf_1020": {
+                    "name": "扬尼",
+                    "job": "1",
+                    "rarity": "3",
+                },
+                "mindf_1021": {
+                    "name": "音流",
+                    "job": "4",
+                    "rarity": "3",
+                },
+                "mindf_1022": {
+                    "name": "秋",
+                    "job": "3",
+                    "rarity": "5",
+                },
+                "mindf_1023": {
+                    "name": "波妮",
+                    "job": "1",
+                    "rarity": "3",
+                },
+                "mindf_1024": {
+                    "name": "埃尔赫",
+                    "job": "2",
+                    "rarity": "4",
+                },
+                "mindf_1025": {
+                    "name": "缠枝",
+                    "job": "2",
+                    "rarity": "5",
+                },
+                "mindf_1026": {
+                    "name": "七花",
+                    "job": "5",
+                    "rarity": "5",
+                },
+                "mindf_1027": {
+                    "name": "希安",
+                    "job": "1",
+                    "rarity": "3",
+                },
+                "mindf_1028": {
+                    "name": "薇",
+                    "job": "3",
+                    "rarity": "5",
+                },
+                "mindf_1029": {
+                    "name": "薇洛儿",
+                    "job": "4",
+                    "rarity": "5",
+                },
+                "mindf_1030": {
+                    "name": "科谢尼娅",
+                    "job": "4",
+                    "rarity": "4",
+                },
+                "mindf_1031": {
+                    "name": "伊姆赫特",
+                    "job": "5",
+                    "rarity": "4",
+                },
+                "mindf_1032": {
+                    "name": "奥托金",
+                    "job": "2",
+                    "rarity": "4",
+                },
+                "mindf_1033": {
+                    "name": "莉丝",
+                    "job": "4",
+                    "rarity": "4",
+                },
+                "mindf_1034": {
+                    "name": "阿比盖尔",
+                    "job": "4",
+                    "rarity": "3",
+                },
+                "mindf_1035": {
+                    "name": "洁西",
+                    "job": "5",
+                    "rarity": "3",
+                },
+                "mindf_1036": {
+                    "name": "拉姆",
+                    "job": "2",
+                    "rarity": "3",
+                },
+                "mindf_1037": {
+                    "name": "赫波",
+                    "job": "2",
+                    "rarity": "5",
+                },
+                "mindf_1038": {
+                    "name": "咲耶",
+                    "job": "4",
+                    "rarity": "4",
+                },
+                "mindf_1039": {
+                    "name": "桑朵莱希",
+                    "job": "3",
+                    "rarity": "5",
+                },
+                "mindf_1040": {
+                    "name": "杜莎妮",
+                    "job": "4",
+                    "rarity": "4",
+                },
+                "mindf_1041": {
+                    "name": "德菈赛",
+                    "job": "5",
+                    "rarity": "5",
+                },
+                "mindf_1042": {
+                    "name": "初尘",
+                    "job": "3",
+                    "rarity": "5",
+                },
+                "mindf_1043": {
+                    "name": "派森",
+                    "job": "1",
+                    "rarity": "5",
+                }
+            },
+            "minds": {
+                "minds_1": {
+                    "name": "心智构件",
+                    "number": "1",
+                },
+                "minds_2": {
+                    "name": "心智构件",
+                    "number": "2",
+                },
+                "minds_4": {
+                    "name": "心智构件",
+                    "number": "4",
+                }
+            },
+            "factory": {
+                "factory_1_1": {
+                    "name": "低模方形数据",
+                    "rarity": "2"
+                },
+                "factory_1_2": {
+                    "name": "低模三角数据",
+                    "rarity": "2"
+                },
+                "factory_1_3": {
+                    "name": "低模菱形数据",
+                    "rarity": "2"
+                },
+                "factory_2_1": {
+                    "name": "中模方形数据",
+                    "rarity": "3"
+                },
+                "factory_2_2": {
+                    "name": "中模三角数据",
+                    "rarity": "3"
+                },
+                "factory_2_3": {
+                    "name": "中模菱形数据",
+                    "rarity": "3"
+                },
+                "factory_3_1": {
+                    "name": "高模方形数据",
+                    "rarity": "4"
+                },
+                "factory_3_2": {
+                    "name": "高模三角数据",
+                    "rarity": "4"
+                },
+                "factory_3_3": {
+                    "name": "高模菱形数据",
+                    "rarity": "4"
+                },
+            },
+            "xp": {
+                "xp_1_1": {
+                    "name": "作战经验*100",
+                    "number": "1",
+                    "rarity": "3",
+                    "xp": "100",
+                },
+                "xp_1_3": {
+                    "name": "作战经验*100",
+                    "number": "3",
+                    "rarity": "3",
+                    "xp": "100",
+                },
+                "xp_2_1": {
+                    "name": "作战经验*600",
+                    "number": "1",
+                    "rarity": "4",
+                    "xp": "600",
+                },
+                "xp_2_2": {
+                    "name": "作战经验*600",
+                    "number": "2",
+                    "rarity": "4",
+                    "xp": "600",
+                },
+                "xp_2_3": {
+                    "name": "作战经验*600",
+                    "number": "3",
+                    "rarity": "4",
+                    "xp": "600",
+                },
+                "xp_3_1": {
+                    "name": "作战经验*3600",
+                    "number": "1",
+                    "rarity": "5",
+                    "xp": "3600",
+                },
+            },
+            "gift": {
+                "gift_1_1": {
+                    "name": "包子",
+                    "rarity": "3"
+                },
+                "gift_1_2": {
+                    "name": "快餐",
+                    "rarity": "3"
+                },
+                "gift_1_3": {
+                    "name": "小块蛋糕",
+                    "rarity": "3"
+                },
+                "gift_1_4": {
+                    "name": "蜂蜜",
+                    "rarity": "3"
+                },
+                "gift_1_5": {
+                    "name": "关东煮",
+                    "rarity": "3"
+                },
+                "gift_1_6": {
+                    "name": "毛绒挂饰",
+                    "rarity": "3"
+                },
+                "gift_1_7": {
+                    "name": "数码积木",
+                    "rarity": "3"
+                },
+                "gift_1_8": {
+                    "name": "练习竹剑",
+                    "rarity": "3"
+                },
+                "gift_2_1": {
+                    "name": "一笼包子",
+                    "rarity": "4"
+                },
+                "gift_2_2": {
+                    "name": "工作套餐",
+                    "rarity": "4"
+                },
+                "gift_2_3": {
+                    "name": "加量蛋糕",
+                    "rarity": "4"
+                },
+                "gift_2_4": {
+                    "name": "巧克力圣代",
+                    "rarity": "4"
+                },
+                "gift_2_5": {
+                    "name": "草莓蛋糕",
+                    "rarity": "4"
+                },
+                "gift_2_6": {
+                    "name": "卡通玩偶",
+                    "rarity": "4"
+                },
+                "gift_2_7": {
+                    "name": "瓶中飞船",
+                    "rarity": "4"
+                },
+                "gift_2_8": {
+                    "name": "实用军刀",
+                    "rarity": "4"
+                },
+                "gift_3_1": {
+                    "name": "一屉包子",
+                    "rarity": "5"
+                },
+                "gift_3_2": {
+                    "name": "双人套餐",
+                    "rarity": "5"
+                },
+                "gift_3_3": {
+                    "name": "豪华蛋糕",
+                    "rarity": "5"
+                },
+                "gift_3_4": {
+                    "name": "咖啡",
+                    "rarity": "5"
+                },
+                "gift_3_5": {
+                    "name": "下午茶",
+                    "rarity": "5"
+                },
+                "gift_3_6": {
+                    "name": "玩具大熊",
+                    "rarity": "5"
+                },
+                "gift_3_7": {
+                    "name": "手办模型",
+                    "rarity": "5"
+                },
+                "gift_3_8": {
+                    "name": "典藏名刀",
+                    "rarity": "5"
+                },
+            },
+            "ctrl": {
+                "ctrl_1_1":{
+                    "name": "简化突破控件·守卫",
+                    "rarity": "1"
+                },
+                "ctrl_1_2":{
+                    "name": "简化突破控件·射手",
+                    "rarity": "1"
+                },
+                "ctrl_1_3":{
+                    "name": "简化突破控件·战士",
+                    "rarity": "1"
+                },
+                "ctrl_1_4":{
+                    "name": "简化突破控件·特种",
+                    "rarity": "1"
+                },
+                "ctrl_1_5":{
+                    "name": "简化突破控件·医师",
+                    "rarity": "1"
+                },
+                "ctrl_2_1":{
+                    "name": "标准突破控件·守卫",
+                    "rarity": "2"
+                },
+                "ctrl_2_2":{
+                    "name": "标准突破控件·射手",
+                    "rarity": "2"
+                },
+                "ctrl_2_3":{
+                    "name": "标准突破控件·战士",
+                    "rarity": "2"
+                },
+                "ctrl_2_4":{
+                    "name": "标准突破控件·特种",
+                    "rarity": "2"
+                },
+                "ctrl_2_5":{
+                    "name": "标准突破控件·医师",
+                    "rarity": "2"
+                },
+                "ctrl_3_1":{
+                    "name": "高级突破控件·守卫",
+                    "rarity": "3"
+                },
+                "ctrl_3_2":{
+                    "name": "高级突破控件·射手",
+                    "rarity": "3"
+                },
+                "ctrl_3_3":{
+                    "name": "高级突破控件·战士",
+                    "rarity": "3"
+                },
+                "ctrl_3_4":{
+                    "name": "高级突破控件·特种",
+                    "rarity": "3"
+                },
+                "ctrl_3_5":{
+                    "name": "高级突破控件·医师",
+                    "rarity": "3"
+                },
+                "ctrl_4_1":{
+                    "name": "特级突破控件·守卫",
+                    "rarity": "4"
+                },
+                "ctrl_4_2":{
+                    "name": "特级突破控件·射手",
+                    "rarity": "4"
+                },
+                "ctrl_4_3":{
+                    "name": "特级突破控件·战士",
+                    "rarity": "4"
+                },
+                "ctrl_4_4":{
+                    "name": "特级突破控件·特种",
+                    "rarity": "4"
+                },
+                "ctrl_4_5":{
+                    "name": "特级突破控件·医师",
+                    "rarity": "4"
+                },
+                "ctrl_5_1":{
+                    "name": "尖端突破控件·守卫",
+                    "rarity": "5"
+                },
+                "ctrl_5_2":{
+                    "name": "尖端突破控件·射手",
+                    "rarity": "5"
+                },
+                "ctrl_5_3":{
+                    "name": "尖端突破控件·战士",
+                    "rarity": "5"
+                },
+                "ctrl_5_4":{
+                    "name": "尖端突破控件·特种",
+                    "rarity": "5"
+                },
+                "ctrl_5_5":{
+                    "name": "尖端突破控件·医师",
+                    "rarity": "5"
+                },
+            }
+        }
+
+        var item_dict = {{ item_dict | safe }};
+        var item_total = {{ item_total | safe }};
+
+
+        // doll display table
+        var item_doll = {
+            "total": 0,
+            "rarity3": 0,
+            "rarity4": 0,
+            "rarity5": 0,
+        }
+
+        function createItemDoll(){
+            for(let id in item["doll"]){
+                item_doll["total"] += item_dict[id];
+                item_doll["rarity" + item["doll"][id]["rarity"]] += item_dict[id];
+            }
+
+            let dom = `
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>1星人形</th>
+                        <th>2星人形</th>
+                        <th>3星人形</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>数量</td>
+                        <td>${item_doll["rarity3"]}</td>
+                        <td>${item_doll["rarity4"]}</td>
+                        <td>${item_doll["rarity5"]}</td>
+                    </tr>
+                    <tr>
+                        <td>频率(检索)</td>
+                        <td>${(item_doll["rarity3"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_doll["rarity4"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_doll["rarity5"] / item_total * 100).toFixed(3)}%</td>
+                    </tr>
+                    <tr>
+                        <td>频率(人形)</td>
+                        <td>${(item_doll["rarity3"] / item_doll["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_doll["rarity4"] / item_doll["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_doll["rarity5"] / item_doll["total"] * 100).toFixed(3)}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui horizontal divider">DETAIL</div>
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>人形</th>
+                        <th>星级</th>
+                        <th>样本数</th>
+                        <th>频率(检索)</th>
+                        <th>频率(人形)</th>
+                        <th>频率(星级)</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for(let id in item["doll"]){
+                dom += 
+                `<tr>
+                    <td>${id.split("_")[1]}</td>
+                    <td>${item["doll"][id]["name"]}</td>
+                    <td>${String(Number(item["doll"][id]["rarity"]) - 2)}</td>
+                    <td>${item_dict[id]}</td>
+                    <td>${(item_dict[id] / item_total * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_doll["total"] * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_doll["rarity" + item["doll"][id]["rarity"]] * 100).toFixed(3)}%</td>
+                </tr>`;
+            }
+
+            dom += `</tbody></table>`;
+            return dom;
+        }
+        
+        // mind fragment display table
+        var item_mindf = {
+            "total": 0,
+            "rarity3": 0,
+            "rarity4": 0,
+            "rarity5": 0,
+        }
+
+        function createItemMindF(){
+            for(let id in item["mindf"]){
+                item_mindf["total"] += item_dict[id];
+                item_mindf["rarity" + item["mindf"][id]["rarity"]] += item_dict[id];
+            }
+
+            let dom = `
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>1星人形碎片</th>
+                        <th>2星人形碎片</th>
+                        <th>3星人形碎片</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>数量</td>
+                        <td>${item_mindf["rarity3"]}</td>
+                        <td>${item_mindf["rarity4"]}</td>
+                        <td>${item_mindf["rarity5"]}</td>
+                    </tr>
+                    <tr>
+                        <td>频率(检索)</td>
+                        <td>${(item_mindf["rarity3"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_mindf["rarity4"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_mindf["rarity5"] / item_total * 100).toFixed(3)}%</td>
+                    </tr>
+                    <tr>
+                        <td>频率(碎片)</td>
+                        <td>${(item_mindf["rarity3"] / item_mindf["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_mindf["rarity4"] / item_mindf["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_mindf["rarity5"] / item_mindf["total"] * 100).toFixed(3)}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui horizontal divider">DETAIL</div>
+            <div class="ui grid">
+                <div class="four wide column">
+                    <div class="ui vertical fluid tabular menu">
+                        <a class="item active workItem" id="work_1" onclick="workItemClick(1);">
+                            守卫
+                        </a>
+                        <a class="item workItem" id="work_2" onclick="workItemClick(2);">
+                            射手
+                        </a>
+                        <a class="item workItem" id="work_3" onclick="workItemClick(3);">
+                            战士
+                        </a>
+                        <a class="item workItem" id="work_4" onclick="workItemClick(4);">
+                            特种
+                        </a>
+                        <a class="item workItem" id="work_5" onclick="workItemClick(5);">
+                            医师
+                        </a>
+                    </div>
+                </div>
+                <div class="twelve wide stretched column" id="minftablediv">
+                    ${createItemMinfTable("1")}
+                </div>
+            </div>`;
+
+            return dom
+        }
+
+        function workItemClick(id){
+            $(".workItem").removeClass("active");
+            $("#work_" + id).addClass("active");
+            $("#minftablediv").html(createItemMinfTable(id))
+        }
+
+        function createItemMinfTable(work){
+            let table = 
+            `<table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>心智碎片</th>
+                        <th>星级</th>
+                        <th>样本数</th>
+                        <th>频率(检索)</th>
+                        <th>频率(碎片)</th>
+                        <th>频率(星级)</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for(let id in item["mindf"]){
+                if(work != String(item["mindf"][id]["job"])) continue;
+                table += 
+                `<tr>
+                    <td>${id.split("_")[1]}</td>
+                    <td>${item["mindf"][id]["name"]}</td>
+                    <td>${String(Number(item["mindf"][id]["rarity"]) - 2)}</td>
+                    <td>${item_dict[id]}</td>
+                    <td>${(item_dict[id] / item_total * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_mindf["total"] * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_mindf["rarity" + item["mindf"][id]["rarity"]] * 100).toFixed(3)}%</td>
+                </tr>`;
+            }
+
+            table += `</tbody></table>`;
+            return table;
+        }
+
+        
+        // mind structure display table
+        var item_minds = {
+            "total": 0,
+            "calculate": 0,
+        }
+
+        function createItemMinds(){
+            for(let id in item["minds"]){
+                item_minds["total"] += item_dict[id];
+                item_doll["calculate"] += Number(item_dict[id]) * item["minds"][id]["number"];
+            }
+
+            let dom = `
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>数量</th>
+                        <th>样本数</th>
+                        <th>频率(检索)</th>
+                        <th>均值(检索)</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for(let id in item["minds"]){
+                dom += 
+                `<tr>
+                    <td>${item["minds"][id]["name"]}</td>
+                    <td>${item["minds"][id]["number"]}</td>
+                    <td>${item_dict[id]}</td>
+                    <td>${(item_dict[id] / item_total * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] * Number(item["minds"][id]["number"]) / item_total).toFixed(3)}</td>
+                </tr>`;
+            }
+
+            dom += `</tbody></table>`;
+            return dom;
+        }
+        
+        // factory display table
+        var item_factory = {
+            "total": 0,
+            "rarity2": 0,
+            "rarity3": 0,
+            "rarity4": 0,
+        }
+
+        function createItemFactory(){
+            for(let id in item["factory"]){
+                item_factory["total"] += item_dict[id];
+                item_factory["rarity" + item["factory"][id]["rarity"]] += item_dict[id];
+            }
+
+            let dom = `
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>低模数据</th>
+                        <th>中模数据</th>
+                        <th>高模数据</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>样本数</td>
+                        <td>${item_factory["rarity2"]}</td>
+                        <td>${item_factory["rarity3"]}</td>
+                        <td>${item_factory["rarity4"]}</td>
+                    </tr>
+                    <tr>
+                        <td>频率(检索)</td>
+                        <td>${(item_factory["rarity2"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_factory["rarity3"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_factory["rarity4"] / item_total * 100).toFixed(3)}%</td>
+                    </tr>
+                    <tr>
+                        <td>频率(数据)</td>
+                        <td>${(item_factory["rarity2"] / item_factory["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_factory["rarity3"] / item_factory["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_factory["rarity4"] / item_factory["total"] * 100).toFixed(3)}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui horizontal divider">DETAIL</div>
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>数量</th>
+                        <th>样本数</th>
+                        <th>频率(检索)</th>
+                        <th>频率(数据)</th>
+                        <th>频率(稀有度)</th>
+                        <th>均值(检索)</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for(let id in item["factory"]){
+                dom += 
+                `<tr>
+                    <td>${item["factory"][id]["name"]}</td>
+                    <td>5</td>
+                    <td>${item_dict[id]}</td>
+                    <td>${(item_dict[id] / item_total * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_factory["total"] * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_factory["rarity" + item["factory"][id]["rarity"]] * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_total * 5).toFixed(3)}</td>
+                </tr>`;
+            }
+
+            dom += `</tbody></table>`;
+            return dom;
+        }
+ 
+        // xp display table
+        var item_xp = {
+            "total": 0,
+            "rarity3": 0,
+            "rarity4": 0,
+            "rarity5": 0,
+            "rarity3_1": 0,
+            "rarity4_1": 0,
+            "rarity5_1": 0,
+        }
+
+        function createItemXP(){
+            for(let id in item["xp"]){
+                item_xp["total"] += item_dict[id];
+                item_xp["rarity" + item["xp"][id]["rarity"]] += item_dict[id];
+                item_xp["rarity" + item["xp"][id]["rarity"] + "_1"] += item_dict[id] * item["xp"][id]["number"];
+            }
+
+            let dom = `
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>作战经验*100</th>
+                        <th>作战经验*600</th>
+                        <th>作战经验*3600</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>样本数</td>
+                        <td>${item_xp["rarity3"]}</td>
+                        <td>${item_xp["rarity4"]}</td>
+                        <td>${item_xp["rarity5"]}</td>
+                    </tr>
+                    <tr>
+                        <td>频率(检索)</td>
+                        <td>${(item_xp["rarity3"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_xp["rarity4"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_xp["rarity5"] / item_total * 100).toFixed(3)}%</td>
+                    </tr>
+                    <tr>
+                        <td>均值(检索)</td>
+                        <td>${(item_xp["rarity3_1"] / item_total).toFixed(3)}</td>
+                        <td>${(item_xp["rarity4_1"] / item_total).toFixed(3)}</td>
+                        <td>${(item_xp["rarity5_1"] / item_total).toFixed(3)}</td>
+                    </tr>
+                    <tr>
+                        <td>平均经验(检索)</td>
+                        <td>${(item_xp["rarity3_1"] / item_total * 100).toFixed(3)}</td>
+                        <td>${(item_xp["rarity4_1"] / item_total * 600).toFixed(3)}</td>
+                        <td>${(item_xp["rarity5_1"] / item_total * 3600).toFixed(3)}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui horizontal divider">DETAIL</div>
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>数量</th>
+                        <th>样本数</th>
+                        <th>频率(检索)</th>
+                        <th>平均经验(检索)</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for(let id in item["xp"]){
+                dom += 
+                `<tr>
+                    <td>${item["xp"][id]["name"]}</td>
+                    <td>${item["xp"][id]["number"]}</td>
+                    <td>${item_dict[id]}</td>
+                    <td>${(item_dict[id] / item_total * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_total * item["xp"][id]["number"] * item["xp"][id]["xp"]).toFixed(3)}</td>
+                </tr>`;
+            }
+
+            dom += `</tbody></table>`;
+            return dom;
+        }
+
+        // gift display table
+        var item_gift = {
+            "total": 0,
+            "rarity3": 0,
+            "rarity4": 0,
+            "rarity5": 0,
+        }
+
+        function createItemGift(){
+            for(let id in item["gift"]){
+                item_gift["total"] += item_dict[id];
+                item_gift["rarity" + item["gift"][id]["rarity"]] += item_dict[id];
+            }
+
+            let dom = `
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>礼物(蓝)</th>
+                        <th>礼物(紫)</th>
+                        <th>礼物(橙)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>样本数</td>
+                        <td>${item_gift["rarity3"]}</td>
+                        <td>${item_gift["rarity4"]}</td>
+                        <td>${item_gift["rarity5"]}</td>
+                    </tr>
+                    <tr>
+                        <td>频率(检索)</td>
+                        <td>${(item_gift["rarity3"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_gift["rarity4"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_gift["rarity5"] / item_total * 100).toFixed(3)}%</td>
+                    </tr>
+                    <tr>
+                        <td>频率(礼物)</td>
+                        <td>${(item_gift["rarity3"] / item_gift["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_gift["rarity4"] / item_gift["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_gift["rarity5"] / item_gift["total"] * 100).toFixed(3)}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui horizontal divider">DETAIL</div>
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>稀有度</th>
+                        <th>样本数</th>
+                        <th>频率(检索)</th>
+                        <th>频率(礼物)</th>
+                        <th>频率(稀有度)</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for(let id in item["gift"]){
+                dom += 
+                `<tr>
+                    <td>${item["gift"][id]["name"]}</td>
+                    <td>${item["gift"][id]["rarity"]}</td>
+                    <td>${item_dict[id]}</td>
+                    <td>${(item_dict[id] / item_total * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_gift["total"] * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_gift["rarity" + item["gift"][id]["rarity"]] * 100).toFixed(3)}%</td>
+                </tr>`;
+            }
+
+            dom += `</tbody></table>`;
+            return dom;
+        }
+
+
+        // gift display table
+        var item_ctrl = {
+            "total": 0,
+            "rarity1": 0,
+            "rarity2": 0,
+            "rarity3": 0,
+            "rarity4": 0,
+            "rarity5": 0,
+        }
+
+        function createItemCtrl(){
+            for(let id in item["ctrl"]){
+                item_ctrl["total"] += item_dict[id];
+                item_ctrl["rarity" + item["ctrl"][id]["rarity"]] += item_dict[id];
+            }
+
+            let dom = `
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>简化</th>
+                        <th>标准</th>
+                        <th>高级</th>
+                        <th>特级</th>
+                        <th>尖端</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>样本数</td>
+                        <td>${item_ctrl["rarity1"]}</td>
+                        <td>${item_ctrl["rarity2"]}</td>
+                        <td>${item_ctrl["rarity3"]}</td>
+                        <td>${item_ctrl["rarity4"]}</td>
+                        <td>${item_ctrl["rarity5"]}</td>
+                    </tr>
+                    <tr>
+                        <td>频率(检索)</td>
+                        <td>${(item_ctrl["rarity1"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_ctrl["rarity2"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_ctrl["rarity3"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_ctrl["rarity4"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_ctrl["rarity5"] / item_total * 100).toFixed(3)}%</td>
+                    </tr>
+                    <tr>
+                        <td>频率(控件)</td>
+                        <td>${(item_ctrl["rarity1"] / item_ctrl["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_ctrl["rarity2"] / item_ctrl["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_ctrl["rarity3"] / item_ctrl["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_ctrl["rarity4"] / item_ctrl["total"] * 100).toFixed(3)}%</td>
+                        <td>${(item_ctrl["rarity5"] / item_ctrl["total"] * 100).toFixed(3)}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui horizontal divider">DETAIL</div>
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>稀有度</th>
+                        <th>样本数</th>
+                        <th>频率(检索)</th>
+                        <th>频率(控件)</th>
+                        <th>频率(稀有度)</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for(let id in item["ctrl"]){
+                dom += 
+                `<tr>
+                    <td>${item["ctrl"][id]["name"]}</td>
+                    <td>${item["ctrl"][id]["rarity"]}</td>
+                    <td>${item_dict[id]}</td>
+                    <td>${(item_dict[id] / item_total * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_ctrl["total"] * 100).toFixed(3)}%</td>
+                    <td>${(item_dict[id] / item_ctrl["rarity" + item["ctrl"][id]["rarity"]] * 100).toFixed(3)}%</td>
+                </tr>`;
+            }
+
+            dom += `</tbody></table>`;
+            return dom;
+        }
+
+        function createAccordion(){
+            $("#retrievalDispalySingle").html(
+                `
+                <div class="ui styled fluid accordion" id="retrievalDispalySingle">
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        人形
+                    </div>
+                    <div class="content">
+                        ${createItemDoll()}
+                    </div>
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        心智碎片
+                    </div>
+                    <div class="content">
+                        ${createItemMindF()}
+                    </div>
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        心智构件
+                    </div>
+                    <div class="content">
+                        ${createItemMinds()}    
+                    </div>
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        加工厂材料
+                    </div>
+                    <div class="content">
+                        ${createItemFactory()}    
+                    </div>
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        经验
+                    </div>
+                    <div class="content">
+                        ${createItemXP()}    
+                    </div>
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        礼物
+                    </div>
+                    <div class="content">
+                        ${createItemGift()}    
+                    </div>
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        突破控件
+                    </div>
+                    <div class="content">
+                        ${createItemCtrl()}    
+                    </div>
+                </div>
+                `
+            );
+
+            $('.ui.accordion').accordion();
+        }
+
+        function createDisplayAll(){
+            let table = 
+            `
+            <table class="ui sortable celled table">
+                <thead>
+                    <tr>
+                        <th>总计</th>
+                        <th>人形</th>
+                        <th>心智碎片</th>
+                        <th>心智构件</th>
+                        <th>加工厂材料</th>
+                        <th>经验</th>
+                        <th>礼物</th>
+                        <th>突破控件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>${item_total}</td>
+                        <td>${item_doll["total"]}</td>
+                        <td>${item_mindf["total"]}</td>
+                        <td>${item_minds["total"]}</td>
+                        <td>${item_factory["total"]}</td>
+                        <td>${item_xp["total"]}</td>
+                        <td>${item_gift["total"]}</td>
+                        <td>${item_ctrl["total"]}</td>
+                    </tr>
+                    <tr>
+                        <td>${(item_total / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_doll["total"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_mindf["total"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_minds["total"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_factory["total"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_xp["total"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_gift["total"] / item_total * 100).toFixed(3)}%</td>
+                        <td>${(item_ctrl["total"] / item_total * 100).toFixed(3)}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            `;
+
+            $("#retrievalDispalyAll").html(table);
+        }
+
+        initialTrigger();
+        function initialTrigger(){
+            createAccordion();
+            createDisplayAll();
+
+            /* sidebar */
+            $("#sidebarButton").click(function(){
+                $('.menu.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+            });
+        }
+    </script>
+</html>

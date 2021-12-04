@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>基础检索截图识别 | 绿洲气象观测站</title>
+        <script type="text/javascript" src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/blueimp-md5/2.18.0/js/md5.min.js"></script>
+        <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/semantic-ui/2.4.1/semantic.min.css">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-EFRP4XN134"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-EFRP4XN134');
+        </script>
+        <style>
+            body {
+                text-align: center;
+            }
+
+            canvas {
+                max-width: 100%;
+            }
+
+            .ui.placeholder {
+                height: 100%;
+            }
+
+            .ui.segment {
+                text-align: center;
+                max-width: 1080px;
+                margin: 20px auto;
+            }
+
+            .ui.menu.sidebar {
+                text-align: left;
+                font-size: 16px;
+            }
+
+            div#sidebarButton {
+                float: left;
+            }
+
+            h1.ui.header {
+                text-align: right;
+                margin: auto;
+            }
+
+            .ui.secondary.vertical.pointing.menu {
+                width: 242px;
+            }
+            
+            .itemDiv {
+                position: relative;
+                display: inline-block;
+                margin: 4px;
+                width: 82px;
+                vertical-align: top;
+            }
+
+            .itemText {
+                font-size: 12px;
+                text-align: center;
+            }
+
+            .itemIcon {
+                position: relative;
+                display: inline-block;
+                aspect-ratio: auto 1 / 1;
+                font-size: 2rem;
+                width: 80px;
+                min-width: 64px;
+                user-select: none;
+            }
+
+            .itemIcon .overlay {  
+                clip-path: polygon(91.92% 0%,8.08% 0%,0% 8.08%,0% 91.92%,8.08% 100%,91.92% 100%,100% 91.92%,100% 8.08%);
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                z-index: 4;
+            }
+            
+            .itemIcon .overlay::before {
+                content: "";
+                width: 50%;
+                height: 50%;
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+                background-image: linear-gradient(135deg,rgb(0 0 0 / 70%) 50%,transparent 50%);
+                z-index: 0;
+            }
+
+            .itemIcon .subicon.tl {
+                left: 3%;
+                top: 3%;
+                width: 25%;
+                height: 25%;
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+            }
+
+            .itemIcon .subicon {
+                z-index: 10;
+                position: absolute;
+                height: auto;
+            }
+
+            .itemIcon .mainicon {
+                z-index: 0;
+                height: auto;
+                width: 100%;
+                position: relative;
+                z-index: 1;
+                background-size: 100%;
+                background-repeat: no-repeat;
+                background-position: center;
+                clip-path: polygon(8.83% 97.50%,2.50% 91.17%,2.50% 8.83%,8.83% 2.50%,91.16% 2.50%,97.49% 8.83%,97.49% 91.16%,91.16% 97.49%,8.83% 97.49%);
+            }
+
+            .itemIcon .plate {
+                clip-path: polygon(8.83% 97.50%,2.50% 91.17%,2.50% 8.83%,8.83% 2.50%,91.16% 2.50%,97.49% 8.83%,97.49% 91.16%,91.16% 97.49%,8.83% 97.49%);
+                position: absolute;
+                background-image: radial-gradient(circle,transparent 60%,rgb(0 0 0 / 50%) 150%);
+                display: block;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0px;
+                z-index: 0;
+            }
+            
+            .itemIcon .back {
+                clip-path: polygon(91.92% 0.00%,8.08% 0.00%,0.00% 8.08%,0.00% 91.92%,8.08% 100.00%,42.19% 100.00%,42.19% 96.87%,9.38% 96.87%,3.13% 90.62%,3.13% 9.38%,9.38% 3.13%,90.63% 3.13%,96.88% 9.38%,96.88% 90.63%,90.63% 96.88%,42.19% 96.88%,42.19% 100.00%,91.92% 100.00%,100.00% 91.92%,100.00% 8.08%,91.92% 0.00%);
+                position: absolute;
+                display: block;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0px;
+                z-index: 3;
+            }
+
+            .itemIcon.rarity1 .back {background-color:#7D7D7D}
+            .itemIcon.rarity1 .plate {background-color:#606060}
+            .itemIcon.rarity1.blend .subicon.tl{filter:url(#blendColor1)}
+            .itemIcon.rarity2 .back {background-color:#60c030}
+            .itemIcon.rarity2 .plate {background-color:#507040}
+            .itemIcon.rarity2.blend .subicon.tl{filter:url(#blendColor2)}
+            .itemIcon.rarity3 .back {background-color:#5CB7EC}
+            .itemIcon.rarity3 .plate {background-color:#256070}
+            .itemIcon.rarity3.blend .subicon.tl{filter:url(#blendColor3)}
+            .itemIcon.rarity4 .back {background-color:#BA77FF}
+            .itemIcon.rarity4 .plate {background-color:#6C4466}
+            .itemIcon.rarity4.blend .subicon.tl{filter:url(#blendColor4)}
+            .itemIcon.rarity5 .back {background-color:#FF8000}
+            .itemIcon.rarity5 .plate {background-color:#805530}
+            .itemIcon.rarity5.blend .subicon.tl{filter:url(#blendColor5)}
+
+            .itemNumber {
+                text-align: center;
+                clip-path: polygon(0% 0%,100% 0%,100% 60%,80% 100%,0% 100%,0% 0%);
+                position: absolute;
+                bottom: 1px;
+                right: 1px;
+                width: 45%;
+                background-color: rgb(0 0 0 / 60%);
+                z-index: 2;
+                font-size: 14px;
+                color: #eaeaea;
+                font-family: sans-serif;
+            }
+
+            img.dollicon {
+                height: auto;
+                width: 100%;
+                position: relative;
+                z-index: 1;
+                background-size: 100%;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            .itemIcon.dollSquare.rarity5 {
+                box-shadow: inset 10px -10px 20px -10px #cf6c07;
+            }
+
+            .itemIcon.dollSquare.rarity4 {
+                box-shadow: inset 10px -10px 20px -10px #BA77FF;
+            }
+
+            .itemIcon.dollSquare.rarity3 {
+                box-shadow: inset 10px -10px 20px -10px #5cb7ec;
+            }
+
+            div#itemDisplay {
+                text-align: left;
+                height: 491px;
+                width: 100%;
+                overflow-y: scroll;
+                box-shadow: none;
+                border: none;
+                margin-top: 0px !important;
+                margin-bottom: 0px !important;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ui left vertical menu sidebar">
+            <div class="item">
+                <div class="header">绿洲气象观测站</div>
+                <div class="menu">
+                    <a class="item" href="/">首页</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">算法</div>
+                <div class="menu">
+                  <a class="item" href="/algorithm">数据提交</a>
+                  <a class="item" href="/algorithm/query">掉落查询</a>
+                  <a class="item" href="/algorithm/display">近期提交记录</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">心智碎片</div>
+                <div class="menu">
+                <a class="item" href="/mind">数据提交</a>
+                <a class="item" href="/mind/display">数据展示</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">基础检索</div>
+                <div class="menu">
+                <a class="item" href="/retrieval">数据提交</a>
+                <a class="item" href="/retrieval/screenshot">截图识别</a>
+                <a class="item" href="/retrieval/query">数据统计</a>
+                <a class="item" href="/retrieval/display">近期提交记录</a>
+                </div>
+            </div>
+        </div>
+        <div class="pusher">
+            <br/>
+            <div class="ui raised segment">
+                <div class="ui basic button" id="sidebarButton">
+                    <i class="th list icon"></i>
+                    Menu
+                </div>
+                <h1 class="ui header">
+                    <div class="content">
+                        基础检索截图识别
+                    </div>
+                </h1>
+            </div>
+            <div class="ui raised segment">
+                第一次使用请等待页面加载完毕。<br/>
+                截图识别正确率不高，需要额外手动选择，优化会在未来持续推出。
+            </div>
+            <div class="ui raised segment" style="min-height: 520px;">
+                <div class="ui grid">
+                    <div class="four wide column">
+                        <div class="ui secondary vertical pointing menu">
+                            <a class="active item itemType" id="itemType_doll">
+                                角色
+                            </a>
+                            <a class="item itemType" id="itemType_mindf">
+                                心智碎片
+                            </a>
+                            <a class="item itemType" id="itemType_minds">
+                                心智构件
+                            </a>
+                            <a class="item itemType" id="itemType_factory">
+                                工厂材料
+                            </a>
+                            <a class="item itemType" id="itemType_xp">
+                                经验
+                            </a>
+                            <a class="item itemType" id="itemType_gift">
+                                礼物
+                            </a>
+                            <a class="item itemType" id="itemType_ctrl">
+                                突破控件
+                            </a>
+                        </div>
+                        <div class="ui horizontal divider">OR</div>
+                        <div class="ui secondary vertical pointing menu">
+                            <a class="item itemType" id="itemType_sc">
+                                截图识别
+                            </a>
+                        </div>
+                    </div>
+                    <div class="twelve wide stretched column" style="height: 542px;">
+                        <div class="ui segment" id="itemDisplay" style="display: none;">
+                            <p></p>
+                        </div>
+                        <div class="ui segment" id="screenshotDisplay" style="width: 100%; margin-top: 0px; height: 528px;">
+                            <div class="ui grid screenshotGrid" style="width: 100%;">
+                                <div class="four wide column">
+                                    <br/>
+                                    <div id="fileImageDiv">
+                                        <div class="ui primary button" onclick="fileOpenClick();">添加截图</div>
+                                        <input type="file" id="fileInput" name="file" accept="image/*" style="display: none;"/>
+                                        <img id="imageSrc" alt="No Image" style="display: none;"/>
+                                    </div>
+                                    <div class="ui primary button" id="worldCleaner" onclick="fileOpenClear();" style="display: none;">重新选择</div>
+                                </div>
+                                <div class="twelve wide column">
+                                    <div class="ui progress" id="progressing" style="display: none;">
+                                        <div class="label" style="top: -100%;">Processing Templates</div>
+                                        <div class="bar" style="margin: 2em 0em 1em 0em;">
+                                            <div class="progress"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <canvas id="canvasOutput"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui raised segment" style="min-height: 1200px;">
+                <div id="retrievalDispalySingle" style="height: 142px;"></div>
+                <div class="ui error message dataErrorMessage" style="display: none;">
+                    <div class="header">提交失败</div>
+                    <p>请填入十个</p>
+                </div>
+                <div class="ui section divider"></div>
+                <button class="ui button" id="retrievalClear" onclick="fileOpenClear();">清空</button>
+                <button class="ui primary button" id="retrievalSubmit">提交</button>
+            </div>
+            
+            <a href="https://beian.miit.gov.cn/" style="position: fixed; bottom: 10px; right: 20px; color: #888;">
+                冀ICP备2021026039号-1
+            </a>
+            <!-- 下面是提示框的设计 -->
+            <div class="ui tiny modal retrievalModal">
+                <div class="ui icon header">
+                    <i class="envelope icon"></i>Message
+                </div>
+                <div class="content">
+                    <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+                </div>
+                <div class="actions">
+                <div class="ui green ok inverted button">
+                    <i class="checkmark icon"></i>
+                    Yes
+                </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://docs.opencv.org/4.x/utils.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var item = {
+                "doll_1008": {
+                    "name": "琴",
+                    "threshold": 0
+                },
+                "doll_1009": {
+                    "name": "迈迈",
+                    "threshold": 0.8
+                },
+                "doll_1013": {
+                    "name": "贝蒂",
+                    "threshold": 0
+                },
+                "doll_1016": {
+                    "name": "坂口希",
+                    "threshold": 0
+                },
+                "doll_1017": {
+                    "name": "安吉拉",
+                    "threshold": 0
+                },
+                "doll_1023": {
+                    "name": "波妮",
+                    "threshold": 0
+                },
+                "doll_1024": {
+                    "name": "埃尔赫",
+                    "threshold": 0
+                },
+                "doll_1031": {
+                    "name": "伊姆赫特",
+                    "threshold": 0
+                },
+                "doll_1035": {
+                    "name": "洁西",
+                    "threshold": 0
+                },
+                "mindf_1001": {
+                    "name": "帕斯卡",
+                    "threshold": 0
+                },
+                "mindf_1002": {
+                    "name": "安冬妮娜",
+                    "threshold": 0
+                },
+                "mindf_1003": {
+                    "name": "苏尔",
+                    "threshold": 0
+                },
+                "mindf_1004": {
+                    "name": "席摩",
+                    "threshold": 0
+                },
+                "mindf_1005": {
+                    "name": "克罗琦",
+                    "threshold": 0
+                },
+                "mindf_1006": {
+                    "name": "菲涅尔",
+                    "threshold": 0
+                },
+                "mindf_1007": {
+                    "name": "炽",
+                    "threshold": 0
+                },
+                "mindf_1008": {
+                    "name": "琴",
+                    "threshold": 0
+                },
+                "mindf_1009": {
+                    "name": "迈迈",
+                    "threshold": 0
+                },
+                "mindf_1010": {
+                    "name": "伊芙琳",
+                    "threshold": 0
+                },
+                "mindf_1011": {
+                    "name": "薮春",
+                    "threshold": 0
+                },
+                "mindf_1012": {
+                    "name": "麦克斯",
+                    "threshold": 0
+                },
+                "mindf_1013": {
+                    "name": "贝蒂",
+                    "threshold": 0
+                },
+                "mindf_1014": {
+                    "name": "巧可",
+                    "threshold": 0
+                },
+                "mindf_1015": {
+                    "name": "帕那刻亚",
+                    "threshold": 0
+                },
+                "mindf_1016": {
+                    "name": "坂口希",
+                    "threshold": 0
+                },
+                "mindf_1017": {
+                    "name": "安吉拉",
+                    "threshold": 0
+                },
+                "mindf_1018": {
+                    "name": "芙洛伦",
+                    "threshold": 0
+                },
+                "mindf_1019": {
+                    "name": "芬恩",
+                    "threshold": 0
+                },
+                "mindf_1020": {
+                    "name": "扬尼",
+                    "threshold": 0
+                },
+                "mindf_1021": {
+                    "name": "音流",
+                    "threshold": 0
+                },
+                "mindf_1022": {
+                    "name": "秋",
+                    "threshold": 0
+                },
+                "mindf_1023": {
+                    "name": "波妮",
+                    "threshold": 0
+                },
+                "mindf_1024": {
+                    "name": "埃尔赫",
+                    "threshold": 0
+                },
+                "mindf_1025": {
+                    "name": "缠枝",
+                    "threshold": 0
+                },
+                "mindf_1026": {
+                    "name": "七花",
+                    "threshold": 0
+                },
+                "mindf_1027": {
+                    "name": "希安",
+                    "threshold": 0
+                },
+                "mindf_1028": {
+                    "name": "薇",
+                    "threshold": 0
+                },
+                "mindf_1029": {
+                    "name": "薇洛儿",
+                    "threshold": 0
+                },
+                "mindf_1030": {
+                    "name": "科谢尼娅",
+                    "threshold": 0
+                },
+                "mindf_1031": {
+                    "name": "伊姆赫特",
+                    "threshold": 0
+                },
+                "mindf_1032": {
+                    "name": "奥托金",
+                    "threshold": 0
+                },
+                "mindf_1033": {
+                    "name": "莉丝",
+                    "threshold": 0
+                },
+                "mindf_1034": {
+                    "name": "阿比盖尔",
+                    "threshold": 0
+                },
+                "mindf_1035": {
+                    "name": "洁西",
+                    "threshold": 0
+                },
+                "mindf_1036": {
+                    "name": "拉姆",
+                    "threshold": 0
+                },
+                "mindf_1037": {
+                    "name": "赫波",
+                    "threshold": 0
+                },
+                "mindf_1038": {
+                    "name": "咲耶",
+                    "threshold": 0
+                },
+                "mindf_1039": {
+                    "name": "桑朵莱希",
+                    "threshold": 0
+                },
+                "mindf_1040": {
+                    "name": "杜莎妮",
+                    "threshold": 0
+                },
+                "mindf_1041": {
+                    "name": "德菈赛",
+                    "threshold": 0
+                },
+                "mindf_1042": {
+                    "name": "初尘",
+                    "threshold": 0
+                },
+                "mindf_1043": {
+                    "name": "派森",
+                    "job": "1",
+                },
+                "minds_1": {
+                    "name": "心智构件",
+                    "threshold": 0.96
+                },
+                "minds_2": {
+                    "name": "心智构件",
+                    "threshold": 0.96
+                },
+                "minds_4": {
+                    "name": "心智构件",
+                    "threshold": 0.96
+                },
+                "factory_1_1": {
+                    "name": "低模方形数据",
+                    "threshold": 0.9
+                },
+                "factory_1_2": {
+                    "name": "低模三角数据",
+                    "threshold": 0.9
+                },
+                "factory_1_3": {
+                    "name": "低模菱形数据",
+                    "threshold": 0.9
+                },
+                "factory_2_1": {
+                    "name": "中模方形数据",
+                    "threshold": 0
+                },
+                "factory_2_2": {
+                    "name": "中模三角数据",
+                    "threshold": 0
+                },
+                "factory_2_3": {
+                    "name": "中模菱形数据",
+                    "threshold": 0
+                },
+                "factory_3_1": {
+                    "name": "高模方形数据",
+                    "threshold": 0
+                },
+                "factory_3_2": {
+                    "name": "高模三角数据",
+                    "threshold": 0
+                },
+                "factory_3_3": {
+                    "name": "高模菱形数据",
+                    "threshold": 0
+                },
+                "xp_1_1": {
+                    "name": "作战经验*100",
+                    "number": "1",
+                    "threshold": 0.895
+                },
+                "xp_1_3": {
+                    "name": "作战经验*100",
+                    "number": "3",
+                    "threshold": 0.9
+                },
+                "xp_2_1": {
+                    "name": "作战经验*600",
+                    "number": "1",
+                    "threshold": 0.9
+                },
+                "xp_2_2": {
+                    "name": "作战经验*600",
+                    "number": "2",
+                    "threshold": 0.89
+                },
+                "xp_2_3": {
+                    "name": "作战经验*600",
+                    "number": "3",
+                    "threshold": 0.87
+                },
+                "xp_3_1": {
+                    "name": "作战经验*3600",
+                    "number": "1",
+                    "threshold": 0.9
+                },
+                "gift_1_1": {
+                    "name": "包子",
+                    "threshold": 0
+                },
+                "gift_1_2": {
+                    "name": "快餐",
+                    "threshold": 0
+                },
+                "gift_1_3": {
+                    "name": "小块蛋糕",
+                    "threshold": 0
+                },
+                "gift_1_4": {
+                    "name": "蜂蜜",
+                    "threshold": 0
+                },
+                "gift_1_5": {
+                    "name": "关东煮",
+                    "threshold": 0
+                },
+                "gift_1_6": {
+                    "name": "毛绒挂饰",
+                    "threshold": 0
+                },
+                "gift_1_7": {
+                    "name": "数码积木",
+                    "threshold": 0
+                },
+                "gift_1_8": {
+                    "name": "练习竹剑",
+                    "threshold": 0
+                },
+                "gift_2_1": {
+                    "name": "一笼包子",
+                    "threshold": 0
+                },
+                "gift_2_2": {
+                    "name": "工作套餐",
+                    "threshold": 0
+                },
+                "gift_2_3": {
+                    "name": "加量蛋糕",
+                    "threshold": 0
+                },
+                "gift_2_4": {
+                    "name": "巧克力圣代",
+                    "threshold": 0
+                },
+                "gift_2_5": {
+                    "name": "草莓蛋糕",
+                    "threshold": 0.9
+                },
+                "gift_2_6": {
+                    "name": "卡通玩偶",
+                    "threshold": 0
+                },
+                "gift_2_7": {
+                    "name": "瓶中飞船",
+                    "threshold": 0
+                },
+                "gift_2_8": {
+                    "name": "实用军刀",
+                    "threshold": 0
+                },
+                "gift_3_1": {
+                    "name": "一屉包子",
+                    "threshold": 0
+                },
+                "gift_3_2": {
+                    "name": "双人套餐",
+                    "threshold": 0
+                },
+                "gift_3_3": {
+                    "name": "豪华蛋糕",
+                    "threshold": 0
+                },
+                "gift_3_4": {
+                    "name": "咖啡",
+                    "threshold": 0
+                },
+                "gift_3_5": {
+                    "name": "下午茶",
+                    "threshold": 0
+                },
+                "gift_3_6": {
+                    "name": "玩具大熊",
+                    "threshold": 0
+                },
+                "gift_3_7": {
+                    "name": "手办模型",
+                    "threshold": 0
+                },
+                "gift_3_8": {
+                    "name": "典藏名刀",
+                    "threshold": 0
+                },
+                "ctrl_1_1": {
+                    "name": "简化突破控件·守卫",
+                    "threshold": 0.92
+                },
+                "ctrl_1_2": {
+                    "name": "简化突破控件·射手",
+                    "threshold": 0.945
+                },
+                "ctrl_1_3": {
+                    "name": "简化突破控件·战士",
+                    "threshold": 0.94
+                },
+                "ctrl_1_4": {
+                    "name": "简化突破控件·特种",
+                    "threshold": 0.94
+                },
+                "ctrl_1_5": {
+                    "name": "简化突破控件·医师",
+                    "threshold": 0.97
+                },
+                "ctrl_2_1": {
+                    "name": "标准突破控件·守卫",
+                    "threshold": 0.945
+                },
+                "ctrl_2_2": {
+                    "name": "标准突破控件·射手",
+                    "threshold": 0.95
+                },
+                "ctrl_2_3": {
+                    "name": "标准突破控件·战士",
+                    "threshold": 0.96
+                },
+                "ctrl_2_4": {
+                    "name": "标准突破控件·特种",
+                    "threshold": 0.945
+                },
+                "ctrl_2_5": {
+                    "name": "标准突破控件·医师",
+                    "threshold": 0.96
+                },
+                "ctrl_3_1": {
+                    "name": "高级突破控件·守卫",
+                    "threshold": 0
+                },
+                "ctrl_3_2": {
+                    "name": "高级突破控件·射手",
+                    "threshold": 0
+                },
+                "ctrl_3_3": {
+                    "name": "高级突破控件·战士",
+                    "threshold": 0.94
+                },
+                "ctrl_3_4": {
+                    "name": "高级突破控件·特种",
+                    "threshold": 0.94
+                },
+                "ctrl_3_5": {
+                    "name": "高级突破控件·医师",
+                    "threshold": 0
+                },
+                "ctrl_4_1": {
+                    "name": "特级突破控件·守卫",
+                    "threshold": 0.955
+                },
+                "ctrl_4_2": {
+                    "name": "特级突破控件·射手",
+                    "threshold": 0.945
+                },
+                "ctrl_4_3": {
+                    "name": "特级突破控件·战士",
+                    "threshold": 0.94
+                },
+                "ctrl_4_4": {
+                    "name": "特级突破控件·特种",
+                    "threshold": 0.94
+                },
+                "ctrl_4_5": {
+                    "name": "特级突破控件·医师",
+                    "threshold": 0
+                },
+                "ctrl_5_1": {
+                    "name": "尖端突破控件·守卫",
+                    "threshold": 0.94
+                },
+                "ctrl_5_2": {
+                    "name": "尖端突破控件·射手",
+                    "threshold": 0.94
+                },
+                "ctrl_5_3": {
+                    "name": "尖端突破控件·战士",
+                    "threshold": 0
+                },
+                "ctrl_5_4": {
+                    "name": "尖端突破控件·特种",
+                    "threshold": 0.92
+                },
+                "ctrl_5_5": {
+                    "name": "尖端突破控件·医师",
+                    "threshold": 0
+                },
+            }
+            var itemAll = {
+            "doll": {
+                "doll_1008": {
+                    "name": "琴",
+                    "rarity": "5",
+                    "card": "http://wiki.42lab.cloud/images/a/ab/Npic_gin.png",
+                },
+                "doll_1009": {
+                    "name": "迈迈",
+                    "rarity": "3",
+                    "card": "http://wiki.42lab.cloud/images/4/4f/Npic_mai.png",
+                },
+                "doll_1013": {
+                    "name": "贝蒂",
+                    "rarity": "4",
+                    "card": "http://wiki.42lab.cloud/images/9/9a/Npic_betty.png",
+                },
+                "doll_1016": {
+                    "name": "坂口希",
+                    "rarity": "5",
+                    "card": "http://wiki.42lab.cloud/images/4/40/Npic_banxsy.png",
+                },
+                "doll_1017": {
+                    "name": "安吉拉",
+                    "rarity": "4",
+                    "card": "http://wiki.42lab.cloud/images/f/f0/Npic_angela.png",
+                },
+                "doll_1023": {
+                    "name": "波妮",
+                    "rarity": "3",
+                    "card": "http://wiki.42lab.cloud/images/e/e8/Npic_bonee.png",
+                },
+                "doll_1024": {
+                    "name": "埃尔赫",
+                    "rarity": "4",
+                    "card": "http://wiki.42lab.cloud/images/1/1c/Npic_earhart.png",
+                },
+                "doll_1031": {
+                    "name": "伊姆赫特",
+                    "rarity": "4",
+                    "card": "http://wiki.42lab.cloud/images/6/6f/Npic_imhotep.png",
+                },
+                "doll_1035": {
+                    "name": "洁西",
+                    "rarity": "3",
+                    "card": "http://wiki.42lab.cloud/images/c/c6/Npic_jessie.png",
+                }
+            },
+            "mindf": {
+                "mindf_1001": {
+                    "name": "帕斯卡",
+                    "job": "5",
+                },
+                "mindf_1002": {
+                    "name": "安冬妮娜",
+                    "job": "4",
+                },
+                "mindf_1003": {
+                    "name": "苏尔",
+                    "job": "3",
+                },
+                "mindf_1004": {
+                    "name": "席摩",
+                    "job": "2",
+                },
+                "mindf_1005": {
+                    "name": "克罗琦",
+                    "job": "1",
+                },
+                "mindf_1006": {
+                    "name": "菲涅尔",
+                    "job": "2",
+                },
+                "mindf_1007": {
+                    "name": "炽",
+                    "job": "3",
+                },
+                "mindf_1008": {
+                    "name": "琴",
+                    "job": "5",
+                },
+                "mindf_1009": {
+                    "name": "迈迈",
+                    "job": "4",
+                },
+                "mindf_1010": {
+                    "name": "伊芙琳",
+                    "job": "1",
+                },
+                "mindf_1011": {
+                    "name": "薮春",
+                    "job": "1",
+                },
+                "mindf_1012": {
+                    "name": "麦克斯",
+                    "job": "2",
+                },
+                "mindf_1013": {
+                    "name": "贝蒂",
+                    "job": "3",
+                },
+                "mindf_1014": {
+                    "name": "巧可",
+                    "job": "5",
+                },
+                "mindf_1015": {
+                    "name": "帕那刻亚",
+                    "job": "5",
+                },
+                "mindf_1016": {
+                    "name": "坂口希",
+                    "job": "4",
+                },
+                "mindf_1017": {
+                    "name": "安吉拉",
+                    "job": "4",
+                },
+                "mindf_1018": {
+                    "name": "芙洛伦",
+                    "job": "5",
+                },
+                "mindf_1019": {
+                    "name": "芬恩",
+                    "job": "3",
+                },
+                "mindf_1020": {
+                    "name": "扬尼",
+                    "job": "1",
+                },
+                "mindf_1021": {
+                    "name": "音流",
+                    "job": "4",
+                },
+                "mindf_1022": {
+                    "name": "秋",
+                    "job": "3",
+                },
+                "mindf_1023": {
+                    "name": "波妮",
+                    "job": "1",
+                },
+                "mindf_1024": {
+                    "name": "埃尔赫",
+                    "job": "2",
+                },
+                "mindf_1025": {
+                    "name": "缠枝",
+                    "job": "2",
+                },
+                "mindf_1026": {
+                    "name": "七花",
+                    "job": "5",
+                },
+                "mindf_1027": {
+                    "name": "希安",
+                    "job": "1",
+                },
+                "mindf_1028": {
+                    "name": "薇",
+                    "job": "3",
+                },
+                "mindf_1029": {
+                    "name": "薇洛儿",
+                    "job": "4",
+                },
+                "mindf_1030": {
+                    "name": "科谢尼娅",
+                    "job": "4",
+                },
+                "mindf_1031": {
+                    "name": "伊姆赫特",
+                    "job": "5",
+                },
+                "mindf_1032": {
+                    "name": "奥托金",
+                    "job": "2",
+                },
+                "mindf_1033": {
+                    "name": "莉丝",
+                    "job": "4",
+                },
+                "mindf_1034": {
+                    "name": "阿比盖尔",
+                    "job": "4",
+                },
+                "mindf_1035": {
+                    "name": "洁西",
+                    "job": "5",
+                },
+                "mindf_1036": {
+                    "name": "拉姆",
+                    "job": "2",
+                },
+                "mindf_1037": {
+                    "name": "赫波",
+                    "job": "2",
+                },
+                "mindf_1038": {
+                    "name": "咲耶",
+                    "job": "4",
+                },
+                "mindf_1039": {
+                    "name": "桑朵莱希",
+                    "job": "3",
+                },
+                "mindf_1040": {
+                    "name": "杜莎妮",
+                    "job": "4",
+                },
+                "mindf_1041": {
+                    "name": "德菈赛",
+                    "job": "5",
+                },
+                "mindf_1042": {
+                    "name": "初尘",
+                    "job": "3",
+                },
+                "mindf_1043": {
+                    "name": "派森",
+                    "job": "1",
+                }
+            },
+            "minds": {
+                "minds_1": {
+                    "name": "心智构件×1",
+                    "number": "1",
+                },
+                "minds_2": {
+                    "name": "心智构件×2",
+                    "number": "2",
+                },
+                "minds_4": {
+                    "name": "心智构件×4",
+                    "number": "4",
+                }
+            },
+            "factory": {
+                "factory_1_1": {
+                    "name": "低模方形数据",
+                    "rarity": "2"
+                },
+                "factory_1_2": {
+                    "name": "低模三角数据",
+                    "rarity": "2"
+                },
+                "factory_1_3": {
+                    "name": "低模菱形数据",
+                    "rarity": "2"
+                },
+                "factory_2_1": {
+                    "name": "中模方形数据",
+                    "rarity": "3"
+                },
+                "factory_2_2": {
+                    "name": "中模三角数据",
+                    "rarity": "3"
+                },
+                "factory_2_3": {
+                    "name": "中模菱形数据",
+                    "rarity": "3"
+                },
+                "factory_3_1": {
+                    "name": "高模方形数据",
+                    "rarity": "4"
+                },
+                "factory_3_2": {
+                    "name": "高模三角数据",
+                    "rarity": "4"
+                },
+                "factory_3_3": {
+                    "name": "高模菱形数据",
+                    "rarity": "4"
+                },
+            },
+            "xp": {
+                "xp_1_1": {
+                    "name": "作战经验*100",
+                    "number": "1",
+                    "rarity": "3"
+                },
+                "xp_1_3": {
+                    "name": "作战经验*100",
+                    "number": "3",
+                    "rarity": "3"
+                },
+                "xp_2_1": {
+                    "name": "作战经验*600",
+                    "number": "1",
+                    "rarity": "4"
+                },
+                "xp_2_2": {
+                    "name": "作战经验*600",
+                    "number": "2",
+                    "rarity": "4"
+                },
+                "xp_2_3": {
+                    "name": "作战经验*600",
+                    "number": "3",
+                    "rarity": "4"
+                },
+                "xp_3_1": {
+                    "name": "作战经验*3600",
+                    "number": "1",
+                    "rarity": "5"
+                },
+            },
+            "gift": {
+                "gift_1_1": {
+                    "name": "包子",
+                    "rarity": "3"
+                },
+                "gift_1_2": {
+                    "name": "快餐",
+                    "rarity": "3"
+                },
+                "gift_1_3": {
+                    "name": "小块蛋糕",
+                    "rarity": "3"
+                },
+                "gift_1_4": {
+                    "name": "蜂蜜",
+                    "rarity": "3"
+                },
+                "gift_1_5": {
+                    "name": "关东煮",
+                    "rarity": "3"
+                },
+                "gift_1_6": {
+                    "name": "毛绒挂饰",
+                    "rarity": "3"
+                },
+                "gift_1_7": {
+                    "name": "数码积木",
+                    "rarity": "3"
+                },
+                "gift_1_8": {
+                    "name": "练习竹剑",
+                    "rarity": "3"
+                },
+                "gift_2_1": {
+                    "name": "一笼包子",
+                    "rarity": "4"
+                },
+                "gift_2_2": {
+                    "name": "工作套餐",
+                    "rarity": "4"
+                },
+                "gift_2_3": {
+                    "name": "加量蛋糕",
+                    "rarity": "4"
+                },
+                "gift_2_4": {
+                    "name": "巧克力圣代",
+                    "rarity": "4"
+                },
+                "gift_2_5": {
+                    "name": "草莓蛋糕",
+                    "rarity": "4"
+                },
+                "gift_2_6": {
+                    "name": "卡通玩偶",
+                    "rarity": "4"
+                },
+                "gift_2_7": {
+                    "name": "瓶中飞船",
+                    "rarity": "4"
+                },
+                "gift_2_8": {
+                    "name": "实用军刀",
+                    "rarity": "4"
+                },
+                "gift_3_1": {
+                    "name": "一屉包子",
+                    "rarity": "5"
+                },
+                "gift_3_2": {
+                    "name": "双人套餐",
+                    "rarity": "5"
+                },
+                "gift_3_3": {
+                    "name": "豪华蛋糕",
+                    "rarity": "5"
+                },
+                "gift_3_4": {
+                    "name": "咖啡",
+                    "rarity": "5"
+                },
+                "gift_3_5": {
+                    "name": "下午茶",
+                    "rarity": "5"
+                },
+                "gift_3_6": {
+                    "name": "玩具大熊",
+                    "rarity": "5"
+                },
+                "gift_3_7": {
+                    "name": "手办模型",
+                    "rarity": "5"
+                },
+                "gift_3_8": {
+                    "name": "典藏名刀",
+                    "rarity": "5"
+                },
+            },
+            "ctrl": {
+                "ctrl_1_1":{
+                    "name": "简化突破控件·守卫",
+                    "rarity": "1"
+                },
+                "ctrl_1_2":{
+                    "name": "简化突破控件·射手",
+                    "rarity": "1"
+                },
+                "ctrl_1_3":{
+                    "name": "简化突破控件·战士",
+                    "rarity": "1"
+                },
+                "ctrl_1_4":{
+                    "name": "简化突破控件·特种",
+                    "rarity": "1"
+                },
+                "ctrl_1_5":{
+                    "name": "简化突破控件·医师",
+                    "rarity": "1"
+                },
+                "ctrl_2_1":{
+                    "name": "标准突破控件·守卫",
+                    "rarity": "2"
+                },
+                "ctrl_2_2":{
+                    "name": "标准突破控件·射手",
+                    "rarity": "2"
+                },
+                "ctrl_2_3":{
+                    "name": "标准突破控件·战士",
+                    "rarity": "2"
+                },
+                "ctrl_2_4":{
+                    "name": "标准突破控件·特种",
+                    "rarity": "2"
+                },
+                "ctrl_2_5":{
+                    "name": "标准突破控件·医师",
+                    "rarity": "2"
+                },
+                "ctrl_3_1":{
+                    "name": "高级突破控件·守卫",
+                    "rarity": "3"
+                },
+                "ctrl_3_2":{
+                    "name": "高级突破控件·射手",
+                    "rarity": "3"
+                },
+                "ctrl_3_3":{
+                    "name": "高级突破控件·战士",
+                    "rarity": "3"
+                },
+                "ctrl_3_4":{
+                    "name": "高级突破控件·特种",
+                    "rarity": "3"
+                },
+                "ctrl_3_5":{
+                    "name": "高级突破控件·医师",
+                    "rarity": "3"
+                },
+                "ctrl_4_1":{
+                    "name": "特级突破控件·守卫",
+                    "rarity": "4"
+                },
+                "ctrl_4_2":{
+                    "name": "特级突破控件·射手",
+                    "rarity": "4"
+                },
+                "ctrl_4_3":{
+                    "name": "特级突破控件·战士",
+                    "rarity": "4"
+                },
+                "ctrl_4_4":{
+                    "name": "特级突破控件·特种",
+                    "rarity": "4"
+                },
+                "ctrl_4_5":{
+                    "name": "特级突破控件·医师",
+                    "rarity": "4"
+                },
+                "ctrl_5_1":{
+                    "name": "尖端突破控件·守卫",
+                    "rarity": "5"
+                },
+                "ctrl_5_2":{
+                    "name": "尖端突破控件·射手",
+                    "rarity": "5"
+                },
+                "ctrl_5_3":{
+                    "name": "尖端突破控件·战士",
+                    "rarity": "5"
+                },
+                "ctrl_5_4":{
+                    "name": "尖端突破控件·特种",
+                    "rarity": "5"
+                },
+                "ctrl_5_5":{
+                    "name": "尖端突破控件·医师",
+                    "rarity": "5"
+                },
+            }
+        }
+
+            var imgTemplate = {}
+            var match_id = []
+
+            function fileOpenClick(){
+                $("#fileInput").click();
+                $("#fileImageDiv").hide();
+                $('#progressing').show();
+                $("#canvasOutput").show();
+            }
+
+            function fileOpenClear(){
+                $("#worldCleaner").hide();
+                $("#fileImageDiv").show();
+                $("#retrievalDispalySingle").html("");
+
+                let theCanvas = $("#canvasOutput")[0];
+                theCanvas.width = theCanvas.width;
+                $('#progressing').progress({
+                    percent: 0,
+                }).hide();
+            }
+
+
+            var processAll = 0;
+            var timeBefore = 0;
+            var timeAfter = 0;
+
+            triggerInitial();
+            function triggerInitial(){
+                $('.ui.modal').modal();
+                $("#retrievalSubmit").click(retrievalSubmit);
+
+                /* itemType chose */
+                $(".itemType").click(function(){
+                    $(".itemType").removeClass("active");
+                    $(this).addClass("active");
+                    if($(this).attr("id") == "itemType_sc"){
+                        $("#itemDisplay").hide();
+                        $("#screenshotDisplay").show();
+                    } else {
+                        $("#itemDisplay").show();
+                        $("#screenshotDisplay").hide();
+                        itemTypeCreate();
+                    }
+                });
+                $("#itemType_sc").click();
+                
+                /* sidebar */
+                $("#sidebarButton").click(function(){
+                    $('.menu.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+                });
+
+                /* make objs in order */
+                for(let obj_id in item) imgTemplate[obj_id] = false;
+                templateInitial();
+            }
+
+            function templateInitial(){
+                for(let id in item){
+                    imgt = new Image();
+                    imgt.src = "./template/" + id + ".png";
+                    imgt.onload = function(){ 
+                        imgTemplate[id] = this;
+                        processAll ++;
+                    };
+                }
+
+                $('#progressing').progress();
+            }
+
+            let imgElement = document.getElementById('imageSrc');
+            let inputElement = document.getElementById('fileInput');
+
+            inputElement.addEventListener('change', (e) => {
+                imgElement.src = URL.createObjectURL(e.target.files[0]);
+            }, false);
+
+            var img_output;
+            imgElement.onload = function() {
+                timeBefore = new Date().getTime();
+                pic(cv.imread(imgElement));
+            };
+
+            const height = 1080;
+            const scale = 0.5;
+            var objList = [];
+
+            function pic(im_src){
+                match_id = [];
+                let im_shape = im_src.matSize;
+                let im_h = im_shape[0]
+                let im_w = im_shape[1]
+
+                let im_src_dst = new cv.Mat();
+                let dsize = new cv.Size(Number(im_w * height / im_h * scale), Number(height * scale));
+                cv.resize(im_src, im_src_dst, dsize, 0, 0, cv.INTER_AREA);
+
+                objList = [];
+                for(let obj in imgTemplate) if(imgTemplate[obj]) objList.push(obj)
+
+                templateProgress(im_src_dst, -1);
+            }
+
+            function templateProgress(im_src, i){
+                i ++;
+                if(i >= objList.length){
+                    itemDisplay(im_src);
+                    return
+                }
+
+                let obj = objList[i];
+                let im_obj = cv.imread(imgTemplate[obj]);
+
+                let obj_shape = im_obj.matSize;
+                let im_obj_dst = new cv.Mat();
+                let dsize = new cv.Size(Number(obj_shape[1] * scale), Number(obj_shape[0] * scale));
+                cv.resize(im_obj, im_obj_dst, dsize, interpolation=cv.INTER_AREA);
+
+                let img = match(im_src, im_obj_dst, obj);
+
+                cv.imshow('canvasOutput', img);
+                $("#progressing").progress({
+                    percent: Number(((i + 1) / processAll * 100).toFixed(0)),
+                    text: {
+                        active  : 'Processing ' + obj,
+                        success : 'Processing Completed!'
+                    },
+                });
+
+                setTimeout(function(){ templateProgress(img, i);}, 50);
+            }
+
+            function match(im_src, im_obj, obj){
+                n = 0.92
+                if (obj.indexOf("ctrl") != -1) n = 0.95;
+                if (item[obj]["threshold"]) n = item[obj]["threshold"]
+
+                if (obj.indexOf("ctrl") != -1) pos = find_all_template(im_src, im_obj, n, true, Number(obj.split("_")[1]));
+                else if(obj.indexOf("xp") != -1) pos = find_all_template(im_src, im_obj, n, true);
+                else pos = find_all_template(im_src, im_obj, n, false);
+
+                if(pos.length){
+                    draw(im_src, pos, obj);
+                    console.log(obj, "匹配成功", pos.length, );
+                    for(let i = 0; i < pos.length; i ++) {
+                        console.log(pos[i]["confidence"]);
+                        match_id.push(obj);
+                    }
+                }
+
+                return im_src
+            }
+
+            var weightCtrl = {
+                1: [0.3, 0.3, 0.4],
+                2: [0.2, 0.6, 0.2],
+                3: [0.6, 0.2, 0.2],
+                4: [0.4, 0.4, 0.2],
+                5: [0.2, 0.2, 0.6]
+            }
+
+            function find_all_template(im_source, im_search, threshold, rgb, rank=0){
+                let res = new cv.Mat();
+
+                if(rgb){
+                    let s_bgr = new cv.MatVector();
+                    let i_bgr = new cv.MatVector();
+                    cv.split(im_search, s_bgr)
+                    cv.split(im_source, i_bgr)
+
+                    let res_b = new cv.Mat();
+                    let res_g = new cv.Mat();
+                    let res_r = new cv.Mat();
+
+                    if(rank == 1) {
+                        cv.matchTemplate(i_bgr.get(0), s_bgr.get(1), res_b, cv.TM_CCOEFF_NORMED)
+                        cv.matchTemplate(i_bgr.get(1), s_bgr.get(2), res_g, cv.TM_CCOEFF_NORMED)
+                        cv.matchTemplate(i_bgr.get(0), s_bgr.get(2), res_r, cv.TM_CCOEFF_NORMED)
+                    } else {
+                        cv.matchTemplate(i_bgr.get(0), s_bgr.get(0), res_b, cv.TM_CCOEFF_NORMED)
+                        cv.matchTemplate(i_bgr.get(1), s_bgr.get(1), res_g, cv.TM_CCOEFF_NORMED)
+                        cv.matchTemplate(i_bgr.get(2), s_bgr.get(2), res_r, cv.TM_CCOEFF_NORMED)
+                    }
+
+                    if(rank) weight = weightCtrl[rank];
+                    else weight = [0.3, 0.3, 0.4];
+                    cv.addWeighted(res_b, weight[0], res_g, weight[1], 0, res);
+                    cv.addWeighted(res, 1, res_g, weight[2], 0, res);
+
+                    res_b.delete();
+                    res_g.delete();
+                    res_r.delete();
+
+                } else {
+                    let s_gray = new cv.Mat();
+                    let i_gray = new cv.Mat();
+
+                    cv.cvtColor(im_search, s_gray, cv.COLOR_BGR2GRAY)
+                    cv.cvtColor(im_source, i_gray, cv.COLOR_BGR2GRAY)
+
+                    cv.matchTemplate(i_gray, s_gray, res, cv.TM_CCOEFF_NORMED)
+                    s_gray.delete();
+                    i_gray.delete();
+                }
+
+                let w = im_search.matSize[1];
+                let h = im_search.matSize[0];
+
+                result = []
+                while(true){
+                    let num = cv.minMaxLoc(res);
+                    if (num.maxVal < threshold) break;
+                    
+                    top_left = num.maxLoc;
+                    middle_point = [top_left.x+w/2, top_left.y+h/2];
+                    
+                    result.push({
+                        "result" : middle_point,
+                        "rectangle" : [top_left.x, top_left.y, top_left.x + w, top_left.y + h],
+                        "confidence" : num.maxVal
+                    });
+                    
+                    let color = new cv.Scalar(-1000);
+                    let loDiff = new cv.Scalar(num.maxVal - threshold + 0.1);
+                    let upDiff = new cv.Scalar(1);
+                    // cv.floodFill(res, new cv.Mat(), num.maxLoc, color, loDiff, upDiff);
+
+                    cv.rectangle(res, num.maxLoc, new cv.Point(top_left.x + w, top_left.y + h), color, 8, 4);
+                }
+                
+                res.delete();
+
+                return result
+            }
+
+            function draw(im_src, pos, obj){
+                let color = new cv.Scalar(255, 0, 0, 255);
+                for(let i in pos){
+                    let point = pos[i]['rectangle'];
+                    cv.rectangle(im_src, new cv.Point(point[0], point[1]), new cv.Point(point[2], point[3]), color, 2);
+                    font = cv.FONT_HERSHEY_SIMPLEX;
+                    cv.putText(im_src, obj, new cv.Point(point[0], point[1] - 25*scale), font, 1 * scale, color, 1);
+                }
+
+                return im_src
+            }
+
+            function itemDisplay(img){
+                cv.imshow('canvasOutput', img);
+
+                timeAfter = new Date().getTime();
+                $("#progressing").progress({
+                    percent: 100,
+                    text: {
+                        success : 'Processing completed!  Timeuse: ' + ((timeAfter - timeBefore) / 1000).toFixed(2) + " s"
+                    },
+                });
+
+                let dom = ``;
+                for(let i = 0; i < match_id.length; i ++){
+                    dom += itemTypeAllCreate(match_id[i]).slice(0, -6) + `<div class="floating ui black label">0</div></div>`
+                }
+                $("#retrievalDispalySingle").html(dom);
+                $("#retrievalDispalySingle").children(".itemDiv").children(".itemIcon").unbind("click").click(function(){
+                    $(this).parent(".itemDiv").remove();
+                    dollLabelCreate();
+                });
+                dollLabelCreate();
+
+                /* clear button */
+                $("#worldCleaner").show();
+            }
+
+            function itemTypeAllCreate(id){
+                let itemType = id.split("_")[0];
+                let dom = ``;
+                
+                switch("itemType_" + itemType){
+                    case "itemType_doll":{
+                        dom = dollSquareCreate(id, itemAll["doll"][id]["name"], itemAll["doll"][id]["card"], false, itemAll["doll"][id]["rarity"], false);
+                    } break;
+                    case "itemType_mindf":{
+                        let img_name = "ICON_Item_" + String(Number(id.split("_")[1]) + 1000) + ".png";
+                        let img_md5 = md5(img_name).slice(0,2);
+                        let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                        let icon_path = "http://wiki.42lab.cloud/images/3/3f/%E9%80%9A%E7%94%A8_%E7%A2%8E%E7%89%87.png";
+                        dom = itemSquareCreate(id, "心智碎片", img_path, 1, 4, icon_path);
+                    } break;
+                    case "itemType_minds":{
+                        let img_path = `http://wiki.42lab.cloud/images/a/a7/ICON_Item_%E5%BF%83%E6%99%BA%E6%9E%84%E4%BB%B6.png`;
+                        let icon_path = "http://wiki.42lab.cloud/images/1/10/ICON_small_Item_%E5%BF%83%E6%99%BA%E6%9E%84%E4%BB%B6.png";
+                        dom = itemSquareCreate(id, itemAll["minds"][id]["name"], img_path, itemAll["minds"][id]["number"], 5, icon_path);
+                    } break;
+                    case "itemType_factory":{
+                        let img_name = "ICON_Item_" + itemAll["factory"][id]["name"] + ".png";
+                        let img_md5 = md5(img_name).slice(0,2);
+                        let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                        
+                        dom = itemSquareCreate(id, itemAll["factory"][id]["name"], img_path, 5, itemAll["factory"][id]["rarity"], false);
+                    } break;
+                    case "itemType_xp":{
+                        let img_name = "ICON_Item_" + itemAll["xp"][id]["name"] + ".png";
+                        let img_md5 = md5(img_name).slice(0,2);
+                        let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                        let icon_path = "http://wiki.42lab.cloud/images/3/3d/ICON_small_Item_%E4%BD%9C%E6%88%98%E7%BB%8F%E9%AA%8C_2.png";
+                        dom = itemSquareCreate(id, itemAll["xp"][id]["name"], img_path, itemAll["xp"][id]["number"], itemAll["xp"][id]["rarity"], icon_path);
+                    } break;
+                    case "itemType_gift":{
+                        let img_name = "Icon_gift_" + itemAll["gift"][id]["name"] + ".png";
+                        let img_md5 = md5(img_name).slice(0,2);
+                        let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                        dom = itemSquareCreate(id, itemAll["gift"][id]["name"], img_path, 1, itemAll["gift"][id]["rarity"], false);
+                    } break;
+                    case "itemType_ctrl":{
+                        let img_name = "ICON_Item_" + itemAll["ctrl"][id]["name"] + ".png";
+                        let img_md5 = md5(img_name).slice(0,2);
+                        let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                        
+                        let icon_name = "ICON_small_Item_" + itemAll["ctrl"][id]["name"].slice(2, itemAll["ctrl"][id]["name"].length) + ".png";
+                        let icon_md5 = md5(icon_name).slice(0,2);
+                        let icon_path = `http://wiki.42lab.cloud/images/${icon_md5[0]}/${icon_md5}/${icon_name}`;
+
+                        dom = itemSquareCreate(id, itemAll["ctrl"][id]["name"], img_path, 1, itemAll["ctrl"][id]["rarity"], icon_path);
+                    } break;
+                }
+
+                return dom
+            }
+
+            function itemSquareCreate(id, text, img, num, rarity, icon){
+                return `<div class="itemDiv">
+                <div class="itemIcon rarity${rarity}" data-id="${id}">
+                    ${(icon) ? `<div class="overlay">
+                        <img src="http://wiki.42lab.cloud/images/d/d2/Blank.png" class="subicon tl" style="background-image:url(${icon})" />
+                    </div>` : ``}
+                    <a><img alt="${text}" class="mainicon" src="http://wiki.42lab.cloud/images/d/d2/Blank.png" style="background-image:url(${img})">
+                        <div class="plate"></div>
+                        <div class="back"></div>
+                    </a>
+                    <div class="itemNumber">${num}</div>
+                </div>
+                <div class="itemText">${text}</div>
+                </div>`;
+            }
+
+            function dollSquareCreate(id, text, img, num, rarity, icon){
+                return `<div class="itemDiv">
+                <div class="itemIcon dollSquare rarity${rarity}" data-id="${id}">
+                    <a><img alt="${text}" class="dollicon" src="http://wiki.42lab.cloud/images/d/d2/Blank.png" style="background-image:url(${img})">
+                    </a>
+                </div>
+                <div class="itemText">${text}</div>
+                </div>`;
+            }
+
+            function dollLabelCreate(){
+                let element = $("#retrievalDispalySingle").children(".itemDiv");
+                for(let i = 0; i < element.length; i++){
+                    $(element[i]).children(".floating.label").html(i + 1);
+                }
+            }
+
+            function itemTypeCreate(){
+                let itemType = $(".itemType.active").attr("id");
+                let dom = ``;
+                
+                switch(itemType){
+                    case "itemType_doll":{
+                        for(let id in itemAll.doll){
+                            dom += dollSquareCreate(id, itemAll["doll"][id]["name"], itemAll["doll"][id]["card"], false, itemAll["doll"][id]["rarity"], false);
+                        }
+                    } break;
+                    case "itemType_mindf":{
+                        for(let id in itemAll.mindf){
+                            let img_name = "ICON_Item_" + String(Number(id.split("_")[1]) + 1000) + ".png";
+                            let img_md5 = md5(img_name).slice(0,2);
+                            let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                            let icon_path = "http://wiki.42lab.cloud/images/3/3f/%E9%80%9A%E7%94%A8_%E7%A2%8E%E7%89%87.png";
+                            dom += itemSquareCreate(id, "心智碎片", img_path, 1, 4, icon_path);
+                        }
+                    } break;
+                    case "itemType_minds":{
+                        for(let id in itemAll.minds){
+                            let img_path = `http://wiki.42lab.cloud/images/a/a7/ICON_Item_%E5%BF%83%E6%99%BA%E6%9E%84%E4%BB%B6.png`;
+                            let icon_path = "http://wiki.42lab.cloud/images/1/10/ICON_small_Item_%E5%BF%83%E6%99%BA%E6%9E%84%E4%BB%B6.png";
+                            dom += itemSquareCreate(id, itemAll["minds"][id]["name"], img_path, itemAll["minds"][id]["number"], 5, icon_path);
+                        }
+                    } break;
+                    case "itemType_factory":{
+                        let last_rarity = "2";
+                        for(let id in itemAll.factory){
+                            let img_name = "ICON_Item_" + itemAll["factory"][id]["name"] + ".png";
+                            let img_md5 = md5(img_name).slice(0,2);
+                            let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                            
+                            if(last_rarity != itemAll["factory"][id]["rarity"]) dom += "<br/>"
+                            dom += itemSquareCreate(id, itemAll["factory"][id]["name"], img_path, 5, itemAll["factory"][id]["rarity"], false);
+                            last_rarity = itemAll["factory"][id]["rarity"];
+                        }
+                    } break;
+                    case "itemType_xp":{
+                        for(let id in itemAll.xp){
+                            let img_name = "ICON_Item_" + itemAll["xp"][id]["name"] + ".png";
+                            let img_md5 = md5(img_name).slice(0,2);
+                            let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                            let icon_path = "http://wiki.42lab.cloud/images/3/3d/ICON_small_Item_%E4%BD%9C%E6%88%98%E7%BB%8F%E9%AA%8C_2.png";
+                            dom += itemSquareCreate(id, itemAll["xp"][id]["name"], img_path, itemAll["xp"][id]["number"], itemAll["xp"][id]["rarity"], icon_path);
+                        }
+                    } break;
+                    case "itemType_gift":{
+                        let last_rarity = "3";
+                        for(let id in itemAll.gift){
+                            let img_name = "Icon_gift_" + itemAll["gift"][id]["name"] + ".png";
+                            let img_md5 = md5(img_name).slice(0,2);
+                            let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                            if(last_rarity != itemAll["gift"][id]["rarity"]) dom += "<br/>"
+                            dom += itemSquareCreate(id, itemAll["gift"][id]["name"], img_path, 1, itemAll["gift"][id]["rarity"], false);
+                            last_rarity = itemAll["gift"][id]["rarity"];
+                        }
+                    } break;
+                    case "itemType_ctrl":{
+                        let last_rarity = "1";
+                        for(let id in itemAll.ctrl){
+                            let img_name = "ICON_Item_" + itemAll["ctrl"][id]["name"] + ".png";
+                            let img_md5 = md5(img_name).slice(0,2);
+                            let img_path = `http://wiki.42lab.cloud/images/${img_md5[0]}/${img_md5}/${img_name}`;
+                            
+                            let icon_name = "ICON_small_Item_" + itemAll["ctrl"][id]["name"].slice(2, itemAll["ctrl"][id]["name"].length) + ".png";
+                            let icon_md5 = md5(icon_name).slice(0,2);
+                            let icon_path = `http://wiki.42lab.cloud/images/${icon_md5[0]}/${icon_md5}/${icon_name}`;
+
+                            if(last_rarity != itemAll["ctrl"][id]["rarity"]) dom += "<br/>"
+                            dom += itemSquareCreate( id, itemAll["ctrl"][id]["name"], img_path, 1, itemAll["ctrl"][id]["rarity"], icon_path);
+                            last_rarity = itemAll["ctrl"][id]["rarity"];
+                        }
+                    } break;
+                }
+
+                $("#itemDisplay").html(dom);
+
+                $("#itemDisplay").children(".itemDiv").children(".itemIcon").click(function(){
+                    let square = $(this).parent(".itemDiv").html();
+                    $("#retrievalDispalySingle").append(`<div class="itemDiv">${square}<div class="floating ui black label">0</div></div>`);
+                    $("#retrievalDispalySingle").children(".itemDiv").children(".itemIcon").unbind("click").click(function(){
+                        $(this).parent(".itemDiv").remove();
+                        dollLabelCreate();
+                    });
+                    dollLabelCreate();
+                });
+            }
+
+            function itemClickFunction(){
+                let square = $(this).parent(".itemDiv").html();
+                $("#retrievalDispalySingle").append(`<div class="itemDiv">${square}<div class="floating ui black label">0</div></div>`);
+                $("#retrievalDispalySingle").children(".itemDiv").children(".itemIcon").unbind("click").click(function(){
+                    $(this).parent(".itemDiv").remove();
+                    dollLabelCreate();
+                });
+                dollLabelCreate();
+            }
+
+            function retrievalSubmit(){
+                $("#retrievalSubmit").unbind("click").addClass("loading");
+
+                let dataPass = true;
+                $(".ui.dataErrorMessage").addClass("error").hide();
+                
+                let element = $("#retrievalDispalySingle").children(".itemDiv").children(".itemIcon");
+                if(element.length != 10) dataPass = false;
+
+                let data = [];
+                for(let i = 0; i < element.length; i ++){
+                    let id = $(element[i]).data("id");
+                    data.push($(element[i]).data("id"));
+                    if(!(id in itemAll[id.split("_")[0]])) {
+                        dataPass = false
+                    }
+                }
+
+                console.log(data)
+                if(!dataPass){
+                    $("#retrievalSubmit").removeClass("loading").click(retrievalSubmit);
+                    $(".ui.dataErrorMessage").fadeIn(200);
+                    $(".error").unbind("click").click(function(){
+                        $(this).removeClass("error");
+                    });
+                    return
+                }
+
+                $.ajax({
+                    url: "submit",
+                    type: "POST",
+                    data: {
+                        "number": element.length, 
+                        "get": JSON.stringify(data),
+                    },
+                    success: function (result) {
+                        if(result.message == "success"){
+                            fileOpenClear();
+                            notice("提交成功，感谢教授的贡献！", "<i class='thumbs up icon'></i>Good Job, Professor!");
+                        } else {
+                            notice("提交失败，" + result.message, "<i class='exclamation triangle icon'></i>Error!");
+                        }
+                        $("#retrievalSubmit").removeClass("loading").click(retrievalSubmit);
+                    }
+                });
+            }
+
+            function notice(text, icon){
+                if(icon) $(".retrievalModal").children(".ui.icon.header").html(icon);
+                $(".retrievalModal").children(".content").children("p").html(text);
+                $('.ui.modal').modal('show');
+            }
+
+        </script>
+        <script async src="../static/opencv.js" type="text/javascript" ></script>
+        
+    </body>
+</html>
