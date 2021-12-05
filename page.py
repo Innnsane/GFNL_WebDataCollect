@@ -1,6 +1,6 @@
 import os
 import ujson
-from flask import Flask, render_template, Response, request, send_from_directory
+from flask import Flask, render_template, Response, request, send_from_directory, jsonify
 from flask import abort
 from dicts import *
 from database import *
@@ -12,7 +12,7 @@ DATA = "./data"
 
 @app.route("/")
 def root():
-    return render_template("mainpage.html")
+    return render_template("mainpage.html", menu_list=MENU)
 
 
 # 网站icon的返回
@@ -38,11 +38,30 @@ def get_src(src_id):
     return send_from_directory(os.path.join(app.root_path, 'static'), src_id)
 
 
+# 请求json信息 便于日后更新维护内容
+@app.route("/json/<dictionary>")
+def get_json(dictionary):
+    if dictionary.upper() == "ALGORITHM":
+        return jsonify(ALGORITHM)
+    elif dictionary.upper() == "ATTRIBUTELIST":
+        return jsonify(ATTRIBUTELIST)
+    elif dictionary.upper() == "ATTRIBUTE":
+        return jsonify(ATTRIBUTE)
+    elif dictionary.upper() == "WORK":
+        return jsonify(WORK)
+    elif dictionary.upper() == "DOLL":
+        return jsonify(DOLL)
+    elif dictionary.upper() == "ITEM":
+        return jsonify(ITEM)
+    elif dictionary.upper() == "ITEMALL":
+        return jsonify(ITEMALL)
+
+
 # 算法相关内容的提交与展示
 
 @app.route("/algorithm")
 def algorithm_submit_page():
-    return render_template("al.html")
+    return render_template("al.html", menu_list=MENU)
 
 
 @app.route("/algorithm/submit", methods=["GET", "POST"])
@@ -136,7 +155,7 @@ def algorithm_display():
 
         html_list.append(this_html_dict)
 
-    return render_template("aldisplay.html", algorithm_list=html_list, statistic=statistic)
+    return render_template("aldisplay.html", algorithm_list=html_list, statistic=statistic, menu_list=MENU)
 
 
 @app.route("/algorithm/query")
@@ -164,14 +183,14 @@ def algorithm_query():
             "frequent": "0%" if (row[7] == 0) else str(round(float(row[5]) / float(row[7]) * 100, 2)) + "%",
         })
 
-    return render_template("alquery.html", algorithm_list=algorithm_list)
+    return render_template("alquery.html", algorithm_list=algorithm_list, menu_list=MENU)
 
 
 # 心智碎片相关内容的提交与展示
 
 @app.route("/mind")
 def mind_submit_page():
-    return render_template("mind.html")
+    return render_template("mind.html", menu_list=MENU)
 
 
 @app.route("/mind/submit", methods=["POST"])
@@ -250,14 +269,14 @@ def mind_display():
             fragment_dict[row[0]][f"s{i}_g2"] = row[i + 23]
             fragment_dict[row[0]][f"s{i}_g3"] = row[i + 29]
 
-    return render_template("minddisplay.html", fragment_dict=fragment_dict)
+    return render_template("minddisplay.html", fragment_dict=fragment_dict, menu_list=MENU)
 
 
 # 基础检索相关内容的提交与展示
 
 @app.route("/retrieval")
 def retrieval_submit_display():
-    return render_template("ret.html")
+    return render_template("ret.html", menu_list=MENU)
 
 
 @app.route("/retrieval/submit", methods=["POST"])
@@ -284,7 +303,7 @@ def retrieval_submit():
     i = 0
     while i < 10:
         if i < len(retrieval["get_list"]):
-            if retrieval['get_list'][i] not in ITEM_ALL.keys():
+            if retrieval['get_list'][i] not in ITEMALL.keys():
                 return {'status': "error", 'message': "数据格式错误！"}
             sql += f"'{retrieval['get_list'][i]}', "
         else:
@@ -346,7 +365,7 @@ def retrieval_display():
 
         html_list.append(this_html_dict)
 
-    return render_template("retdisplay.html", retrieval_list=html_list, statistic=statistic)
+    return render_template("retdisplay.html", retrieval_list=html_list, statistic=statistic, menu_list=MENU)
 
 
 @app.route("/retrieval/query")
@@ -366,7 +385,7 @@ def retrieval_query():
     for row in table:
         item_dict[row[0]] = row[1]
 
-    return render_template("retquery.html", item_dict=item_dict, item_total=item_total)
+    return render_template("retquery.html", item_dict=item_dict, item_total=item_total, menu_list=MENU)
 
 
 # 为截图识别服务的图片资源传输 若图片模板不存在则返回404
@@ -383,7 +402,7 @@ def retrieval_template(name):
 
 @app.route("/retrieval/screenshot")
 def retrieval_opencv():
-    return render_template("retopencv.html")
+    return render_template("retopencv.html", menu_list=MENU)
 
 
 # 定义app在4222端口运行

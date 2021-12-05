@@ -51,36 +51,16 @@
     </head>
     <body>
         <div class="ui left vertical menu sidebar">
-            <div class="item">
-                <div class="header">绿洲气象观测站</div>
-                <div class="menu">
-                    <a class="item" href="/">首页</a>
+            {% for menu in menu_list %}
+                <div class="item">
+                    <div class="header">{{ menu.name }}</div>
+                    <div class="menu">
+                        {% for item in menu.child %}
+                            <a class="item" href="{{ item.href }}">{{ item.name }}</a>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            <div class="item">
-                <div class="header">算法</div>
-                <div class="menu">
-                  <a class="item" href="/algorithm">数据提交</a>
-                  <a class="item" href="/algorithm/query">掉落查询</a>
-                  <a class="item" href="/algorithm/display">近期提交记录</a>
-                </div>
-            </div>
-            <div class="item">
-                <div class="header">心智碎片</div>
-                <div class="menu">
-                <a class="item" href="/mind">数据提交</a>
-                <a class="item" href="/mind/display">数据展示</a>
-                </div>
-            </div>
-            <div class="item">
-                <div class="header">基础检索</div>
-                <div class="menu">
-                <a class="item" href="/retrieval">数据提交</a>
-                <a class="item" href="/retrieval/screenshot">截图识别</a>
-                <a class="item" href="/retrieval/query">数据统计</a>
-                <a class="item" href="/retrieval/display">近期提交记录</a>
-                </div>
-            </div>
+            {% endfor %}
         </div>
         <div class="pusher">
             <br/>
@@ -173,243 +153,39 @@
                 </div>
             </div>
             
-            <a href="https://beian.miit.gov.cn/" style="position: fixed; bottom: 10px; right: 20px; color: #888;">
-                冀ICP备2021026039号-1
+            <a target="_blank" href="https://beian.miit.gov.cn/" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;margin: 5px 10px;">
+                <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">
+                    冀ICP备2021026039号-1 
+                </p>
+            </a>
+            <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=13020302001036" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;margin: 5px 10px;">
+                <img src="" style="float:left;">
+                <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">
+                    冀公网安备 13020302001036号
+                </p>
             </a>
         </div>
     </body>
     <script>
-        var work = {
-            "1": "守卫",
-            "2": "射手",
-            "3": "战士",
-            "4": "特种",
-            "5": "医师",
-        }
-        var doll = {
-            "1001": {
-                "name": "帕斯卡",
-                "job": "5",
-                "icon": "http://wiki.42lab.cloud/images/f/f8/ICON_Item_2001.png",
-            },
-            "1002": {
-                "name": "安冬妮娜",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/4/47/ICON_Item_2002.png",
-            },
-            "1003": {
-                "name": "苏尔",
-                "job": "3",
-                "icon": "http://wiki.42lab.cloud/images/9/99/ICON_Item_2003.png",
-            },
-            "1004": {
-                "name": "席摩",
-                "job": "2",
-                "icon": "http://wiki.42lab.cloud/images/4/4f/ICON_Item_2004.png",
-            },
-            "1005": {
-                "name": "克罗琦",
-                "job": "1",
-                "icon": "http://wiki.42lab.cloud/images/9/97/ICON_Item_2005.png",
-            },
-            "1006": {
-                "name": "菲涅尔",
-                "job": "2",
-                "icon": "http://wiki.42lab.cloud/images/f/f7/ICON_Item_2006.png",
-            },
-            "1007": {
-                "name": "炽",
-                "job": "3",
-                "icon": "http://wiki.42lab.cloud/images/1/12/ICON_Item_2007.png",
-            },
-            "1008": {
-                "name": "琴",
-                "job": "5",
-                "icon": "http://wiki.42lab.cloud/images/c/c5/ICON_Item_2008.png",
-            },
-            "1009": {
-                "name": "迈迈",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/3/34/ICON_Item_2009.png",
-            },
-            "1010": {
-                "name": "伊芙琳",
-                "job": "1",
-                "icon": "http://wiki.42lab.cloud/images/4/46/ICON_Item_2010.png",
-            },
-            "1011": {
-                "name": "薮春",
-                "job": "1",
-                "icon": "http://wiki.42lab.cloud/images/9/9b/ICON_Item_2011.png",
-            },
-            "1012": {
-                "name": "麦克斯",
-                "job": "2",
-                "icon": "http://wiki.42lab.cloud/images/4/4e/ICON_Item_2012.png",
-            },
-            "1013": {
-                "name": "贝蒂",
-                "job": "3",
-                "icon": "http://wiki.42lab.cloud/images/d/de/ICON_Item_2013.png",
-            },
-            "1014": {
-                "name": "巧可",
-                "job": "5",
-                "icon": "http://wiki.42lab.cloud/images/e/e8/ICON_Item_2014.png",
-            },
-            "1015": {
-                "name": "帕那刻亚",
-                "job": "5",
-                "icon": "http://wiki.42lab.cloud/images/f/fb/ICON_Item_2015.png",
-            },
-            "1016": {
-                "name": "坂口希",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/f/f9/ICON_Item_2016.png",
-            },
-            "1017": {
-                "name": "安吉拉",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/8/82/ICON_Item_2017.png",
-            },
-            "1018": {
-                "name": "芙洛伦",
-                "job": "5",
-                "icon": "http://wiki.42lab.cloud/images/6/63/ICON_Item_2018.png",
-            },
-            "1019": {
-                "name": "芬恩",
-                "job": "3",
-                "icon": "http://wiki.42lab.cloud/images/f/f9/ICON_Item_2019.png",
-            },
-            "1020": {
-                "name": "扬尼",
-                "job": "1",
-                "icon": "http://wiki.42lab.cloud/images/0/00/ICON_Item_2020.png",
-            },
-            "1021": {
-                "name": "音流",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/5/57/ICON_Item_2021.png",
-            },
-            "1022": {
-                "name": "秋",
-                "job": "3",
-                "icon": "http://wiki.42lab.cloud/images/1/11/ICON_Item_2022.png",
-            },
-            "1023": {
-                "name": "波妮",
-                "job": "1",
-                "icon": "http://wiki.42lab.cloud/images/c/c8/ICON_Item_2023.png",
-            },
-            "1024": {
-                "name": "埃尔赫",
-                "job": "2",
-                "icon": "http://wiki.42lab.cloud/images/b/be/ICON_Item_2024.png",
-            },
-            "1025": {
-                "name": "缠枝",
-                "job": "2",
-                "icon": "http://wiki.42lab.cloud/images/8/8e/ICON_Item_2025.png",
-            },
-            "1026": {
-                "name": "七花",
-                "job": "5",
-                "icon": "http://wiki.42lab.cloud/images/7/70/ICON_Item_2026.png",
-            },
-            "1027": {
-                "name": "希安",
-                "job": "1",
-                "icon": "http://wiki.42lab.cloud/images/4/44/ICON_Item_2027.png",
-            },
-            "1028": {
-                "name": "薇",
-                "job": "3",
-                "icon": "http://wiki.42lab.cloud/images/9/97/ICON_Item_2028.png",
-            },
-            "1029": {
-                "name": "薇洛儿",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/4/48/ICON_Item_2029.png",
-            },
-            "1030": {
-                "name": "科谢尼娅",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/3/3d/ICON_Item_2030.png",
-            },
-            "1031": {
-                "name": "伊姆赫特",
-                "job": "5",
-                "icon": "http://wiki.42lab.cloud/images/0/0c/ICON_Item_2031.png",
-            },
-            "1032": {
-                "name": "奥托金",
-                "job": "2",
-                "icon": "http://wiki.42lab.cloud/images/7/74/ICON_Item_2032.png",
-            },
-            "1033": {
-                "name": "莉丝",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/7/72/ICON_Item_2033.png",
-            },
-            "1034": {
-                "name": "阿比盖尔",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/b/b2/ICON_Item_2034.png",
-            },
-            "1035": {
-                "name": "洁西",
-                "job": "5",
-                "icon": "http://wiki.42lab.cloud/images/5/57/ICON_Item_2035.png",
-            },
-            "1036": {
-                "name": "拉姆",
-                "job": "2",
-                "icon": "http://wiki.42lab.cloud/images/3/32/ICON_Item_2036.png",
-            },
-            "1037": {
-                "name": "赫波",
-                "job": "2",
-                "icon": "http://wiki.42lab.cloud/images/c/ce/ICON_Item_2037.png",
-            },
-            "1038": {
-                "name": "咲耶",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/3/38/ICON_Item_2038.png",
-            },
-            "1039": {
-                "name": "桑朵莱希",
-                "job": "3",
-                "icon": "http://wiki.42lab.cloud/images/b/b6/ICON_Item_2039.png",
-            },
-            "1040": {
-                "name": "杜莎妮",
-                "job": "4",
-                "icon": "http://wiki.42lab.cloud/images/d/d6/ICON_Item_2040.png",
-            },
-            "1041": {
-                "name": "德菈赛",
-                "job": "5",
-                "icon": "http://wiki.42lab.cloud/images/6/65/ICON_Item_2041.png",
-            },
-            "1042": {
-                "name": "初尘",
-                "job": "3",
-                "icon": "http://wiki.42lab.cloud/images/1/17/ICON_Item_2042.png",
-            },
-            "1043": {
-                "name": "派森",
-                "job": "1",
-                "icon": "http://wiki.42lab.cloud/images/d/d9/ICON_Item_2043.png",
-            }
+        var work;
+        var doll;
+        var attribute;
+        
+        fetch('/json/work').then(response => response.json()).then(data => work = data).then(() => {fetchJudge();});
+        fetch('/json/doll').then(response => response.json()).then(data => doll = data).then(() => {fetchJudge();});
+
+        function fetchJudge(){
+            if(work && doll) initialTrigger();
         }
 
         var fragment = {{ fragment_dict | safe }};
 
-        initialTrigger();
         function initialTrigger(){
             $('.ui.dropdown').dropdown();
             $('.ui.accordion').accordion();
+
+            createAllStatus();
+            createEachWork();
 
             /* workType chose */
             $(".workItem").click(function(){
@@ -424,7 +200,6 @@
             });
         }
 
-        createAllStatus();
         function createAllStatus(){
             let status = {
                 "fragment": 0,
@@ -479,7 +254,6 @@
             $("#fragmentDispalyAll").append(table);
         }
 
-        createEachWork();
         function createEachWork(){
             let work_id = $(".workItem.active").attr("id").replace("work_", "");
             $(".workItemDiv").children(".dollFragment").remove();

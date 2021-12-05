@@ -42,36 +42,16 @@
     </head>
     <body>
         <div class="ui left vertical menu sidebar">
-            <div class="item">
-                <div class="header">绿洲气象观测站</div>
-                <div class="menu">
-                    <a class="item" href="/">首页</a>
+            {% for menu in menu_list %}
+                <div class="item">
+                    <div class="header">{{ menu.name }}</div>
+                    <div class="menu">
+                        {% for item in menu.child %}
+                            <a class="item" href="{{ item.href }}">{{ item.name }}</a>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            <div class="item">
-                <div class="header">算法</div>
-                <div class="menu">
-                  <a class="item" href="/algorithm">数据提交</a>
-                  <a class="item" href="/algorithm/query">掉落查询</a>
-                  <a class="item" href="/algorithm/display">近期提交记录</a>
-                </div>
-            </div>
-            <div class="item">
-                <div class="header">心智碎片</div>
-                <div class="menu">
-                <a class="item" href="/mind">数据提交</a>
-                <a class="item" href="/mind/display">数据展示</a>
-                </div>
-            </div>
-            <div class="item">
-                <div class="header">基础检索</div>
-                <div class="menu">
-                <a class="item" href="/retrieval">数据提交</a>
-                <a class="item" href="/retrieval/screenshot">截图识别</a>
-                <a class="item" href="/retrieval/query">数据统计</a>
-                <a class="item" href="/retrieval/display">近期提交记录</a>
-                </div>
-            </div>
+            {% endfor %}
         </div>
         <div class="pusher">
             <br/>
@@ -134,8 +114,16 @@
                 </div>
             </div>
             
-            <a href="https://beian.miit.gov.cn/" style="position: fixed; bottom: 10px; right: 20px; color: #888;">
-                冀ICP备2021026039号-1
+            <a target="_blank" href="https://beian.miit.gov.cn/" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;margin: 5px 10px;">
+                <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">
+                    冀ICP备2021026039号-1 
+                </p>
+            </a>
+            <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=13020302001036" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;margin: 5px 10px;">
+                <img src="" style="float:left;">
+                <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">
+                    冀公网安备 13020302001036号
+                </p>
             </a>
         </div>
         <br/>
