@@ -531,47 +531,47 @@ ITEM = {
     "doll": {
         "doll_1008": {
             "name": "琴",
-            "rarity": "3",
+            "rarity": "5",
             "card": "http://wiki.42lab.cloud/images/a/ab/Npic_gin.png",
         },
         "doll_1009": {
             "name": "迈迈",
-            "rarity": "1",
+            "rarity": "3",
             "card": "http://wiki.42lab.cloud/images/4/4f/Npic_mai.png",
         },
         "doll_1013": {
             "name": "贝蒂",
-            "rarity": "2",
+            "rarity": "4",
             "card": "http://wiki.42lab.cloud/images/9/9a/Npic_betty.png",
         },
         "doll_1016": {
             "name": "坂口希",
-            "rarity": "3",
+            "rarity": "5",
             "card": "http://wiki.42lab.cloud/images/4/40/Npic_banxsy.png",
         },
         "doll_1017": {
             "name": "安吉拉",
-            "rarity": "2",
+            "rarity": "4",
             "card": "http://wiki.42lab.cloud/images/f/f0/Npic_angela.png",
         },
         "doll_1023": {
             "name": "波妮",
-            "rarity": "1",
+            "rarity": "3",
             "card": "http://wiki.42lab.cloud/images/e/e8/Npic_bonee.png",
         },
         "doll_1024": {
             "name": "埃尔赫",
-            "rarity": "2",
+            "rarity": "4",
             "card": "http://wiki.42lab.cloud/images/1/1c/Npic_earhart.png",
         },
         "doll_1031": {
             "name": "伊姆赫特",
-            "rarity": "2",
+            "rarity": "4",
             "card": "http://wiki.42lab.cloud/images/6/6f/Npic_imhotep.png",
         },
         "doll_1035": {
             "name": "洁西",
-            "rarity": "1",
+            "rarity": "3",
             "card": "http://wiki.42lab.cloud/images/c/c6/Npic_jessie.png",
         }
     },
@@ -579,174 +579,217 @@ ITEM = {
         "mindf_1001": {
             "name": "帕斯卡",
             "job": "5",
+            "rarity": "4",
         },
         "mindf_1002": {
             "name": "安冬妮娜",
             "job": "4",
+            "rarity": "4",
         },
         "mindf_1003": {
             "name": "苏尔",
             "job": "3",
+            "rarity": "4",
         },
         "mindf_1004": {
             "name": "席摩",
             "job": "2",
+            "rarity": "3",
         },
         "mindf_1005": {
             "name": "克罗琦",
             "job": "1",
+            "rarity": "5",
         },
         "mindf_1006": {
             "name": "菲涅尔",
             "job": "2",
+            "rarity": "4",
         },
         "mindf_1007": {
             "name": "炽",
             "job": "3",
+            "rarity": "3",
         },
         "mindf_1008": {
             "name": "琴",
             "job": "5",
+            "rarity": "5",
         },
         "mindf_1009": {
             "name": "迈迈",
             "job": "4",
+            "rarity": "3",
         },
         "mindf_1010": {
             "name": "伊芙琳",
             "job": "1",
+            "rarity": "5",
         },
         "mindf_1011": {
             "name": "薮春",
             "job": "1",
+            "rarity": "4",
         },
         "mindf_1012": {
             "name": "麦克斯",
             "job": "2",
+            "rarity": "3",
         },
         "mindf_1013": {
             "name": "贝蒂",
             "job": "3",
+            "rarity": "4",
         },
         "mindf_1014": {
             "name": "巧可",
             "job": "5",
+            "rarity": "3",
         },
         "mindf_1015": {
             "name": "帕那刻亚",
             "job": "5",
+            "rarity": "4",
         },
         "mindf_1016": {
             "name": "坂口希",
             "job": "4",
+            "rarity": "5",
         },
         "mindf_1017": {
             "name": "安吉拉",
             "job": "4",
+            "rarity": "4",
         },
         "mindf_1018": {
             "name": "芙洛伦",
             "job": "5",
+            "rarity": "5",
         },
         "mindf_1019": {
             "name": "芬恩",
             "job": "3",
+            "rarity": "4",
         },
         "mindf_1020": {
             "name": "扬尼",
             "job": "1",
+            "rarity": "3",
         },
         "mindf_1021": {
             "name": "音流",
             "job": "4",
+            "rarity": "3",
         },
         "mindf_1022": {
             "name": "秋",
             "job": "3",
+            "rarity": "5",
         },
         "mindf_1023": {
             "name": "波妮",
             "job": "1",
+            "rarity": "3",
         },
         "mindf_1024": {
             "name": "埃尔赫",
             "job": "2",
+            "rarity": "4",
         },
         "mindf_1025": {
             "name": "缠枝",
             "job": "2",
+            "rarity": "5",
         },
         "mindf_1026": {
             "name": "七花",
             "job": "5",
+            "rarity": "5",
         },
         "mindf_1027": {
             "name": "希安",
             "job": "1",
+            "rarity": "3",
         },
         "mindf_1028": {
             "name": "薇",
             "job": "3",
+            "rarity": "5",
         },
         "mindf_1029": {
             "name": "薇洛儿",
             "job": "4",
+            "rarity": "5",
         },
         "mindf_1030": {
             "name": "科谢尼娅",
             "job": "4",
+            "rarity": "4",
         },
         "mindf_1031": {
             "name": "伊姆赫特",
             "job": "5",
+            "rarity": "4",
         },
         "mindf_1032": {
             "name": "奥托金",
             "job": "2",
+            "rarity": "4",
         },
         "mindf_1033": {
             "name": "莉丝",
             "job": "4",
+            "rarity": "4",
         },
         "mindf_1034": {
             "name": "阿比盖尔",
             "job": "4",
+            "rarity": "3",
         },
         "mindf_1035": {
             "name": "洁西",
             "job": "5",
+            "rarity": "3",
         },
         "mindf_1036": {
             "name": "拉姆",
             "job": "2",
+            "rarity": "3",
         },
         "mindf_1037": {
             "name": "赫波",
             "job": "2",
+            "rarity": "5",
         },
         "mindf_1038": {
             "name": "咲耶",
             "job": "4",
+            "rarity": "4",
         },
         "mindf_1039": {
             "name": "桑朵莱希",
             "job": "3",
+            "rarity": "5",
         },
         "mindf_1040": {
             "name": "杜莎妮",
-            "job": "3",
+            "job": "4",
+            "rarity": "4",
         },
         "mindf_1041": {
             "name": "德菈赛",
             "job": "5",
+            "rarity": "5",
         },
         "mindf_1042": {
             "name": "初尘",
             "job": "3",
+            "rarity": "5",
         },
         "mindf_1043": {
             "name": "派森",
             "job": "1",
+            "rarity": "5",
         }
     },
     "minds": {

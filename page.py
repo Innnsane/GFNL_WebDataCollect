@@ -405,6 +405,6 @@ def retrieval_opencv():
     return render_template("retopencv.html", menu_list=MENU)
 
 
-# 定义app在4222端口运行
-app.run(port=83, debug=True)
+# 定义app在80端口运行
+app.run(port=80, debug=True)
 

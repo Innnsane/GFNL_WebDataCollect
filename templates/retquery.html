@@ -181,7 +181,7 @@
                 `<tr>
                     <td>${id.split("_")[1]}</td>
                     <td>${item["doll"][id]["name"]}</td>
-                    <td>${String(Number(item["doll"][id]["rarity"]) - 2)}</td>
+                    <td>${String(Number(item["doll"][id]["rarity"])-2)}</td>
                     <td>${item_dict[id]}</td>
                     <td>${(item_dict[id] / item_total * 100).toFixed(3)}%</td>
                     <td>${(item_dict[id] / item_doll["total"] * 100).toFixed(3)}%</td>
