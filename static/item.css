@@ -1,0 +1,155 @@
+
+/* normal */
+
+.ui.segment {
+    width: calc(100% - 6px);
+    max-width: 1010px;
+    margin: 20px auto !important;
+}
+
+
+/* item */
+
+.itemDiv {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+}
+
+.itemText {
+    font-size: 12px;
+}
+
+.itemIcon {
+    position: relative;
+    display: inline-block;
+    aspect-ratio: auto 1 / 1;
+    font-size: 2rem;
+    width: 80px;
+    min-width: 64px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.itemIcon .overlay {  
+    clip-path: polygon(91.92% 0%,8.08% 0%,0% 8.08%,0% 91.92%,8.08% 100%,91.92% 100%,100% 91.92%,100% 8.08%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+}
+
+.itemIcon .overlay::before {
+    content: "";
+    width: 50%;
+    height: 50%;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-image: linear-gradient(135deg,rgb(0 0 0 / 70%) 50%,transparent 50%);
+    z-index: 0;
+}
+
+.itemIcon .subicon.tl {
+    left: 3%;
+    top: 3%;
+    width: 25%;
+    height: 25%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.itemIcon .subicon {
+    z-index: 10;
+    position: absolute;
+    height: auto;
+}
+
+.itemIcon .mainicon {
+    z-index: 0;
+    height: auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    clip-path: polygon(8.83% 97.50%,2.50% 91.17%,2.50% 8.83%,8.83% 2.50%,91.16% 2.50%,97.49% 8.83%,97.49% 91.16%,91.16% 97.49%,8.83% 97.49%);
+}
+
+.itemIcon .plate {
+    clip-path: polygon(8.83% 97.50%,2.50% 91.17%,2.50% 8.83%,8.83% 2.50%,91.16% 2.50%,97.49% 8.83%,97.49% 91.16%,91.16% 97.49%,8.83% 97.49%);
+    position: absolute;
+    background-image: radial-gradient(circle,transparent 60%,rgb(0 0 0 / 50%) 150%);
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0px;
+    z-index: 0;
+}
+
+.itemIcon .back {
+    clip-path: polygon(91.92% 0.00%,8.08% 0.00%,0.00% 8.08%,0.00% 91.92%,8.08% 100.00%,42.19% 100.00%,42.19% 96.87%,9.38% 96.87%,3.13% 90.62%,3.13% 9.38%,9.38% 3.13%,90.63% 3.13%,96.88% 9.38%,96.88% 90.63%,90.63% 96.88%,42.19% 96.88%,42.19% 100.00%,91.92% 100.00%,100.00% 91.92%,100.00% 8.08%,91.92% 0.00%);
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0px;
+    z-index: 3;
+}
+
+.itemIcon.rarity1 .back {background-color:#7D7D7D}
+.itemIcon.rarity1 .plate {background-color:#606060}
+.itemIcon.rarity1.blend .subicon.tl{filter:url(#blendColor1)}
+.itemIcon.rarity2 .back {background-color:#60c030}
+.itemIcon.rarity2 .plate {background-color:#507040}
+.itemIcon.rarity2.blend .subicon.tl{filter:url(#blendColor2)}
+.itemIcon.rarity3 .back {background-color:#5CB7EC}
+.itemIcon.rarity3 .plate {background-color:#256070}
+.itemIcon.rarity3.blend .subicon.tl{filter:url(#blendColor3)}
+.itemIcon.rarity4 .back {background-color:#BA77FF}
+.itemIcon.rarity4 .plate {background-color:#6C4466}
+.itemIcon.rarity4.blend .subicon.tl{filter:url(#blendColor4)}
+.itemIcon.rarity5 .back {background-color:#FF8000}
+.itemIcon.rarity5 .plate {background-color:#805530}
+.itemIcon.rarity5.blend .subicon.tl{filter:url(#blendColor5)}
+
+.itemNumber {
+    text-align: center;
+    clip-path: polygon(0% 0%,100% 0%,100% 60%,80% 100%,0% 100%,0% 0%);
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 45%;
+    background-color: rgb(0 0 0 / 60%);
+    z-index: 2;
+    font-size: 14px;
+    color: #eaeaea;
+    font-family: sans-serif;
+}
+
+img.dollicon {
+    height: auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.itemIcon.dollSquare.rarity5 {
+    box-shadow: inset 10px -10px 20px -10px #cf6c07;
+}
+
+.itemIcon.dollSquare.rarity4 {
+    box-shadow: inset 10px -10px 20px -10px #BA77FF;
+}
+
+.itemIcon.dollSquare.rarity3 {
+    box-shadow: inset 10px -10px 20px -10px #5cb7ec;
+}
